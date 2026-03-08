@@ -1,0 +1,2180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐍 OOP with Python – Student Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --sidebar-bg: #16192a;
+    --card: #1c1f31;
+    --card2: #232640;
+    --accent: #7c5cfc;
+    --accent2: #fc5c7d;
+    --accent3: #5cf0b8;
+    --accent4: #fcd75c;
+    --accent5: #5cadf0;
+    --text: #e8eaf6;
+    --text2: #9ba3c4;
+    --border: #2d3260;
+    --code-bg: #11131f;
+    --nav-w: 280px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ========== SIDEBAR ========== */
+  #sidebar {
+    width: var(--nav-w);
+    min-height: 100vh;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-header {
+    padding: 24px 20px 16px;
+    background: linear-gradient(135deg, #16192a, #1c1f31);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    z-index: 10;
+  }
+  .sidebar-header h2 {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+  }
+  .sidebar-header p { font-size: 0.75rem; color: var(--text2); margin-top: 3px; }
+  .nav-section { padding: 8px 0; }
+  .nav-section-title {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--text2);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 12px 20px 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    text-decoration: none;
+    color: var(--text2);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+  }
+  .nav-link:hover, .nav-link.active {
+    color: var(--text);
+    background: rgba(124,92,252,0.1);
+    border-left-color: var(--accent);
+  }
+  .nav-link .num {
+    background: var(--card2);
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 20px;
+    min-width: 24px;
+    text-align: center;
+  }
+  .nav-sub {
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-sub .nav-link {
+    padding-left: 36px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #6b7399;
+  }
+  .nav-sub .nav-link:hover {
+    color: var(--text);
+  }
+
+  /* ========== MAIN ========== */
+  #main {
+    margin-left: var(--nav-w);
+    flex: 1;
+    padding: 48px 48px 80px;
+    max-width: 1100px;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    background: linear-gradient(135deg, #16192a 0%, #1c1f31 50%, #1a1440 100%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(124,92,252,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero h1 {
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+  .hero p { font-size: 1.1rem; color: var(--text2); max-width: 550px; line-height: 1.6; }
+  .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(124,92,252,0.15);
+    border: 1px solid rgba(124,92,252,0.3);
+    color: #c4b0ff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  /* ========== SECTION ========== */
+  .section {
+    margin-bottom: 64px;
+    scroll-margin-top: 20px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 900;
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title { font-size: 1.7rem; font-weight: 900; }
+  .section-sub { font-size: 0.85rem; color: var(--text2); margin-top: 2px; font-weight: 600; }
+
+  /* ========== CARDS ========== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card p, .card li { font-size: 0.9rem; line-height: 1.7; color: var(--text); }
+  .card ul { padding-left: 20px; }
+  .card ul li { margin-bottom: 6px; }
+
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* highlight cards */
+  .card-accent { border-left: 4px solid var(--accent); }
+  .card-green  { border-left: 4px solid var(--accent3); }
+  .card-pink   { border-left: 4px solid var(--accent2); }
+  .card-yellow { border-left: 4px solid var(--accent4); }
+  .card-blue   { border-left: 4px solid var(--accent5); }
+
+  .emoji-big { font-size: 1.5rem; }
+
+  /* ========== REAL LIFE BOX ========== */
+  .real-life {
+    background: linear-gradient(135deg, rgba(92,240,184,0.07), rgba(92,240,184,0.03));
+    border: 1px solid rgba(92,240,184,0.2);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .real-life-title {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--accent3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .real-life p { font-size: 0.9rem; color: var(--text); line-height: 1.65; }
+
+  /* ========== TIP BOX ========== */
+  .tip-box {
+    background: rgba(252,215,92,0.07);
+    border: 1px solid rgba(252,215,92,0.25);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 18px;
+    font-size: 0.88rem;
+    color: #f5e4a0;
+    line-height: 1.6;
+  }
+  .tip-box strong { color: var(--accent4); }
+
+  /* ========== WARNING BOX ========== */
+  .warn-box {
+    background: rgba(252,92,125,0.07);
+    border: 1px solid rgba(252,92,125,0.25);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 18px;
+    font-size: 0.88rem;
+    color: #ffa8be;
+    line-height: 1.6;
+  }
+
+  /* ========== CODE BLOCKS ========== */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 18px;
+    background: #0d0f1a;
+    border-bottom: 1px solid var(--border);
+  }
+  .code-filename {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.78rem;
+    color: var(--accent3);
+    font-weight: 600;
+  }
+  .code-lang {
+    font-size: 0.7rem;
+    background: rgba(124,92,252,0.2);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #c9d1d9;
+  }
+  /* syntax highlighting */
+  .kw  { color: #ff79c6; font-weight: 600; }
+  .fn  { color: #50fa7b; }
+  .str { color: #f1fa8c; }
+  .com { color: #6272a4; font-style: italic; }
+  .num { color: #bd93f9; }
+  .cls { color: #8be9fd; font-weight: 700; }
+  .dec { color: #ffb86c; }
+  .self{ color: #ff79c6; }
+
+  /* ========== CONCEPT TABLE ========== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+  }
+  th {
+    background: var(--card2);
+    color: var(--accent);
+    font-weight: 800;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  tr:hover td { background: rgba(124,92,252,0.04); }
+
+  /* ========== PROJECT BANNER ========== */
+  .project-banner {
+    background: linear-gradient(135deg, #1a1440, #1c1f31);
+    border: 1px solid rgba(124,92,252,0.3);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-banner::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(124,92,252,0.12) 0%, transparent 70%);
+  }
+  .project-tag {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .project-banner h3 { font-size: 1.2rem; font-weight: 900; margin-bottom: 8px; }
+  .project-banner p { font-size: 0.88rem; color: var(--text2); line-height: 1.6; }
+
+  /* ========== STEP LIST ========== */
+  .step-list { list-style: none; padding: 0; }
+  .step-list li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-num {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    font-weight: 900;
+    font-size: 0.78rem;
+    min-width: 26px; height: 26px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ========== DIVIDER ========== */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  /* ========== HW BOX ========== */
+  .hw-box {
+    background: linear-gradient(135deg, rgba(252,215,92,0.06), rgba(252,92,125,0.06));
+    border: 1px solid rgba(252,215,92,0.2);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-top: 24px;
+  }
+  .hw-title {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--accent4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .hw-box ul { padding-left: 18px; }
+  .hw-box li { font-size: 0.88rem; margin-bottom: 8px; line-height: 1.6; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 900px) {
+    #sidebar { transform: translateX(-100%); }
+    #main { margin-left: 0; padding: 24px 20px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== SIDEBAR ========== -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <h2>🐍 OOP with Python</h2>
+    <p>Grade 6–10 Student Notes</p>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Topics</div>
+    <a class="nav-link" href="#s1"><span class="num">1</span> Classes &amp; Objects</a>
+    <div class="nav-sub">
+      <a class="nav-link" href="#s1-basics">What is OOP?</a>
+      <a class="nav-link" href="#s1-class">Classes &amp; Attributes</a>
+      <a class="nav-link" href="#s1-car">Project: Car</a>
+      <a class="nav-link" href="#s1-dice">Project: Rolling Dice</a>
+    </div>
+    <a class="nav-link" href="#s2"><span class="num">2</span> Class Methods &amp; DOC</a>
+    <div class="nav-sub">
+      <a class="nav-link" href="#s2-classmethod">Class Methods</a>
+      <a class="nav-link" href="#s2-student">Project: Student Counter</a>
+      <a class="nav-link" href="#s2-doc">Project: Card Deck</a>
+    </div>
+    <a class="nav-link" href="#s3"><span class="num">3</span> Inheritance</a>
+    <div class="nav-sub">
+      <a class="nav-link" href="#s3-animal">Example: Animals</a>
+      <a class="nav-link" href="#s3-superhero">Project: Superhero</a>
+      <a class="nav-link" href="#s3-student">Project: Person &amp; Student</a>
+      <a class="nav-link" href="#s3-game">Project: RPG Game</a>
+    </div>
+    <a class="nav-link" href="#s4"><span class="num">4</span> Method Overriding</a>
+    <div class="nav-sub">
+      <a class="nav-link" href="#s4-bird">Example: Birds</a>
+      <a class="nav-link" href="#s4-vehicle">Project: Vehicles</a>
+      <a class="nav-link" href="#s4-bank">Project: Banks</a>
+      <a class="nav-link" href="#s4-hero">Project: Superhero Override</a>
+    </div>
+    <a class="nav-link" href="#s5"><span class="num">5</span> Polymorphism</a>
+    <div class="nav-sub">
+      <a class="nav-link" href="#s5-operator">Operator Overloading</a>
+      <a class="nav-link" href="#s5-method">Method Overloading</a>
+      <a class="nav-link" href="#s5-shapes">Project: Shapes</a>
+    </div>
+    <a class="nav-link" href="#s6"><span class="num">6</span> Abstraction</a>
+    <div class="nav-sub">
+      <a class="nav-link" href="#s6-concept">Abstract Classes</a>
+      <a class="nav-link" href="#s6-car">Project: Car Mileage</a>
+      <a class="nav-link" href="#s6-shapes">Project: Abstract Shapes</a>
+    </div>
+    <a class="nav-link" href="#s7"><span class="num">7</span> Colourful Flower 🌸</a>
+    <div class="nav-sub">
+      <a class="nav-link" href="#s7-basic">Basic Flower</a>
+      <a class="nav-link" href="#s7-flower">OOP Flower Garden</a>
+      <a class="nav-link" href="#s7-car">Animated Car</a>
+    </div>
+    <a class="nav-link" href="#s8"><span class="num">8</span> Space Invaders 🚀</a>
+    <div class="nav-sub">
+      <a class="nav-link" href="#s8-player">Player Class</a>
+      <a class="nav-link" href="#s8-alien">Alien Class</a>
+      <a class="nav-link" href="#s8-flower">Flower (Bullet) Class</a>
+      <a class="nav-link" href="#s8-main">Main Game Loop</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main id="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Object-Oriented<br>Programming 🐍</h1>
+    <p>Learn to code like a pro by modelling the real world! From cars and superheroes to space invaders — everything is an <strong>object</strong>.</p>
+    <div class="badge-row">
+      <span class="badge">🏫 Grade 6–10</span>
+      <span class="badge">🐍 Python</span>
+      <span class="badge">8 Topics</span>
+      <span class="badge">🎮 Real Projects</span>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       SECTION 1: CLASSES & OBJECTS
+  ==================================================== -->
+  <section class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div>
+        <div class="section-title">Classes &amp; Objects</div>
+        <div class="section-sub">The building blocks of Object-Oriented Programming</div>
+      </div>
+    </div>
+
+    <!-- What is OOP -->
+    <div id="s1-basics">
+      <div class="card card-accent">
+        <h3><span class="emoji-big">🌍</span> What is OOP?</h3>
+        <p>Object-Oriented Programming (OOP) is a <strong>way of writing code</strong> that mirrors the real world. Everything around you — a pen, a car, a person — is an <em>object</em>. OOP lets you model those real things in your code!</p>
+      </div>
+
+      <div class="real-life">
+        <div class="real-life-title">🌟 Real-Life Example</div>
+        <p>Pick up a pen from your desk. Did anything else in the room change? No! That's because the world is made of <strong>individual objects</strong>. Similarly, in OOP, you can change one object without affecting others — just like painting your car yellow doesn't change your neighbour's car!</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card card-green">
+          <h3>🏗️ What is a Class?</h3>
+          <p>A <strong>class</strong> is like a <em>blueprint</em> or a <em>recipe</em>. Just like a car blueprint tells you what every car will have (wheels, engine, seats), a class tells Python what every object of that type will have.</p>
+        </div>
+        <div class="card card-pink">
+          <h3>📦 What is an Object?</h3>
+          <p>An <strong>object</strong> is the actual thing created from the blueprint. A BMW and a Toyota are both <em>objects</em> of the Car <em>class</em>. Each has the same structure, but different values!</p>
+        </div>
+      </div>
+
+      <div class="card card-yellow">
+        <h3>🔑 Key Vocabulary</h3>
+        <table>
+          <tr><th>Term</th><th>Meaning</th><th>Real-world example</th></tr>
+          <tr><td><strong>Class</strong></td><td>Blueprint / Template</td><td>Car blueprint</td></tr>
+          <tr><td><strong>Object</strong></td><td>Created from the class</td><td>Your specific car (BMW)</td></tr>
+          <tr><td><strong>Attribute</strong></td><td>Property / Variable inside a class</td><td>Color, brand, wheels</td></tr>
+          <tr><td><strong>Method</strong></td><td>Function inside a class</td><td>drive(), brake(), honk()</td></tr>
+          <tr><td><strong>__init__</strong></td><td>Constructor — runs when object is created</td><td>Factory assembly line</td></tr>
+          <tr><td><strong>self</strong></td><td>Refers to the current object</td><td>"My own color" vs "other car's color"</td></tr>
+        </table>
+      </div>
+
+      <div id="s1-class">
+        <div class="card card-blue">
+          <h3>📐 Class vs Instance Attributes</h3>
+          <ul>
+            <li><strong>Class attributes</strong> — same for ALL objects (e.g. all cars have 4 wheels)</li>
+            <li><strong>Instance attributes</strong> — different for each object (e.g. each car has its own color)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT: CAR -->
+    <div id="s1-car">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 1</div>
+        <h3>🚗 The Car Class</h3>
+        <p>Build a Car blueprint with attributes like color, brand, model, fuel, and price. Create multiple car objects and display their info.</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">1. car.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Car</span>:
+    wheels = <span class="num">4</span>      <span class="com"># class attribute — same for ALL cars</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, color, brand, model, fuel, price):
+        <span class="self">self</span>.color = color        <span class="com"># instance attributes — different per car</span>
+        <span class="self">self</span>.brand = brand
+        <span class="self">self</span>.model = model
+        <span class="self">self</span>.fuel  = fuel
+        <span class="self">self</span>.__price = price   <span class="com"># private variable (double underscore)</span>
+
+    <span class="kw">def</span> <span class="fn">display_info</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Color:"</span>, <span class="self">self</span>.color)
+        <span class="fn">print</span>(<span class="str">"Brand:"</span>, <span class="self">self</span>.brand)
+        <span class="fn">print</span>(<span class="str">"Model:"</span>, <span class="self">self</span>.model)
+        <span class="fn">print</span>(<span class="str">"Fuel :"</span>, <span class="self">self</span>.fuel)
+        <span class="fn">print</span>(<span class="str">"Wheels:"</span>, <span class="cls">Car</span>.wheels)   <span class="com"># access class attr with class name</span>
+        <span class="fn">print</span>(<span class="str">"Price:"</span>, <span class="self">self</span>.__price)    <span class="com"># access private inside class</span>
+
+<span class="com"># Create 3 objects (instances) of Car</span>
+c1 = <span class="cls">Car</span>(<span class="str">"green"</span>, <span class="str">"Ford"</span>,       <span class="str">"Mustang"</span>, <span class="str">"Gasoline"</span>,  <span class="num">1130238</span>)
+c2 = <span class="cls">Car</span>(<span class="str">"red"</span>,   <span class="str">"Toyota"</span>,     <span class="str">"Prius"</span>,   <span class="str">"Electric"</span>,  <span class="num">2372139</span>)
+c3 = <span class="cls">Car</span>(<span class="str">"blue"</span>,  <span class="str">"Volkswagen"</span>, <span class="str">"Golf"</span>,    <span class="str">"Diesel"</span>,    <span class="num">2873219</span>)
+
+c1.display_info()
+c2.display_info()
+c3.display_info()
+
+<span class="com"># Change an instance attribute of only c1</span>
+c1.color = <span class="str">"yellow"</span>
+c1.display_info()   <span class="com"># c2 and c3 colors are unchanged!</span>
+
+<span class="com"># Change the class attribute for ALL objects</span>
+<span class="cls">Car</span>.wheels = <span class="num">5</span>       <span class="com"># now ALL cars show 5 wheels</span></pre>
+      </div>
+
+      <div class="card card-green">
+        <h3>🔍 Line-by-Line Explanation</h3>
+        <ul>
+          <li><strong>class Car:</strong> — declares the Car blueprint</li>
+          <li><strong>wheels = 4</strong> — all cars have 4 wheels by default (class attribute)</li>
+          <li><strong>def __init__(self, ...)</strong> — this runs automatically when you create a Car object. It's like the factory setting up each car on the assembly line</li>
+          <li><strong>self.color = color</strong> — stores the color for THIS specific car</li>
+          <li><strong>self.__price</strong> — private variable! The double underscore means it can only be accessed inside the class (like a car's internal cost that you don't share)</li>
+          <li><strong>c1 = Car(...)</strong> — creates an actual car object!</li>
+        </ul>
+      </div>
+
+      <div class="tip-box">
+        <strong>💡 Tip:</strong> Class names in Python should always start with a Capital Letter (Car, Person, Dog). This is a standard coding convention!
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <strong>Private Variables:</strong> Variables starting with <code>__</code> (double underscore) are private — you can't access them from outside the class using <code>c1.__price</code>. This is called <em>Encapsulation</em>!
+      </div>
+
+      <div class="hw-box">
+        <div class="hw-title">📝 Homework</div>
+        <ul>
+          <li>Create a class called <strong>Person</strong> with attributes: name, age, height, weight, gender</li>
+          <li>Define a method called <strong>display_info()</strong> that prints all information</li>
+          <li>Create at least 3 Person objects with different values</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- PROJECT: DICE -->
+    <div id="s1-dice">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 2</div>
+        <h3>🎲 Rolling Dice</h3>
+        <p>Build a Dice class and use it in a separate file — this is how professional programmers organize their code!</p>
+      </div>
+
+      <div class="tip-box">
+        <strong>💡 Pro Tip:</strong> It's best practice to define a class in one file and use it in another. A single class can then be used in many different programs!
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">dice.py — The Dice Blueprint</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">import</span> random
+
+<span class="kw">class</span> <span class="cls">Dice</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>):
+        <span class="self">self</span>.values = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>]
+        <span class="self">self</span>.face_value = <span class="num">0</span>    <span class="com"># always give default value in __init__</span>
+        <span class="self">self</span>.roll_dice()        <span class="com"># auto-roll when dice is created</span>
+
+    <span class="kw">def</span> <span class="fn">display_face</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="self">self</span>.face_value)
+
+    <span class="kw">def</span> <span class="fn">roll_dice</span>(<span class="self">self</span>):
+        <span class="self">self</span>.face_value = random.choice(<span class="self">self</span>.values)</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">diceobjects.py — Using the Dice</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">from</span> dice <span class="kw">import</span> <span class="cls">Dice</span>   <span class="com"># import Dice class from dice.py</span>
+
+d1 = <span class="cls">Dice</span>()          <span class="com"># create a dice object (auto-rolls)</span>
+d1.display_face()    <span class="com"># shows a random number 1-6</span>
+
+d1.roll_dice()       <span class="com"># roll again</span>
+d1.display_face()    <span class="com"># shows a new number</span></pre>
+      </div>
+
+      <div class="real-life">
+        <div class="real-life-title">🌟 Real-Life Connection</div>
+        <p>Think of the Dice class as the <strong>manufacturer's design</strong>. The dice.py file is the factory — it makes dice. The diceobjects.py file is you — actually picking up a dice and rolling it! You can make as many dice objects (d1, d2, d3...) as you want from the same design.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 2: CLASS METHODS & DOC
+  ==================================================== -->
+  <section class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div>
+        <div class="section-title">Class Methods &amp; DOC Project</div>
+        <div class="section-sub">Special methods that belong to the class, not individual objects</div>
+      </div>
+    </div>
+
+    <div id="s2-classmethod">
+      <div class="card card-accent">
+        <h3><span class="emoji-big">📌</span> What is a Class Method?</h3>
+        <p>A <strong>class method</strong> belongs to the <em>class itself</em>, not to any specific object. It uses <code>@classmethod</code> decorator and takes <code>cls</code> (the class) as the first parameter instead of <code>self</code>.</p>
+        <br>
+        <ul>
+          <li>Uses <code>@classmethod</code> decorator above the function</li>
+          <li>First parameter is <code>cls</code> (stands for "class")</li>
+          <li>Can only access <strong>class attributes</strong>, NOT instance attributes</li>
+          <li>Can be called without creating an object: <code>ClassName.method()</code></li>
+          <li>Can create and return a new object of the class</li>
+        </ul>
+      </div>
+
+      <div class="real-life">
+        <div class="real-life-title">🌟 Real-Life Example</div>
+        <p>Imagine a school <strong>attendance counter</strong>. No matter which student you ask, the total number of students enrolled is the same — it belongs to the school (class), not any individual student. A class method lets you count how many Student objects have been created!</p>
+      </div>
+    </div>
+
+    <!-- Student Counter -->
+    <div id="s2-student">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 3</div>
+        <h3>🎓 Student Counter</h3>
+        <p>Track how many Student objects are created using a class method and class attribute.</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">count.py — Student Counter</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Student</span>:
+    count = <span class="num">0</span>   <span class="com"># class attribute — shared by ALL students</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, name, age, score):
+        <span class="self">self</span>.name  = name
+        <span class="self">self</span>.age   = age
+        <span class="self">self</span>.score = score
+        <span class="cls">Student</span>.count += <span class="num">1</span>   <span class="com"># every time a student is created, count goes up</span>
+
+    <span class="kw">def</span> <span class="fn">display_info</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Name :"</span>, <span class="self">self</span>.name)
+        <span class="fn">print</span>(<span class="str">"Age  :"</span>, <span class="self">self</span>.age)
+        <span class="fn">print</span>(<span class="str">"Score:"</span>, <span class="self">self</span>.score)
+
+    <span class="dec">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">display_count</span>(cls):
+        <span class="fn">print</span>(<span class="str">"Total students:"</span>, <span class="cls">Student</span>.count)
+
+    <span class="dec">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">oath</span>(cls):
+        <span class="fn">print</span>(<span class="str">"I promise to study hard and be honest!"</span>)
+
+s1 = <span class="cls">Student</span>(<span class="str">"Roshni"</span>, <span class="num">20</span>, <span class="num">100</span>)
+s2 = <span class="cls">Student</span>(<span class="str">"Iyan"</span>,   <span class="num">13</span>, <span class="num">95</span>)
+s3 = <span class="cls">Student</span>(<span class="str">"Divya"</span>,  <span class="num">15</span>, <span class="num">88</span>)
+
+s1.display_info()
+<span class="cls">Student</span>.oath()          <span class="com"># called on the class directly!</span>
+<span class="cls">Student</span>.display_count() <span class="com"># Output: Total students: 3</span></pre>
+      </div>
+
+      <div class="card card-green">
+        <h3>🔍 How from_string works</h3>
+        <p>A class method can also <strong>create and return a new object</strong>. This is useful when your data comes in a different format, like a comma-separated string:</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">student.py — Creating object from string</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Student</span>:
+    <span class="com"># ... (same as above) ...</span>
+
+    <span class="dec">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">from_string</span>(cls, string):
+        first, last, age, marks = string.split(<span class="str">","</span>)
+        <span class="kw">return</span> cls(first, last, age, marks)   <span class="com"># returns a new Student object!</span>
+
+<span class="com"># Now you can create a student from a CSV-style string</span>
+s3 = <span class="cls">Student</span>.from_string(<span class="str">"Roshni,Mahajan,25,100"</span>)
+s3.displayinfo()</pre>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- CARD DECK PROJECT -->
+    <div id="s2-doc">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 4 — DOC (Deck of Cards)</div>
+        <h3>🃏 Card &amp; Deck — OOP in Action</h3>
+        <p>Build a full deck of 52 playing cards using two classes: Card and Deck. Deck contains Card objects as attributes — objects inside objects!</p>
+      </div>
+
+      <div class="card card-blue">
+        <h3>🗂️ Structure Overview</h3>
+        <ul>
+          <li><strong>card.py</strong> — defines a single Card (suit + value, with validation)</li>
+          <li><strong>deck.py</strong> — defines a Deck that holds 52 Card objects</li>
+          <li><strong>main.py</strong> — the game menu to display, shuffle, and deal cards</li>
+        </ul>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">card.py — Single Card</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Card</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, suit, value):
+        <span class="self">self</span>.suit  = <span class="str">""</span>
+        <span class="self">self</span>.value = <span class="str">""</span>
+        <span class="self">self</span>.setSuit(suit)
+        <span class="self">self</span>.setValue(value)
+
+    <span class="kw">def</span> <span class="fn">setSuit</span>(<span class="self">self</span>, s):
+        <span class="kw">if</span> s <span class="kw">in</span> [<span class="str">"diamonds"</span>, <span class="str">"hearts"</span>, <span class="str">"clubs"</span>, <span class="str">"spades"</span>]:
+            <span class="self">self</span>.suit = s
+        <span class="kw">else</span>:
+            <span class="fn">print</span>(<span class="str">"Invalid suit!"</span>)
+
+    <span class="kw">def</span> <span class="fn">setValue</span>(<span class="self">self</span>, v):
+        valid = [<span class="str">'A'</span>,<span class="str">'K'</span>,<span class="str">'Q'</span>,<span class="str">'J'</span>,<span class="str">'2'</span>,<span class="str">'3'</span>,<span class="str">'4'</span>,<span class="str">'5'</span>,<span class="str">'6'</span>,<span class="str">'7'</span>,<span class="str">'8'</span>,<span class="str">'9'</span>,<span class="str">'10'</span>]
+        <span class="kw">if</span> v <span class="kw">in</span> valid:
+            <span class="self">self</span>.value = v
+        <span class="kw">else</span>:
+            <span class="fn">print</span>(<span class="str">"Invalid value!"</span>)
+
+    <span class="kw">def</span> <span class="fn">displayCard</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(f<span class="str">"{self.value} of {self.suit}"</span>)</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">deck.py — 52 Cards using Class Method</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">from</span> card <span class="kw">import</span> <span class="cls">Card</span>
+<span class="kw">import</span> random
+
+<span class="kw">class</span> <span class="cls">Deck</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>):
+        <span class="self">self</span>.cards = <span class="cls">Deck</span>.populate()  <span class="com"># use class method to fill the deck</span>
+
+    <span class="dec">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">populate</span>(cls):
+        suits  = [<span class="str">"diamonds"</span>, <span class="str">"hearts"</span>, <span class="str">"spades"</span>, <span class="str">"clubs"</span>]
+        values = [<span class="str">'A'</span>,<span class="str">'K'</span>,<span class="str">'Q'</span>,<span class="str">'J'</span>,<span class="str">'2'</span>,<span class="str">'3'</span>,<span class="str">'4'</span>,<span class="str">'5'</span>,<span class="str">'6'</span>,<span class="str">'7'</span>,<span class="str">'8'</span>,<span class="str">'9'</span>,<span class="str">'10'</span>]
+        cards  = []
+        <span class="kw">for</span> suit <span class="kw">in</span> suits:
+            <span class="kw">for</span> value <span class="kw">in</span> values:
+                cards.append(<span class="cls">Card</span>(suit, value))   <span class="com"># Card objects inside Deck!</span>
+        <span class="kw">return</span> cards   <span class="com"># 4 suits × 13 values = 52 cards</span>
+
+    <span class="kw">def</span> <span class="fn">displayDeck</span>(<span class="self">self</span>):
+        <span class="kw">for</span> card <span class="kw">in</span> <span class="self">self</span>.cards:
+            card.displayCard()
+        <span class="fn">print</span>(<span class="str">"Total:"</span>, len(<span class="self">self</span>.cards))
+
+    <span class="kw">def</span> <span class="fn">shuffleDeck</span>(<span class="self">self</span>):
+        random.shuffle(<span class="self">self</span>.cards)
+        <span class="self">self</span>.displayDeck()
+
+    <span class="kw">def</span> <span class="fn">deal</span>(<span class="self">self</span>):
+        i = random.randint(<span class="num">0</span>, len(<span class="self">self</span>.cards) - <span class="num">1</span>)
+        c = <span class="self">self</span>.cards.pop(i)
+        <span class="fn">print</span>(<span class="str">"Card dealt:"</span>)
+        c.displayCard()
+        <span class="fn">print</span>(<span class="str">"Remaining:"</span>, len(<span class="self">self</span>.cards))</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">main.py — Interactive Menu</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">from</span> card <span class="kw">import</span> <span class="cls">Card</span>
+<span class="kw">from</span> deck <span class="kw">import</span> <span class="cls">Deck</span>
+
+d1 = <span class="cls">Deck</span>()
+
+<span class="kw">while</span> <span class="kw">True</span>:
+    <span class="fn">print</span>(<span class="str">"""
+    1. Display deck
+    2. Shuffle deck
+    3. Deal a card
+    4. Exit
+    """</span>)
+    choice = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Enter 1-4: "</span>))
+    <span class="kw">if</span>   choice == <span class="num">1</span>: d1.displayDeck()
+    <span class="kw">elif</span> choice == <span class="num">2</span>: d1.shuffleDeck()
+    <span class="kw">elif</span> choice == <span class="num">3</span>: d1.deal()
+    <span class="kw">elif</span> choice == <span class="num">4</span>: <span class="kw">break</span>
+    <span class="kw">else</span>: <span class="fn">print</span>(<span class="str">"Wrong choice"</span>)</pre>
+      </div>
+
+      <div class="real-life">
+        <div class="real-life-title">🌟 Real-Life Connection</div>
+        <p>This is exactly how a <strong>real card game app</strong> is built! Card and Deck are separate classes. The Deck holds Card objects as its attribute. Class method <code>populate()</code> acts like a factory that mass-produces all 52 cards automatically.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 3: INHERITANCE
+  ==================================================== -->
+  <section class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div>
+        <div class="section-title">Inheritance</div>
+        <div class="section-sub">Reuse code by building new classes on top of existing ones</div>
+      </div>
+    </div>
+
+    <div class="card card-accent">
+      <h3><span class="emoji-big">🧬</span> What is Inheritance?</h3>
+      <p>Inheritance means a <strong>child class</strong> can get (inherit) all the properties and methods of a <strong>parent class</strong>, and then add its own extra features. This is code reuse at its best!</p>
+    </div>
+
+    <div class="real-life">
+      <div class="real-life-title">🌟 Real-Life Example</div>
+      <p>Think about <strong>animals</strong>. All animals have a name and an age. But a <em>Dog</em> also barks, and a <em>Bird</em> also flies. Instead of repeating name and age in every animal class, we put common stuff in the <em>Animal</em> parent class, and Dog/Bird <em>inherit</em> from it. Just like how you inherit traits (eye color, height) from your parents!</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card card-green">
+        <h3>👪 Parent / Child Classes</h3>
+        <ul>
+          <li><strong>Parent class</strong> (base class) = the original class with common features</li>
+          <li><strong>Child class</strong> (derived class) = inherits from parent + adds new features</li>
+          <li>Syntax: <code>class Child(Parent):</code></li>
+        </ul>
+      </div>
+      <div class="card card-blue">
+        <h3>🔗 super().__init__()</h3>
+        <ul>
+          <li><code>super()</code> calls the parent class</li>
+          <li>Use it in the child's <code>__init__</code> to set up the parent's attributes first</li>
+          <li>Prevents repeating parent code in every child class</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Animal Example -->
+    <div id="s3-animal">
+      <div class="project-banner">
+        <div class="project-tag">📁 Example 1</div>
+        <h3>🦁 Animals — Single &amp; Hierarchical Inheritance</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">animal2.py — Inheritance with super()</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Animal</span>:                                 <span class="com"># Parent class</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, name, age, legs=<span class="num">4</span>):    <span class="com"># default value for legs</span>
+        <span class="self">self</span>.name = name
+        <span class="self">self</span>.age  = age
+        <span class="self">self</span>.legs = legs
+
+    <span class="kw">def</span> <span class="fn">print_info</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Name:"</span>, <span class="self">self</span>.name)
+        <span class="fn">print</span>(<span class="str">"Age :"</span>, <span class="self">self</span>.age)
+        <span class="fn">print</span>(<span class="str">"Legs:"</span>, <span class="self">self</span>.legs)
+
+<span class="kw">class</span> <span class="cls">Mammal</span>(<span class="cls">Animal</span>):                        <span class="com"># Child class</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, name, age, kids):
+        <span class="fn">super</span>().__init__(name, age, <span class="num">4</span>)          <span class="com"># call Animal's __init__</span>
+        <span class="self">self</span>.kids = kids                        <span class="com"># extra attribute for Mammal</span>
+
+    <span class="kw">def</span> <span class="fn">print_running</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"The"</span>, <span class="self">self</span>.name, <span class="str">"is running"</span>)
+
+<span class="com"># Animal object</span>
+a = <span class="cls">Animal</span>(<span class="str">"Lion"</span>, <span class="num">10</span>, <span class="num">4</span>)
+a.print_info()
+
+<span class="com"># Mammal object (inherits ALL Animal methods)</span>
+m = <span class="cls">Mammal</span>(<span class="str">"Monkey"</span>, <span class="str">"15"</span>, <span class="num">5</span>)
+m.print_info()       <span class="com"># inherited from Animal!</span>
+m.print_running()    <span class="com"># Mammal's own method</span>
+<span class="fn">print</span>(m.kids)        <span class="com"># Mammal's own attribute</span></pre>
+      </div>
+    </div>
+
+    <!-- Superhero Inheritance -->
+    <div id="s3-superhero">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 5</div>
+        <h3>🦸 Superhero — Inheriting from Person</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">person.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Person</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, name, age, city):
+        <span class="self">self</span>.name = name
+        <span class="self">self</span>.age  = age
+        <span class="self">self</span>.city = city
+
+    <span class="kw">def</span> <span class="fn">dispInfo</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Name:"</span>, <span class="self">self</span>.name)
+        <span class="fn">print</span>(<span class="str">"Age :"</span>, <span class="self">self</span>.age)
+        <span class="fn">print</span>(<span class="str">"City:"</span>, <span class="self">self</span>.city)
+
+    <span class="kw">def</span> <span class="fn">changeAge</span>(<span class="self">self</span>, a):   <span class="self">self</span>.age  = a
+    <span class="kw">def</span> <span class="fn">changeCity</span>(<span class="self">self</span>, c): <span class="self">self</span>.city = c</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">superhero.py — Inherits from Person</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">from</span> person <span class="kw">import</span> <span class="cls">Person</span>
+
+<span class="kw">class</span> <span class="cls">Superhero</span>(<span class="cls">Person</span>):   <span class="com"># inherits from Person</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, superhero_name, superpower, strength,
+                 person_name, age, city):
+        <span class="fn">super</span>().__init__(person_name, age, city)  <span class="com"># setup Person attributes</span>
+        <span class="self">self</span>.superhero_name = superhero_name
+        <span class="self">self</span>.superpower = {<span class="str">"fly"</span>:<span class="kw">False</span>, <span class="str">"jump"</span>:<span class="kw">False</span>,
+                           <span class="str">"shoot"</span>:<span class="kw">False</span>, <span class="str">"shootWeb"</span>:<span class="kw">False</span>}
+        <span class="self">self</span>.strength = strength
+        <span class="self">self</span>.setPower(superpower)
+
+    <span class="kw">def</span> <span class="fn">setPower</span>(<span class="self">self</span>, s):
+        <span class="self">self</span>.superpower[s] = <span class="kw">True</span>
+
+    <span class="kw">def</span> <span class="fn">getPower</span>(<span class="self">self</span>):
+        <span class="kw">for</span> x <span class="kw">in</span> <span class="self">self</span>.superpower:
+            <span class="kw">if</span> <span class="self">self</span>.superpower[x]: <span class="kw">return</span> x</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">main.py — Using Spiderman</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">from</span> superhero <span class="kw">import</span> <span class="cls">Superhero</span>
+
+s1 = <span class="cls">Superhero</span>(<span class="str">"Spiderman"</span>, <span class="str">"shootWeb"</span>, <span class="num">20</span>, <span class="str">"Peter"</span>, <span class="num">33</span>, <span class="str">"Mumbai"</span>)
+
+s1.dispInfo()       <span class="com"># inherited from Person</span>
+s1.changeAge(<span class="num">45</span>)    <span class="com"># inherited from Person</span>
+s1.changeCity(<span class="str">"London"</span>)  <span class="com"># inherited from Person</span>
+s1.dispInfo()</pre>
+      </div>
+    </div>
+
+    <!-- Person Student -->
+    <div id="s3-student">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 6</div>
+        <h3>👨‍🎓 Person &amp; Student</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">3. PersonStudent.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Person</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, name, age):
+        <span class="self">self</span>.name = name
+        <span class="self">self</span>.age  = age
+    <span class="kw">def</span> <span class="fn">display_name_age</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Name:"</span>, <span class="self">self</span>.name, <span class="str">"| Age:"</span>, <span class="self">self</span>.age)
+    <span class="kw">def</span> <span class="fn">update_age</span>(<span class="self">self</span>, new_age):
+        <span class="self">self</span>.age = new_age
+
+<span class="kw">class</span> <span class="cls">Student</span>(<span class="cls">Person</span>):              <span class="com"># Student IS a Person</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, name, age, marks):
+        <span class="fn">super</span>().__init__(name, age)    <span class="com"># borrow name & age from Person</span>
+        <span class="self">self</span>.marks = marks
+
+    <span class="kw">def</span> <span class="fn">cal_per</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Scored"</span>, (<span class="self">self</span>.marks/<span class="num">500</span>)*<span class="num">100</span>, <span class="str">"percent"</span>)
+
+<span class="com"># Person object</span>
+p = <span class="cls">Person</span>(<span class="str">"Roshni"</span>, <span class="num">20</span>)
+p.display_name_age()
+
+<span class="com"># Student object — has Person methods + its own!</span>
+s = <span class="cls">Student</span>(<span class="str">"Iyan"</span>, <span class="num">13</span>, <span class="num">400</span>)
+s.display_name_age()   <span class="com"># inherited</span>
+s.cal_per()            <span class="com"># Student's own</span>
+s.update_age(<span class="num">14</span>)       <span class="com"># inherited</span></pre>
+      </div>
+    </div>
+
+    <!-- Game RPG -->
+    <div id="s3-game">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 7 — Multiple Inheritance</div>
+        <h3>🎮 RPG Game Characters</h3>
+        <p>A Paladin inherits from BOTH Warrior and Mage — this is called Multiple Inheritance!</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">4. game.py — RPG with Multiple Inheritance</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Character</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, name, level):
+        <span class="self">self</span>.name  = name
+        <span class="self">self</span>.level = level
+    <span class="kw">def</span> <span class="fn">show_stats</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(f<span class="str">"{self.name} is at level {self.level}."</span>)
+
+<span class="kw">class</span> <span class="cls">Warrior</span>(<span class="cls">Character</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, name, level, strength):
+        <span class="fn">super</span>().__init__(name, level)
+        <span class="self">self</span>.strength = strength
+    <span class="kw">def</span> <span class="fn">attack</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(f<span class="str">"{self.name} attacks with power {self.strength}!"</span>)
+    <span class="kw">def</span> <span class="fn">defend</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(f<span class="str">"{self.name} raises a shield!"</span>)
+
+<span class="kw">class</span> <span class="cls">Mage</span>(<span class="cls">Character</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, name, level, mana):
+        <span class="fn">super</span>().__init__(name, level)
+        <span class="self">self</span>.mana = mana
+    <span class="kw">def</span> <span class="fn">cast_spell</span>(<span class="self">self</span>, spell):
+        <span class="fn">print</span>(f<span class="str">"{self.name} casts {spell}!"</span>)
+
+<span class="kw">class</span> <span class="cls">Paladin</span>(<span class="cls">Warrior</span>, <span class="cls">Mage</span>):   <span class="com"># inherits from BOTH!</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, name, level, strength, mana):
+        <span class="cls">Warrior</span>.__init__(<span class="self">self</span>, name, level, strength)
+        <span class="cls">Mage</span>.__init__(<span class="self">self</span>, name, level, mana)
+    <span class="kw">def</span> <span class="fn">heal</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(f<span class="str">"{self.name} heals allies!"</span>)
+
+paladin = <span class="cls">Paladin</span>(<span class="str">"Arthur"</span>, <span class="num">10</span>, <span class="num">80</span>, <span class="num">50</span>)
+paladin.show_stats()        <span class="com"># from Character</span>
+paladin.attack()            <span class="com"># from Warrior</span>
+paladin.cast_spell(<span class="str">"Lightning Strike"</span>)  <span class="com"># from Mage</span>
+paladin.heal()              <span class="com"># Paladin's own</span></pre>
+      </div>
+
+      <div class="card card-yellow">
+        <h3>📊 Types of Inheritance</h3>
+        <table>
+          <tr><th>Type</th><th>Description</th><th>Example</th></tr>
+          <tr><td><strong>Single</strong></td><td>One child inherits from one parent</td><td>Student ← Person</td></tr>
+          <tr><td><strong>Hierarchical</strong></td><td>Multiple children from one parent</td><td>Dog, Cat ← Animal</td></tr>
+          <tr><td><strong>Multilevel</strong></td><td>Chain: grandparent → parent → child</td><td>SportsCar ← Car ← Vehicle</td></tr>
+          <tr><td><strong>Multiple</strong></td><td>One child from multiple parents</td><td>Paladin ← Warrior + Mage</td></tr>
+        </table>
+      </div>
+
+      <div class="hw-box">
+        <div class="hw-title">📝 Homework</div>
+        <ul>
+          <li>Inherit an <strong>Employee</strong> class from Person (add: salary, company)</li>
+          <li>Inherit an <strong>Insect</strong> class from Animal (add: eggs, flying ability)</li>
+          <li>Create a <strong>GradStudent</strong> who is both a Student and a Teacher</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 4: METHOD OVERRIDING
+  ==================================================== -->
+  <section class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div>
+        <div class="section-title">Method Overriding</div>
+        <div class="section-sub">Child class redefines a parent class method to do something different</div>
+      </div>
+    </div>
+
+    <div class="card card-accent">
+      <h3><span class="emoji-big">✏️</span> What is Method Overriding?</h3>
+      <p>When a child class has a method with the <strong>same name</strong> as the parent class, the child's version <em>overrides</em> (replaces) the parent's. Python will use the child's version when called on a child object.</p>
+    </div>
+
+    <div class="real-life">
+      <div class="real-life-title">🌟 Real-Life Example</div>
+      <p>Think of a <strong>bank's interest rate</strong>. Every bank has an interest rate method, but SBI gives 7%, ICICI gives 8%, and a default Bank gives 10%. Each bank <em>overrides</em> the general rate with its own specific rate. Same method name, different result!</p>
+    </div>
+
+    <!-- Bird -->
+    <div id="s4-bird">
+      <div class="project-banner">
+        <div class="project-tag">📁 Example — Birds</div>
+        <h3>🐦 Birds Override flight()</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">3.Bird.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Bird</span>:
+    <span class="kw">def</span> <span class="fn">intro</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"There are many types of birds."</span>)
+    <span class="kw">def</span> <span class="fn">flight</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Most birds can fly but some cannot."</span>)
+
+<span class="kw">class</span> <span class="cls">Sparrow</span>(<span class="cls">Bird</span>):
+    <span class="kw">def</span> <span class="fn">flight</span>(<span class="self">self</span>):           <span class="com"># OVERRIDES Bird's flight()</span>
+        <span class="fn">print</span>(<span class="str">"Sparrows can fly!"</span>)
+
+<span class="kw">class</span> <span class="cls">Ostrich</span>(<span class="cls">Bird</span>):
+    <span class="kw">def</span> <span class="fn">flight</span>(<span class="self">self</span>):           <span class="com"># OVERRIDES Bird's flight()</span>
+        <span class="fn">print</span>(<span class="str">"Ostriches cannot fly."</span>)
+
+b = <span class="cls">Bird</span>();    b.intro(); b.flight()    <span class="com"># "Most birds can fly..."</span>
+s = <span class="cls">Sparrow</span>(); s.intro(); s.flight()   <span class="com"># "Sparrows can fly!"</span>
+o = <span class="cls">Ostrich</span>(); o.intro(); o.flight()   <span class="com"># "Ostriches cannot fly."</span></pre>
+      </div>
+    </div>
+
+    <!-- Vehicle -->
+    <div id="s4-vehicle">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 8 — MRO & Vehicles</div>
+        <h3>🚗🚛 Vehicle Hierarchy with MRO</h3>
+        <p>Multiple levels of inheritance (Vehicle → Car → SportsCar) and Method Resolution Order!</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">2. vehicle.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Vehicle</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, price, color):
+        <span class="self">self</span>.color = color
+        <span class="self">self</span>.price = price
+        <span class="self">self</span>.gas   = <span class="num">0</span>
+
+    <span class="kw">def</span> <span class="fn">fillUpTank</span>(<span class="self">self</span>):  <span class="self">self</span>.gas = <span class="num">100</span>
+    <span class="kw">def</span> <span class="fn">move</span>(<span class="self">self</span>):
+        <span class="kw">while</span> <span class="self">self</span>.gas > <span class="num">0</span>:
+            <span class="fn">print</span>(<span class="str">"Moving..."</span>)
+            <span class="self">self</span>.gas -= <span class="num">1</span>
+        <span class="kw">return</span> <span class="str">"Gas over!"</span>
+
+    <span class="kw">def</span> <span class="fn">display_info</span>(<span class="self">self</span>):  <span class="com"># overridden by children</span>
+        <span class="fn">print</span>(<span class="self">self</span>.price, <span class="self">self</span>.color)
+
+<span class="kw">class</span> <span class="cls">Car</span>(<span class="cls">Vehicle</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, price, color, speed):
+        <span class="fn">super</span>().__init__(price, color)
+        <span class="self">self</span>.speed = speed
+    <span class="kw">def</span> <span class="fn">display_info</span>(<span class="self">self</span>):    <span class="com"># OVERRIDES Vehicle's display_info</span>
+        <span class="fn">print</span>(<span class="self">self</span>.price, <span class="self">self</span>.color, <span class="self">self</span>.speed)
+
+<span class="kw">class</span> <span class="cls">SportsCar</span>(<span class="cls">Car</span>):        <span class="com"># multilevel: SportsCar→Car→Vehicle</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, price, color, speed, radiators):
+        <span class="fn">super</span>().__init__(price, color, speed)
+        <span class="self">self</span>.radiators = radiators
+    <span class="com"># No display_info here — so it uses Car's version (MRO!)</span>
+
+Bugatti = <span class="cls">SportsCar</span>(<span class="num">10000</span>, <span class="str">"red"</span>, <span class="num">400</span>, <span class="num">12</span>)
+Bugatti.fillUpTank()
+<span class="fn">print</span>(Bugatti.move())
+Bugatti.display_info()     <span class="com"># Uses Car's display_info (MRO)</span>
+
+<span class="com"># isinstance checks</span>
+<span class="fn">print</span>(<span class="fn">isinstance</span>(Bugatti, <span class="cls">SportsCar</span>))  <span class="com"># True</span>
+<span class="fn">print</span>(<span class="fn">isinstance</span>(Bugatti, <span class="cls">Car</span>))        <span class="com"># True!</span>
+<span class="fn">print</span>(<span class="fn">isinstance</span>(Bugatti, <span class="cls">Vehicle</span>))    <span class="com"># True!</span></pre>
+      </div>
+
+      <div class="tip-box">
+        <strong>💡 MRO (Method Resolution Order):</strong> When Python looks for a method, it searches in this order: current class → parent class → grandparent class → ... This is why SportsCar uses Car's <code>display_info</code> — it goes up the chain until it finds one!
+      </div>
+    </div>
+
+    <!-- Bank -->
+    <div id="s4-bank">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 9</div>
+        <h3>🏦 Bank Interest Rates</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">4. bank.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Bank</span>:
+    <span class="kw">def</span> <span class="fn">getroi</span>(<span class="self">self</span>): <span class="kw">return</span> <span class="num">10</span>    <span class="com"># default 10%</span>
+
+<span class="kw">class</span> <span class="cls">SBI</span>(<span class="cls">Bank</span>):
+    <span class="kw">def</span> <span class="fn">getroi</span>(<span class="self">self</span>): <span class="kw">return</span> <span class="num">7</span>     <span class="com"># SBI overrides to 7%</span>
+
+<span class="kw">class</span> <span class="cls">ICICI</span>(<span class="cls">Bank</span>):
+    <span class="kw">def</span> <span class="fn">getroi</span>(<span class="self">self</span>): <span class="kw">return</span> <span class="num">8</span>     <span class="com"># ICICI overrides to 8%</span>
+
+b1 = <span class="cls">Bank</span>()
+b2 = <span class="cls">SBI</span>()
+b3 = <span class="cls">ICICI</span>()
+
+<span class="fn">print</span>(<span class="str">"Bank ROI :"</span>, b1.getroi())   <span class="com"># 10</span>
+<span class="fn">print</span>(<span class="str">"SBI ROI  :"</span>, b2.getroi())   <span class="com"># 7</span>
+<span class="fn">print</span>(<span class="str">"ICICI ROI:"</span>, b3.getroi())   <span class="com"># 8</span></pre>
+      </div>
+    </div>
+
+    <!-- Superhero Override -->
+    <div id="s4-hero">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 10</div>
+        <h3>🦸 Superhero — Overriding dispInfo()</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">superhero.py with overriding</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">from</span> person <span class="kw">import</span> <span class="cls">Person</span>
+
+<span class="kw">class</span> <span class="cls">Superhero</span>(<span class="cls">Person</span>):
+    <span class="com"># ... __init__ same as before ...</span>
+
+    <span class="kw">def</span> <span class="fn">dispInfo</span>(<span class="self">self</span>):        <span class="com"># OVERRIDES Person's dispInfo</span>
+        <span class="fn">print</span>(<span class="str">"Name:"</span>, <span class="self">self</span>.name + <span class="str">" The "</span> + <span class="self">self</span>.superhero_name)
+        <span class="fn">print</span>(<span class="str">"Age :"</span>, <span class="self">self</span>.age)
+        <span class="fn">print</span>(<span class="str">"City:"</span>, <span class="self">self</span>.city)
+        <span class="fn">print</span>(<span class="str">"Power:"</span>, <span class="self">self</span>.getPower())
+        <span class="fn">print</span>(<span class="str">"Strength:"</span>, <span class="self">self</span>.strength)
+
+s1 = <span class="cls">Superhero</span>(<span class="str">"Spiderman"</span>, <span class="str">"shootWeb"</span>, <span class="num">20</span>, <span class="str">"Peter"</span>, <span class="num">33</span>, <span class="str">"Mumbai"</span>)
+s1.dispInfo()    <span class="com"># Runs Superhero's version, not Person's!</span></pre>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 5: POLYMORPHISM
+  ==================================================== -->
+  <section class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div>
+        <div class="section-title">Polymorphism</div>
+        <div class="section-sub">poly = many, morphism = forms — one name, many behaviors!</div>
+      </div>
+    </div>
+
+    <div class="card card-accent">
+      <h3><span class="emoji-big">🦎</span> What is Polymorphism?</h3>
+      <p>Polymorphism means the same <strong>action</strong> can behave differently on different objects. Like the word "run" — a person runs on legs, a car runs on fuel, a program runs on a computer!</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card card-green">
+        <h3>🔢 Operator Overloading</h3>
+        <p>Making operators like <code>+</code>, <code>-</code>, <code>&lt;</code> work with your own objects.</p>
+        <p><code>4 + 5 = 9</code> (numbers)<br><code>"4" + "5" = "45"</code> (strings)<br>Same <code>+</code> operator, different behavior!</p>
+      </div>
+      <div class="card card-blue">
+        <h3>🔁 Method Overloading</h3>
+        <p>Same method name works with different numbers of arguments. Python uses <em>default parameters</em> to achieve this.</p>
+      </div>
+    </div>
+
+    <!-- Operator Overloading -->
+    <div id="s5-operator">
+      <div class="project-banner">
+        <div class="project-tag">📁 Concept 1</div>
+        <h3>➕ Operator Overloading</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">operator_overloading.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Vehicle</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, fare):
+        <span class="self">self</span>.fare = fare
+
+    <span class="kw">def</span> <span class="fn">__add__</span>(<span class="self">self</span>, other):       <span class="com"># overloads the + operator</span>
+        <span class="kw">return</span> <span class="self">self</span>.fare + other.fare
+
+    <span class="kw">def</span> <span class="fn">__lt__</span>(<span class="self">self</span>, other):        <span class="com"># overloads the < operator</span>
+        <span class="kw">return</span> <span class="self">self</span>.fare &lt; other.fare
+
+bus = <span class="cls">Vehicle</span>(<span class="num">20</span>)
+car = <span class="cls">Vehicle</span>(<span class="num">30</span>)
+
+total_fare = bus + car      <span class="com"># calls __add__</span>
+<span class="fn">print</span>(total_fare)           <span class="com"># 50</span>
+
+compare = bus &lt; car         <span class="com"># calls __lt__</span>
+<span class="fn">print</span>(compare)              <span class="com"># True</span></pre>
+      </div>
+
+      <div class="card card-yellow">
+        <h3>🔧 Magic Methods for Operators</h3>
+        <table>
+          <tr><th>Operator</th><th>Magic Method</th><th>Operator</th><th>Magic Method</th></tr>
+          <tr><td><code>+</code></td><td>__add__</td><td><code>&lt;</code></td><td>__lt__</td></tr>
+          <tr><td><code>-</code></td><td>__sub__</td><td><code>&gt;</code></td><td>__gt__</td></tr>
+          <tr><td><code>*</code></td><td>__mul__</td><td><code>==</code></td><td>__eq__</td></tr>
+          <tr><td><code>/</code></td><td>__truediv__</td><td><code>!=</code></td><td>__ne__</td></tr>
+          <tr><td><code>**</code></td><td>__pow__</td><td><code>&lt;=</code></td><td>__le__</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Method Overloading -->
+    <div id="s5-method">
+      <div class="project-banner">
+        <div class="project-tag">📁 Concept 2</div>
+        <h3>🔁 Method Overloading with Default Parameters</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">method_overloading.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">class</span> <span class="cls">Shape</span>:
+    <span class="kw">def</span> <span class="fn">find_area</span>(<span class="self">self</span>, a=<span class="kw">None</span>, b=<span class="kw">None</span>):
+        <span class="kw">if</span> a <span class="kw">is not None</span> <span class="kw">and</span> b <span class="kw">is not None</span>:
+            <span class="fn">print</span>(<span class="str">"Rectangle area:"</span>, a * b)
+        <span class="kw">elif</span> a <span class="kw">is not None</span>:
+            <span class="fn">print</span>(<span class="str">"Square area:"</span>, a * a)
+        <span class="kw">else</span>:
+            <span class="fn">print</span>(<span class="str">"No figure assigned"</span>)
+
+obj = <span class="cls">Shape</span>()
+obj.find_area()         <span class="com"># No figure assigned</span>
+obj.find_area(<span class="num">10</span>)       <span class="com"># Square area: 100</span>
+obj.find_area(<span class="num">10</span>, <span class="num">20</span>)   <span class="com"># Rectangle area: 200</span></pre>
+      </div>
+    </div>
+
+    <!-- Shapes -->
+    <div id="s5-shapes">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 11</div>
+        <h3>📐 Shapes — Polymorphism with area()</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">shape.py, rectangle.py, square.py, main.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="com"># shape.py — Parent</span>
+<span class="kw">class</span> <span class="cls">Shape</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, n):
+        <span class="self">self</span>.num_sides = n
+    <span class="kw">def</span> <span class="fn">info</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"2D shape with"</span>, <span class="self">self</span>.num_sides, <span class="str">"sides"</span>)
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Calculating area..."</span>)
+    <span class="kw">def</span> <span class="fn">perimeter</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Calculating perimeter..."</span>)
+
+<span class="com"># rectangle.py — Child</span>
+<span class="kw">from</span> shape <span class="kw">import</span> <span class="cls">Shape</span>
+<span class="kw">class</span> <span class="cls">Rectangle</span>(<span class="cls">Shape</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, side1, side2):
+        <span class="fn">super</span>().__init__(<span class="num">4</span>)
+        <span class="self">self</span>.length = side1
+        <span class="self">self</span>.width  = side2
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="self">self</span>):
+        <span class="fn">super</span>().area()
+        <span class="kw">return</span> <span class="self">self</span>.length * <span class="self">self</span>.width
+    <span class="kw">def</span> <span class="fn">perimeter</span>(<span class="self">self</span>):
+        <span class="fn">super</span>().perimeter()
+        <span class="kw">return</span> <span class="num">2</span> * (<span class="self">self</span>.length + <span class="self">self</span>.width)
+
+<span class="com"># square.py — Child</span>
+<span class="kw">from</span> shape <span class="kw">import</span> <span class="cls">Shape</span>
+<span class="kw">class</span> <span class="cls">Square</span>(<span class="cls">Shape</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, side_len):
+        <span class="fn">super</span>().__init__(<span class="num">4</span>)
+        <span class="self">self</span>.side_len = side_len
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="self">self</span>):
+        <span class="fn">super</span>().area()
+        <span class="kw">return</span> <span class="self">self</span>.side_len ** <span class="num">2</span>
+    <span class="kw">def</span> <span class="fn">perimeter</span>(<span class="self">self</span>):
+        <span class="fn">super</span>().perimeter()
+        <span class="kw">return</span> <span class="num">4</span> * <span class="self">self</span>.side_len
+
+<span class="com"># main.py — Using Shapes</span>
+<span class="kw">from</span> rectangle <span class="kw">import</span> <span class="cls">Rectangle</span>
+<span class="kw">from</span> square <span class="kw">import</span> <span class="cls">Square</span>
+
+r = <span class="cls">Rectangle</span>(<span class="num">10</span>, <span class="num">5</span>)
+r.info()                 <span class="com"># from Shape</span>
+<span class="fn">print</span>(r.area())          <span class="com"># 50</span>
+<span class="fn">print</span>(r.perimeter())     <span class="com"># 30</span>
+
+s = <span class="cls">Square</span>(<span class="num">20</span>)
+s.info()
+<span class="fn">print</span>(s.area())          <span class="com"># 400</span>
+<span class="fn">print</span>(s.perimeter())     <span class="com"># 80</span></pre>
+      </div>
+
+      <div class="real-life">
+        <div class="real-life-title">🌟 Real-Life Connection</div>
+        <p>Both a Rectangle and a Square have an <code>area()</code> method — but they calculate it differently! This is polymorphism: same action (find area), different shapes, different formulas. A math teacher says "find the area" to all students — but the formula depends on the shape!</p>
+      </div>
+
+      <div class="hw-box">
+        <div class="hw-title">📝 Homework</div>
+        <ul>
+          <li>Create a class <strong>Player</strong> with attributes <code>round1_score</code> and <code>round2_score</code>. Overload <code>+</code> so that <code>p1 + p2</code> prints combined scores of each round.</li>
+          <li>Add a <strong>Triangle</strong> class that inherits Shape and calculates area using base and height.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 6: ABSTRACTION
+  ==================================================== -->
+  <section class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div>
+        <div class="section-title">Abstraction</div>
+        <div class="section-sub">Hide the "how" and show only the "what" — simplicity through design</div>
+      </div>
+    </div>
+
+    <div class="card card-accent">
+      <h3><span class="emoji-big">🔲</span> What is Abstraction?</h3>
+      <p>Abstraction means hiding complex details and showing only what's necessary. An <strong>abstract class</strong> is a blueprint that <em>cannot be used to create objects directly</em>. It forces child classes to provide their own implementation of certain methods.</p>
+    </div>
+
+    <div class="real-life">
+      <div class="real-life-title">🌟 Real-Life Examples</div>
+      <p>When you drive a car, you press the accelerator — you don't know how the engine works internally! The car <em>abstracts</em> the complexity. Similarly, when you use a remote control, you press "Volume Up" — you don't care about the electronics inside. Abstract classes work the same way: they define <em>what</em> must be done, but not <em>how</em>.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card card-green">
+        <h3>📋 Rules of Abstract Classes</h3>
+        <ul>
+          <li>Import <code>ABC</code> and <code>abstractmethod</code> from the <code>abc</code> module</li>
+          <li>Class inherits from <code>ABC</code></li>
+          <li>Abstract methods use <code>@abstractmethod</code> decorator</li>
+          <li>You <strong>cannot</strong> create an object of an abstract class</li>
+          <li>Child class <strong>must</strong> implement all abstract methods</li>
+          <li>If child doesn't implement, it also becomes abstract!</li>
+        </ul>
+      </div>
+      <div class="card card-pink">
+        <h3>🔑 Key Concept</h3>
+        <p>Abstract class = Contract! It says: "Every subclass MUST have these methods, but you decide HOW they work."</p>
+        <br>
+        <p>Example: A Shape class says every shape MUST have <code>area()</code> and <code>perimeter()</code>. But Circle, Rectangle, Triangle each calculate them differently.</p>
+      </div>
+    </div>
+
+    <!-- Car Abstraction -->
+    <div id="s6-car">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 12</div>
+        <h3>🚗 Abstract Car — Mileage</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">car.py — Abstract Car</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">from</span> abc <span class="kw">import</span> ABC, abstractmethod
+
+<span class="kw">class</span> <span class="cls">Car</span>(<span class="cls">ABC</span>):       <span class="com"># abstract class — inherits from ABC</span>
+    <span class="dec">@abstractmethod</span>
+    <span class="kw">def</span> <span class="fn">mileage</span>(<span class="self">self</span>):
+        <span class="kw">pass</span>            <span class="com"># no body — child MUST implement this!</span>
+
+<span class="kw">class</span> <span class="cls">Tesla</span>(<span class="cls">Car</span>):
+    <span class="kw">def</span> <span class="fn">mileage</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Tesla mileage: 30 kmph"</span>)
+
+<span class="kw">class</span> <span class="cls">Suzuki</span>(<span class="cls">Car</span>):
+    <span class="kw">def</span> <span class="fn">mileage</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Suzuki mileage: 25 kmph"</span>)
+
+<span class="kw">class</span> <span class="cls">Duster</span>(<span class="cls">Car</span>):
+    <span class="kw">def</span> <span class="fn">mileage</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Duster mileage: 24 kmph"</span>)
+
+<span class="kw">class</span> <span class="cls">Renault</span>(<span class="cls">Car</span>):
+    <span class="kw">def</span> <span class="fn">mileage</span>(<span class="self">self</span>):
+        <span class="fn">print</span>(<span class="str">"Renault mileage: 27 kmph"</span>)
+
+t = <span class="cls">Tesla</span>();   t.mileage()    <span class="com"># Tesla mileage: 30 kmph</span>
+r = <span class="cls">Renault</span>(); r.mileage()    <span class="com"># Renault mileage: 27 kmph</span>
+s = <span class="cls">Suzuki</span>();  s.mileage()    <span class="com"># Suzuki mileage: 25 kmph</span>
+
+<span class="com"># c = Car()  ← ERROR! Cannot instantiate abstract class</span></pre>
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <strong>Important:</strong> <code>c = Car()</code> will throw a <code>TypeError</code>! You cannot create an object of an abstract class because it's just a blueprint, not a real thing.
+      </div>
+    </div>
+
+    <!-- Abstract Shapes -->
+    <div id="s6-shapes">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 13</div>
+        <h3>📐 Abstract Shapes</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">shape.py, rectangle.py, square.py, main.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="com"># shape.py — Abstract Base Class</span>
+<span class="kw">from</span> abc <span class="kw">import</span> ABC, abstractmethod
+
+<span class="kw">class</span> <span class="cls">Shape</span>(<span class="cls">ABC</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, n):
+        <span class="self">self</span>.num_sides = n
+    <span class="kw">def</span> <span class="fn">info</span>(<span class="self">self</span>):   <span class="com"># NOT abstract — has implementation</span>
+        <span class="fn">print</span>(<span class="str">"2D shape with"</span>, <span class="self">self</span>.num_sides, <span class="str">"sides"</span>)
+    <span class="dec">@abstractmethod</span>
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="self">self</span>): <span class="kw">pass</span>       <span class="com"># MUST be overridden</span>
+    <span class="dec">@abstractmethod</span>
+    <span class="kw">def</span> <span class="fn">perimeter</span>(<span class="self">self</span>): <span class="kw">pass</span>  <span class="com"># MUST be overridden</span>
+
+<span class="com"># rectangle.py</span>
+<span class="kw">from</span> shape <span class="kw">import</span> <span class="cls">Shape</span>
+<span class="kw">class</span> <span class="cls">Rectangle</span>(<span class="cls">Shape</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>, side1, side2):
+        <span class="fn">super</span>().__init__(<span class="num">4</span>)
+        <span class="self">self</span>.length = side1
+        <span class="self">self</span>.width  = side2
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="self">self</span>):
+        <span class="kw">return</span> <span class="self">self</span>.length * <span class="self">self</span>.width
+    <span class="kw">def</span> <span class="fn">perimeter</span>(<span class="self">self</span>):
+        <span class="kw">return</span> <span class="num">2</span> * (<span class="self">self</span>.length + <span class="self">self</span>.width)
+    <span class="kw">def</span> <span class="fn">hint</span>(<span class="self">self</span>):
+        <span class="self">self</span>.info()
+        <span class="fn">print</span>(<span class="str">"My opposite sides are equal!"</span>)
+
+<span class="com"># main.py</span>
+<span class="kw">from</span> rectangle <span class="kw">import</span> <span class="cls">Rectangle</span>
+<span class="kw">from</span> square <span class="kw">import</span> <span class="cls">Square</span>
+
+r = <span class="cls">Rectangle</span>(<span class="num">10</span>, <span class="num">5</span>)
+r.hint()
+<span class="com"># new_shape = Shape(4)  ← TypeError! Cannot create abstract object</span></pre>
+      </div>
+
+      <div class="card card-yellow">
+        <h3>🆚 Comparison: Polymorphism vs Abstraction</h3>
+        <table>
+          <tr><th>Feature</th><th>Polymorphism</th><th>Abstraction</th></tr>
+          <tr><td>Purpose</td><td>Same interface, different behavior</td><td>Hide implementation details</td></tr>
+          <tr><td>Focus</td><td>How methods behave differently</td><td>What must be implemented</td></tr>
+          <tr><td>Tool</td><td>Method overriding / overloading</td><td>Abstract classes &amp; methods</td></tr>
+          <tr><td>Object creation</td><td>Can create parent objects</td><td>Cannot create abstract class objects</td></tr>
+        </table>
+      </div>
+
+      <div class="hw-box">
+        <div class="hw-title">📝 Homework</div>
+        <ul>
+          <li>Create an abstract class <strong>Bank</strong> with abstract method <code>getBalance()</code>. Create subclasses BankA ($100), BankB ($150), BankC ($200) and call the method on each.</li>
+          <li>Add a <strong>Triangle</strong> class that inherits from the abstract Shape class.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 7: COLOURFUL FLOWER 🌸
+  ==================================================== -->
+  <section class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div>
+        <div class="section-title">Colourful Flower 🌸</div>
+        <div class="section-sub">OOP + Turtle Graphics — draw beautiful art with classes!</div>
+      </div>
+    </div>
+
+    <div class="card card-accent">
+      <h3><span class="emoji-big">🐢</span> Turtle Graphics + OOP</h3>
+      <p>Python's <strong>turtle</strong> module lets you draw graphics on screen. A turtle is like a pen on the screen — you tell it to move forward, turn, draw circles. By creating a class that <em>inherits from</em> <code>turtle.Turtle</code>, your objects become drawing turtles!</p>
+    </div>
+
+    <!-- Basic Flower -->
+    <div id="s7-basic">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 14 — Step 1</div>
+        <h3>🌼 Basic Flower (No OOP)</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">1. basic flower.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">import</span> turtle
+
+s = turtle.Screen()
+s.title(<span class="str">"Colourful Flowers"</span>)
+s.bgcolor(<span class="str">"pink"</span>)
+s.setup(<span class="num">800</span>, <span class="num">600</span>)
+
+t = turtle.Turtle()
+t.color(<span class="str">"Orange"</span>)
+t.pensize(<span class="num">3</span>)
+t.speed(<span class="num">0</span>)         <span class="com"># 0 = fastest</span>
+
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">6</span>):   <span class="com"># draw 6 petals</span>
+    t.circle(<span class="num">20</span>)    <span class="com"># draw a circle for each petal</span>
+    t.right(<span class="num">60</span>)     <span class="com"># rotate 60° (360° ÷ 6 = 60°)</span>
+
+turtle.done()</pre>
+      </div>
+    </div>
+
+    <!-- OOP Flower -->
+    <div id="s7-flower">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 14 — Step 2</div>
+        <h3>🌸 OOP Flower Garden</h3>
+        <p>Create a Flower class that inherits from turtle.Turtle and draws randomly colored flowers all over the screen!</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">2. flower.py — OOP Flower Garden</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">import</span> turtle, random
+
+<span class="kw">class</span> <span class="cls">Flower</span>(turtle.Turtle):   <span class="com"># Flower IS a Turtle — inheritance!</span>
+    colors = [<span class="str">"#a31b03"</span>, <span class="str">"#cbfaa7"</span>, <span class="str">"#3c3457"</span>, <span class="str">"#ed5fc2"</span>,
+              <span class="str">"medium purple"</span>, <span class="str">"peru"</span>, <span class="str">"gold"</span>, <span class="str">"deep pink"</span>,
+              <span class="str">"tomato"</span>, <span class="str">"magenta"</span>]   <span class="com"># class attribute</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>):
+        turtle.Turtle.__init__(<span class="self">self</span>)           <span class="com"># setup turtle</span>
+        <span class="self">self</span>.color(random.choice(<span class="cls">Flower</span>.colors))  <span class="com"># random color</span>
+        <span class="self">self</span>.radius   = random.randint(<span class="num">5</span>, <span class="num">20</span>)     <span class="com"># random size</span>
+        <span class="self">self</span>.pensize(random.randint(<span class="num">3</span>, <span class="num">6</span>))
+        <span class="self">self</span>.speed(<span class="num">0</span>)
+
+    <span class="kw">def</span> <span class="fn">drawFlower</span>(<span class="self">self</span>):
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">6</span>):
+            <span class="self">self</span>.circle(<span class="self">self</span>.radius)   <span class="com"># draw petal</span>
+            <span class="self">self</span>.right(<span class="num">60</span>)             <span class="com"># rotate</span>
+
+    <span class="kw">def</span> <span class="fn">changeLocation</span>(<span class="self">self</span>, x, y):
+        <span class="self">self</span>.pu()        <span class="com"># pen up (don't draw while moving)</span>
+        <span class="self">self</span>.goto(x, y)  <span class="com"># move to position</span>
+        <span class="self">self</span>.pd()        <span class="com"># pen down (start drawing again)</span>
+
+s = turtle.Screen()
+s.setup(<span class="num">1000</span>, <span class="num">700</span>, <span class="num">0</span>, <span class="num">0</span>)
+s.bgcolor(<span class="str">"lavender"</span>)
+s.title(<span class="str">"Colorful Flower Garden"</span>)
+
+<span class="kw">while</span> <span class="kw">True</span>:                              <span class="com"># keep drawing flowers!</span>
+    f1 = <span class="cls">Flower</span>()
+    f1.changeLocation(
+        random.randint(-<span class="num">400</span>, <span class="num">400</span>),       <span class="com"># random x</span>
+        random.randint(-<span class="num">300</span>, <span class="num">300</span>)        <span class="com"># random y</span>
+    )
+    f1.drawFlower()</pre>
+      </div>
+
+      <div class="real-life">
+        <div class="real-life-title">🌟 Why OOP Here?</div>
+        <p>Each <code>Flower</code> object is <em>independent</em> — its own color, size, and position. Without OOP, you'd need separate variables for each flower. With OOP, you just create a new <code>Flower()</code> object and it sets itself up automatically!</p>
+      </div>
+    </div>
+
+    <!-- Animated Car -->
+    <div id="s7-car">
+      <div class="project-banner">
+        <div class="project-tag">📁 Project 14 — Step 3</div>
+        <h3>🚗 Animated Car with Turtle</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">3. car.py — Moving Car Animation</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">import</span> turtle, time, random
+
+<span class="kw">class</span> <span class="cls">Car</span>(turtle.Turtle):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>):
+        <span class="fn">super</span>().__init__()
+        <span class="self">self</span>.setx(-<span class="num">400</span>)          <span class="com"># start from left</span>
+        <span class="self">self</span>.hideturtle()
+        <span class="self">self</span>.drawCar()
+        <span class="self">self</span>.color(random.choice([<span class="str">"red"</span>,<span class="str">"green"</span>,<span class="str">"blue"</span>,<span class="str">"yellow"</span>]))
+
+    <span class="kw">def</span> <span class="fn">drawCar</span>(<span class="self">self</span>):     <span class="com"># draws the car shape using turtle movements</span>
+        <span class="self">self</span>.clear()
+        <span class="self">self</span>.begin_fill()
+        <span class="self">self</span>.right(<span class="num">45</span>); <span class="self">self</span>.fd(<span class="num">50</span>); <span class="self">self</span>.right(<span class="num">135</span>); <span class="self">self</span>.fd(<span class="num">100</span>)
+        <span class="self">self</span>.right(<span class="num">135</span>); <span class="self">self</span>.fd(<span class="num">50</span>); <span class="self">self</span>.right(<span class="num">45</span>); <span class="self">self</span>.fd(<span class="num">30</span>)
+        <span class="com"># ... continues drawing body, wheels ...</span>
+        <span class="self">self</span>.dot(<span class="num">50</span>, <span class="str">"black"</span>)   <span class="com"># draw wheels as dots</span>
+        <span class="self">self</span>.end_fill()
+
+    <span class="kw">def</span> <span class="fn">moveCar</span>(<span class="self">self</span>, amt):
+        <span class="self">self</span>.clear()
+        <span class="self">self</span>.pu()
+        <span class="self">self</span>.seth(<span class="num">0</span>)              <span class="com"># face East (0=East, 90=North)</span>
+        <span class="self">self</span>.checkLocation()
+        <span class="self">self</span>.fd(amt)
+        <span class="self">self</span>.pd()
+        <span class="self">self</span>.drawCar()
+
+    <span class="kw">def</span> <span class="fn">checkLocation</span>(<span class="self">self</span>):
+        <span class="kw">if</span> <span class="self">self</span>.xcor() >= <span class="num">400</span>:   <span class="com"># if at right edge, go back to left</span>
+            <span class="self">self</span>.setx(-<span class="num">400</span>)
+            <span class="self">self</span>.color(random.choice([<span class="str">"red"</span>,<span class="str">"green"</span>,<span class="str">"blue"</span>,<span class="str">"yellow"</span>]))
+
+s = turtle.Screen()
+s.setup(<span class="num">800</span>, <span class="num">500</span>)
+s.tracer(<span class="kw">False</span>)   <span class="com"># turn off auto-drawing (faster)</span>
+c = <span class="cls">Car</span>()
+
+<span class="kw">while</span> <span class="kw">True</span>:
+    c.moveCar(<span class="num">5</span>)    <span class="com"># move 5 pixels at a time</span>
+    s.update()      <span class="com"># refresh screen</span>
+    time.sleep(<span class="num">0.05</span>)</pre>
+      </div>
+
+      <div class="hw-box">
+        <div class="hw-title">📝 Homework</div>
+        <ul>
+          <li>Draw a <strong>starry sky</strong> using a <code>Star</code> class — create multiple star objects at random positions</li>
+          <li>Create a <strong>falling star</strong> animation using Turtle and OOP</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================================
+       SECTION 8: SPACE INVADERS 🚀
+  ==================================================== -->
+  <section class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div>
+        <div class="section-title">Space Invaders 🚀</div>
+        <div class="section-sub">Final Project — Build a full game using OOP, Turtle, and all concepts learned!</div>
+      </div>
+    </div>
+
+    <div class="card card-accent">
+      <h3><span class="emoji-big">🎮</span> Project Overview</h3>
+      <p>This is the ultimate OOP project! Using everything you've learned, build a Space Invaders-style game. The player moves left and right, shoots flowers (bullets) at aliens, and tries to destroy them all before they reach the player!</p>
+    </div>
+
+    <div class="card card-blue">
+      <h3>📂 File Structure</h3>
+      <ul>
+        <li><strong>player.py</strong> — Player spaceship class (move left/right)</li>
+        <li><strong>alien.py</strong> — Alien class (random starting position, moves sideways)</li>
+        <li><strong>flower.py</strong> — Flower bullet class (shoots upward)</li>
+        <li><strong>main.py</strong> — Game loop, collision detection, score, game over</li>
+      </ul>
+    </div>
+
+    <div class="real-life">
+      <div class="real-life-title">🌟 OOP Concepts Used in This Game</div>
+      <p><strong>Classes &amp; Objects:</strong> Player, Alien, Flower are all classes.<br>
+      <strong>Inheritance:</strong> All 3 inherit from <code>turtle.Turtle</code> — they get all turtle drawing powers!<br>
+      <strong>Encapsulation:</strong> Each class manages its own state (speed, position).<br>
+      <strong>Abstraction:</strong> Main.py doesn't know HOW aliens move — it just calls methods.</p>
+    </div>
+
+    <!-- Player -->
+    <div id="s8-player">
+      <div class="project-banner">
+        <div class="project-tag">📁 File 1</div>
+        <h3>🚀 Player Class</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">player.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">import</span> turtle
+
+<span class="com"># Register custom GIF image as turtle shape</span>
+turtle.register_shape(<span class="str">r"space invader images/player.gif"</span>)
+
+<span class="kw">class</span> <span class="cls">Player</span>(turtle.Turtle):   <span class="com"># inherits from Turtle!</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>):
+        <span class="fn">super</span>().__init__()
+        <span class="self">self</span>.shape(<span class="str">r"space invader images/player.gif"</span>)
+        <span class="self">self</span>.setheading(<span class="num">90</span>)      <span class="com"># face North (0=E, 90=N, 180=W, 270=S)</span>
+        <span class="self">self</span>.speed(<span class="num">0</span>)
+        <span class="self">self</span>.penup()
+        <span class="self">self</span>.goto(<span class="num">0</span>, -<span class="num">150</span>)       <span class="com"># start at bottom center</span>
+        <span class="self">self</span>.playerspeed = <span class="num">40</span>
+
+    <span class="kw">def</span> <span class="fn">move_left</span>(<span class="self">self</span>):
+        x = <span class="self">self</span>.xcor()
+        x -= <span class="self">self</span>.playerspeed
+        <span class="kw">if</span> x &lt; -<span class="num">300</span>: x = -<span class="num">300</span>   <span class="com"># don't go off screen!</span>
+        <span class="self">self</span>.setx(x)
+
+    <span class="kw">def</span> <span class="fn">move_right</span>(<span class="self">self</span>):
+        x = <span class="self">self</span>.xcor()
+        x += <span class="self">self</span>.playerspeed
+        <span class="kw">if</span> x &gt; <span class="num">300</span>: x = <span class="num">300</span>
+        <span class="self">self</span>.setx(x)</pre>
+      </div>
+    </div>
+
+    <!-- Alien -->
+    <div id="s8-alien">
+      <div class="project-banner">
+        <div class="project-tag">📁 File 2</div>
+        <h3">👾 Alien Class</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">alien.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">import</span> turtle, random
+
+turtle.register_shape(<span class="str">r"space invader images/alien.gif"</span>)
+
+<span class="kw">class</span> <span class="cls">Alien</span>(turtle.Turtle):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>):
+        <span class="fn">super</span>().__init__()
+        <span class="self">self</span>.shape(<span class="str">r"space invader images/alien.gif"</span>)
+        <span class="self">self</span>.speed(<span class="num">0</span>)
+        <span class="self">self</span>.penup()
+        <span class="self">self</span>.setheading(<span class="num">90</span>)
+        <span class="self">self</span>.turtlesize(<span class="num">2</span>, <span class="num">2</span>)      <span class="com"># make alien bigger</span>
+        x = random.randint(-<span class="num">300</span>, <span class="num">300</span>)  <span class="com"># random starting x</span>
+        y = random.randint(<span class="num">180</span>,  <span class="num">260</span>)  <span class="com"># random starting y (top)</span>
+        <span class="self">self</span>.goto(x, y)
+        <span class="self">self</span>.speedamt = <span class="num">5</span>               <span class="com"># movement speed</span>
+
+<span class="com"># Note: Turtle only supports .gif images, not .png!</span></pre>
+      </div>
+    </div>
+
+    <!-- Flower -->
+    <div id="s8-flower">
+      <div class="project-banner">
+        <div class="project-tag">📁 File 3</div>
+        <h3>🌸 Flower (Bullet) Class</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">flower.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">import</span> turtle
+
+turtle.register_shape(<span class="str">r"space invader images/flower.gif"</span>)
+
+<span class="kw">class</span> <span class="cls">Flower</span>(turtle.Turtle):   <span class="com"># the bullet!</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="self">self</span>):
+        <span class="fn">super</span>().__init__()
+        <span class="self">self</span>.shape(<span class="str">r"space invader images/flower.gif"</span>)
+        <span class="self">self</span>.speed(<span class="num">0</span>)
+        <span class="self">self</span>.penup()
+        <span class="self">self</span>.setheading(<span class="num">90</span>)
+        <span class="self">self</span>.goto(<span class="num">0</span>, -<span class="num">250</span>)
+        <span class="self">self</span>.speedamt = <span class="num">22</span>          <span class="com"># bullet moves fast!</span>
+        <span class="self">self</span>.hideturtle()           <span class="com"># hidden until player shoots</span>
+        <span class="self">self</span>.state = <span class="str">"Ready"</span>        <span class="com"># "Ready" or "shoot"</span></pre>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div id="s8-main">
+      <div class="project-banner">
+        <div class="project-tag">📁 File 4 — Main Game Loop</div>
+        <h3>🎮 main.py — Putting It All Together</h3>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">main.py — Complete Game</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <pre><span class="kw">import</span> turtle
+<span class="kw">from</span> player <span class="kw">import</span> <span class="cls">Player</span>
+<span class="kw">from</span> alien  <span class="kw">import</span> <span class="cls">Alien</span>
+<span class="kw">from</span> flower <span class="kw">import</span> <span class="cls">Flower</span>
+<span class="kw">import</span> os, winsound
+
+<span class="com"># ─── Setup Screen ───────────────────────────</span>
+scr = turtle.Screen()
+scr.title(<span class="str">"Space Invaders"</span>)
+scr.bgpic(<span class="str">r"space invader images/dp.gif"</span>)
+scr.setup(<span class="num">800</span>, <span class="num">500</span>)
+
+<span class="com"># ─── Create Objects ──────────────────────────</span>
+p = <span class="cls">Player</span>()    <span class="com"># spaceship</span>
+b = <span class="cls">Flower</span>()    <span class="com"># bullet (starts hidden)</span>
+
+aliens = []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">7</span>):
+    aliens.append(<span class="cls">Alien</span>())   <span class="com"># 7 alien objects!</span>
+
+<span class="com"># ─── Shoot Function ──────────────────────────</span>
+<span class="kw">def</span> <span class="fn">shoot</span>():
+    <span class="kw">if</span> b.state == <span class="str">"Ready"</span>:
+        b.state = <span class="str">"shoot"</span>
+        winsound.PlaySound(<span class="str">r"space invader images/explosion.wav"</span>,
+                           winsound.SND_ASYNC)
+        b.goto(p.xcor(), p.ycor() + <span class="num">20</span>)  <span class="com"># start at player position</span>
+        b.showturtle()
+
+<span class="com"># ─── Key Bindings ─────────────────────────────</span>
+turtle.listen()
+turtle.onkey(p.move_left,  <span class="str">"Left"</span>)
+turtle.onkey(p.move_right, <span class="str">"Right"</span>)
+turtle.onkey(shoot,        <span class="str">"space"</span>)
+
+<span class="com"># ─── Collision Functions ─────────────────────</span>
+<span class="kw">def</span> <span class="fn">collision_flower_alien</span>(alien):
+    <span class="kw">return</span> b.distance(alien) &lt; <span class="num">25</span>   <span class="com"># True if bullet hits alien</span>
+
+<span class="kw">def</span> <span class="fn">collision_player_alien</span>(alien):
+    <span class="kw">return</span> p.distance(alien) &lt; <span class="num">25</span>   <span class="com"># True if alien hits player</span>
+
+<span class="com"># ─── Score Display ───────────────────────────</span>
+score = <span class="num">0</span>
+s = turtle.Turtle()
+s.pu(); s.goto(<span class="num">200</span>, <span class="num">200</span>); s.color(<span class="str">"white"</span>); s.ht()
+
+<span class="com"># ─── Main Game Loop ───────────────────────────</span>
+<span class="kw">while</span> <span class="kw">True</span>:
+    <span class="kw">for</span> alien <span class="kw">in</span> aliens:
+        <span class="com"># Move alien sideways</span>
+        alien.setx(alien.xcor() + alien.speedamt)
+
+        <span class="com"># If alien hits right wall, all aliens go down + reverse</span>
+        <span class="kw">if</span> alien.xcor() > <span class="num">400</span>:
+            <span class="kw">for</span> j <span class="kw">in</span> aliens: j.sety(j.ycor() - <span class="num">25</span>)
+            alien.speedamt *= -<span class="num">1</span>
+
+        <span class="com"># If alien hits left wall, same thing</span>
+        <span class="kw">if</span> alien.xcor() &lt; -<span class="num">400</span>:
+            <span class="kw">for</span> j <span class="kw">in</span> aliens: j.sety(j.ycor() - <span class="num">25</span>)
+            alien.speedamt *= -<span class="num">1</span>
+
+        <span class="com"># Bullet hits alien!</span>
+        <span class="kw">if</span> <span class="fn">collision_flower_alien</span>(alien):
+            aliens.remove(alien)
+            alien.ht()
+            score += <span class="num">1</span>
+            s.clear()
+            s.write(score, font=(<span class="str">"Arial"</span>, <span class="num">40</span>))
+
+        <span class="com"># Alien hits player — GAME OVER</span>
+        <span class="kw">if</span> <span class="fn">collision_player_alien</span>(alien):
+            <span class="kw">for</span> i <span class="kw">in</span> aliens: i.ht()
+            s.clear(); s.goto(<span class="num">0</span>, <span class="num">0</span>)
+            s.write(<span class="str">"Game Over"</span>, align=<span class="str">"center"</span>, font=(<span class="str">"Arial"</span>, <span class="num">40</span>))
+            <span class="kw">break</span>
+
+    <span class="com"># Move bullet upward</span>
+    b.sety(b.ycor() + b.speedamt)
+
+    <span class="com"># If bullet goes off screen, reset it</span>
+    <span class="kw">if</span> b.ycor() > <span class="num">300</span>:
+        b.hideturtle()
+        b.state = <span class="str">"Ready"</span>
+
+turtle.done()</pre>
+      </div>
+
+      <div class="card card-yellow">
+        <h3>📋 How the Game Works — Step by Step</h3>
+        <ol class="step-list">
+          <li><span class="step-num">1</span><div><strong>Setup:</strong> Screen is created, background set to space image. Player, 7 aliens, and 1 flower-bullet are created.</div></li>
+          <li><span class="step-num">2</span><div><strong>Key Bindings:</strong> Left arrow → move_left(), Right arrow → move_right(), Space → shoot()</div></li>
+          <li><span class="step-num">3</span><div><strong>Alien Movement:</strong> Each alien moves sideways. When it hits the wall, ALL aliens drop down and reverse direction (like real Space Invaders!).</div></li>
+          <li><span class="step-num">4</span><div><strong>Bullet:</strong> Starts as "Ready". When Space is pressed, it appears at player position and flies upward at speedamt per frame.</div></li>
+          <li><span class="step-num">5</span><div><strong>Collision:</strong> If bullet gets within 25px of an alien → alien is removed, score +1. If alien gets within 25px of player → GAME OVER!</div></li>
+          <li><span class="step-num">6</span><div><strong>Score:</strong> A separate turtle object displays the score at (200, 200) in white text.</div></li>
+        </ol>
+      </div>
+
+      <div class="card card-green">
+        <h3>🔑 OOP Concepts Summary in This Game</h3>
+        <table>
+          <tr><th>Concept</th><th>Where Used</th></tr>
+          <tr><td><strong>Class &amp; Object</strong></td><td>Player, Alien, Flower are classes; p, aliens[], b are objects</td></tr>
+          <tr><td><strong>Inheritance</strong></td><td>All 3 classes inherit from turtle.Turtle</td></tr>
+          <tr><td><strong>Instance Attributes</strong></td><td>speedamt, state, playerspeed — different for each object</td></tr>
+          <tr><td><strong>Methods</strong></td><td>move_left(), move_right(), shoot(), drawCar()</td></tr>
+          <tr><td><strong>Encapsulation</strong></td><td>Each class controls its own movement and state</td></tr>
+          <tr><td><strong>List of Objects</strong></td><td>aliens[] list holds 7 Alien objects — looped through!</td></tr>
+        </table>
+      </div>
+
+      <div class="hw-box">
+        <div class="hw-title">📝 Challenge Extensions</div>
+        <ul>
+          <li>Add multiple lives for the player (3 chances before game over)</li>
+          <li>Increase alien speed after each wave is defeated</li>
+          <li>Add a high score that persists across rounds</li>
+          <li>Let aliens shoot back at the player!</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <hr class="divider">
+    <div class="card card-accent">
+      <h3><span class="emoji-big">🏆</span> OOP Pillars Summary</h3>
+      <table>
+        <tr><th>Pillar</th><th>Definition</th><th>Example</th></tr>
+        <tr><td><strong>Encapsulation</strong></td><td>Wrapping data &amp; methods in a class; hiding private data</td><td>Car's __price is private</td></tr>
+        <tr><td><strong>Inheritance</strong></td><td>Child class gets parent's properties &amp; methods</td><td>Superhero inherits from Person</td></tr>
+        <tr><td><strong>Polymorphism</strong></td><td>Same action, different behavior per object</td><td>area() works for Square &amp; Rectangle</td></tr>
+        <tr><td><strong>Abstraction</strong></td><td>Hide complex details; show only essentials</td><td>Abstract Car forces mileage() to be defined</td></tr>
+      </table>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+// Active nav link on scroll
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.nav-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const id = entry.target.id;
+      const link = document.querySelector(`.nav-link[href="#${id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.15 });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

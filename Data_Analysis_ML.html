@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Analysis &amp; ML with Python — Complete Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0f14;--surface:#13161e;--surface2:#1a1d28;--border:#252a3a;--accent:#7c6af7;--accent2:#f97316;--accent3:#22d3ee;--accent4:#4ade80;--text:#e2e4f0;--muted:#7a7f99;--code-bg:#0a0c10;--tag-py:#f59e0b;--tag-ml:#a78bfa;--tag-viz:#f472b6;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;font-size:15px;line-height:1.75;overflow-x:hidden}
+.hero{position:relative;padding:80px 40px 60px;text-align:center;overflow:hidden;background:radial-gradient(ellipse 120% 80% at 50% -10%,rgba(124,106,247,.18) 0%,transparent 65%),radial-gradient(ellipse 60% 40% at 80% 60%,rgba(34,211,238,.08) 0%,transparent 50%),var(--bg)}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.015) 39px,rgba(255,255,255,.015) 40px),repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.015) 39px,rgba(255,255,255,.015) 40px);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(124,106,247,.15);border:1px solid rgba(124,106,247,.3);border-radius:100px;padding:4px 16px;font-size:12px;color:var(--accent);font-family:"Space Mono",monospace;letter-spacing:.08em;margin-bottom:24px}
+.hero h1{font-family:"Space Mono",monospace;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.1;letter-spacing:-.02em;background:linear-gradient(135deg,#fff 30%,var(--accent) 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px}
+.hero p{font-size:16px;color:var(--muted);max-width:600px;margin:0 auto 32px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:48px}
+.htag{padding:5px 14px;border-radius:6px;font-size:12px;font-family:"Space Mono",monospace;font-weight:700;letter-spacing:.04em}
+.htag.py{background:rgba(245,158,11,.12);color:var(--tag-py);border:1px solid rgba(245,158,11,.3)}
+.htag.pd{background:rgba(6,182,212,.12);color:var(--accent3);border:1px solid rgba(6,182,212,.3)}
+.htag.ml{background:rgba(167,139,250,.12);color:var(--tag-ml);border:1px solid rgba(167,139,250,.3)}
+.htag.viz{background:rgba(244,114,182,.12);color:var(--tag-viz);border:1px solid rgba(244,114,182,.3)}
+.htag.gr{background:rgba(74,222,128,.12);color:var(--accent4);border:1px solid rgba(74,222,128,.3)}
+.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat{background:var(--surface);padding:18px 24px;text-align:center}
+.stat-num{font-family:"Space Mono",monospace;font-size:24px;font-weight:700;color:var(--accent)}
+.stat-label{font-size:12px;color:var(--muted);margin-top:2px}
+.layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:28px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.nav-section{padding:0 20px;margin-bottom:6px}
+.nav-label{font-size:10px;font-family:"Space Mono",monospace;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;padding:10px 8px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s}
+.nav-item:hover,.nav-item.active{background:rgba(124,106,247,.12);color:var(--text)}
+.nav-item.active{color:var(--accent)}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .15s}
+.nav-item.active .nav-dot,.nav-item:hover .nav-dot{background:var(--accent)}
+.main{padding:0}
+.big-section{border-top:1px solid var(--border);padding:48px 48px 0}
+@media(max-width:700px){.big-section{padding:24px 16px 0}}
+.big-section-title{font-family:"Space Mono",monospace;font-size:22px;font-weight:700;color:#fff;margin-bottom:8px}
+.big-section-sub{color:var(--muted);font-size:13.5px;max-width:680px;margin-bottom:28px;line-height:1.7}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:20px;overflow:hidden;transition:border-color .2s;animation:fadeUp .3s ease both}
+.card:hover{border-color:rgba(124,106,247,.3)}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);background:var(--surface2);cursor:pointer;user-select:none}
+.card-title-row{display:flex;align-items:center;gap:12px}
+.card-icon{font-size:18px}
+.card-title{font-weight:700;font-size:14px;color:#fff}
+.card-subtitle{font-size:12px;color:var(--muted);margin-top:2px}
+.card-chevron{color:var(--muted);transition:transform .2s;font-size:18px}
+.card.open .card-chevron{transform:rotate(180deg)}
+.card-body{display:none;padding:22px}
+.card.open .card-body{display:block}
+.code-block{background:var(--code-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:16px 0}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#0f1117;border-bottom:1px solid var(--border)}
+.code-dots{display:flex;gap:6px}
+.code-dot{width:10px;height:10px;border-radius:50%}
+.code-dot.r{background:#ff5f57}.code-dot.y{background:#febc2e}.code-dot.g{background:#28c840}
+.code-lang{font-size:11px;font-family:"Space Mono",monospace;color:var(--muted);letter-spacing:.06em}
+.copy-btn{font-size:11px;font-family:"Space Mono",monospace;color:var(--muted);background:none;border:1px solid var(--border);border-radius:4px;padding:2px 9px;cursor:pointer;transition:all .14s}
+.copy-btn:hover{color:var(--accent);border-color:var(--accent)}
+pre{padding:18px 20px;overflow-x:auto;margin:0;font-family:"Fira Code",monospace;font-size:12.5px;line-height:1.8}
+pre::-webkit-scrollbar{height:4px}
+pre::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.kw{color:#c084fc}.fn{color:#67e8f9}.str{color:#86efac}.num{color:#fb923c}.cm{color:#3d4a5c;font-style:italic}.imp{color:#fde68a}.cls{color:#f9a8d4}
+.note{display:flex;gap:14px;padding:13px 16px;border-radius:10px;margin:14px 0;border-left:3px solid;font-size:13.5px;line-height:1.7}
+.note-icon{font-size:17px;flex-shrink:0;margin-top:2px}
+.note-content{color:var(--muted);flex:1}
+.note-content strong{color:var(--text);display:block;margin-bottom:3px;font-size:13px}
+.note-content code{background:rgba(255,255,255,.06);border-radius:4px;padding:1px 6px;font-family:"Fira Code",monospace;font-size:12px;color:var(--accent3)}
+.note.concept{background:rgba(124,106,247,.07);border-color:var(--accent)}
+.note.tip{background:rgba(74,222,128,.06);border-color:var(--accent4)}
+.note.info{background:rgba(34,211,238,.06);border-color:var(--accent3)}
+.note.warn{background:rgba(249,115,22,.07);border-color:var(--accent2)}
+.real-world{background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(124,106,247,.04));border:1px solid rgba(251,191,36,.2);border-left:3px solid #fbbf24;border-radius:10px;padding:14px 18px;margin:14px 0}
+.real-world-title{font-size:10.5px;font-family:"Space Mono",monospace;color:#fbbf24;letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.real-world-body{font-size:13.5px;color:#c8b870;line-height:1.75}
+.real-world-body strong{color:#e8d8a0}
+.real-world-body code{background:rgba(255,255,255,.07);border-radius:4px;padding:1px 6px;font-family:"Fira Code",monospace;font-size:12px;color:var(--accent3)}
+.real-world-body ul,.real-world-body ol{padding-left:18px;margin-top:6px}
+.real-world-body li{margin-bottom:4px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media(max-width:600px){.compare{grid-template-columns:1fr}}
+.compare-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px}
+.compare-title{font-weight:700;font-size:12px;margin-bottom:8px}
+.compare-title.blue{color:var(--accent3)}.compare-title.orange{color:var(--accent2)}.compare-title.purple{color:var(--accent)}.compare-title.green{color:var(--accent4)}
+.data-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+.data-table th{background:var(--surface2);color:var(--accent);font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.06em;padding:9px 14px;text-align:left;border-bottom:2px solid var(--border)}
+.data-table td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+.data-table tr:hover td{background:rgba(124,106,247,.04)}
+.data-table code{background:rgba(255,255,255,.06);border-radius:4px;padding:1px 6px;font-family:"Fira Code",monospace;font-size:12px;color:var(--accent3)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-family:"Space Mono",monospace;font-weight:700}
+.badge.blue{background:rgba(34,211,238,.1);color:var(--accent3)}.badge.purple{background:rgba(124,106,247,.12);color:var(--accent)}.badge.orange{background:rgba(249,115,22,.1);color:var(--accent2)}.badge.green{background:rgba(74,222,128,.1);color:var(--accent4)}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:16px 0}
+.concept-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .2s}
+.concept-card:hover{border-color:rgba(124,106,247,.4);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.concept-emoji{font-size:26px;margin-bottom:8px}
+.concept-name{font-weight:700;font-size:13px;color:#fff;margin-bottom:4px}
+.concept-desc{font-size:12.5px;color:var(--muted);line-height:1.55}
+.formula{background:rgba(124,106,247,.06);border:1px solid rgba(124,106,247,.2);border-radius:8px;padding:14px 18px;font-family:"Fira Code",monospace;font-size:13.5px;color:#c4b8ff;margin:14px 0;text-align:center}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.problem-box{background:linear-gradient(135deg,rgba(249,115,22,.06),rgba(124,106,247,.06));border:1px solid rgba(249,115,22,.3);border-left:4px solid var(--accent2);border-radius:10px;padding:18px 20px;margin-bottom:14px}
+.problem-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.problem-label{font-size:10px;font-family:"Space Mono",monospace;letter-spacing:.1em;color:var(--accent2);background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:4px;padding:3px 10px;margin-bottom:6px;display:inline-block}
+.problem-title{font-weight:700;font-size:15px;color:#fff;line-height:1.3}
+.copy-problem-btn{flex-shrink:0;font-size:11px;font-family:"Space Mono",monospace;color:var(--accent2);background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.3);border-radius:6px;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all .15s}
+.copy-problem-btn:hover{background:rgba(249,115,22,.2)}
+.problem-task{padding-left:20px;margin:0}
+.problem-task li{color:var(--muted);font-size:13.5px;line-height:1.75;padding:2px 0}
+.problem-task li strong{color:var(--text)}
+.problem-task li code{background:rgba(255,255,255,.06);border-radius:4px;padding:1px 6px;font-family:"Fira Code",monospace;font-size:12px;color:var(--accent3)}
+.md-box{background:#080a0f;border:1px solid var(--border);border-radius:10px;margin:14px 0;overflow:hidden}
+.md-box-header{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#0c0e15;border-bottom:1px solid var(--border)}
+.md-box-label{font-size:10px;font-family:"Space Mono",monospace;color:var(--muted);letter-spacing:.08em}
+.md-copy-btn{font-size:11px;font-family:"Space Mono",monospace;color:#fbbf24;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:4px;padding:3px 10px;cursor:pointer;transition:all .14s}
+.md-copy-btn:hover{background:rgba(251,191,36,.15)}
+.md-content{padding:14px 16px;font-family:"Fira Code",monospace;font-size:12px;color:#7a8a6a;line-height:1.8;white-space:pre-wrap;max-height:260px;overflow-y:auto}
+.md-content::-webkit-scrollbar{width:4px}
+.md-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+.dl-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 13px;border-radius:7px;font-size:12px;font-family:"Space Mono",monospace;font-weight:700;letter-spacing:.04em;background:rgba(34,211,238,.08);color:var(--accent3);border:1px solid rgba(34,211,238,.25);text-decoration:none;transition:all .15s}
+.dl-link:hover{background:rgba(34,211,238,.16);border-color:var(--accent3)}
+.dl-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-eyebrow">📓 INTERACTIVE STUDY GUIDE</div>
+  <h1>Data Analysis &amp; ML<br>with Python</h1>
+  <p>Pandas · Matplotlib · Seaborn · Scikit-learn · Gradio — with detailed notes, real-world examples, and teacher-ready Markdown problem statements for every project.</p>
+  <div class="hero-tags">
+    <span class="htag py">🐍 Python</span>
+    <span class="htag pd">🐼 Pandas</span>
+    <span class="htag viz">📊 Matplotlib / Seaborn</span>
+    <span class="htag ml">🤖 Scikit-learn</span>
+    <span class="htag gr">🎛️ Gradio</span>
+  </div>
+</div>
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Projects</div></div>
+  <div class="stat"><div class="stat-num">4</div><div class="stat-label">ML Models</div></div>
+  <div class="stat"><div class="stat-num">5</div><div class="stat-label">Libraries</div></div>
+  <div class="stat"><div class="stat-num">6</div><div class="stat-label">Chart Types</div></div>
+  <div class="stat"><div class="stat-num">26</div><div class="stat-label">Exercises</div></div>
+</div>
+<div class="layout">
+<nav class="sidebar">
+  <div class="nav-section">
+    <div class="nav-label">📚 Foundations</div>
+    <span data-target="libs" class="nav-item active"><span class="nav-dot"></span>Libraries Overview</span>
+    <span data-target="dataframe" class="nav-item"><span class="nav-dot"></span>DataFrames &amp; Series</span>
+    <span data-target="access" class="nav-item"><span class="nav-dot"></span>Accessing Data</span>
+    <span data-target="aggregates" class="nav-item"><span class="nav-dot"></span>Aggregate Functions</span>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">📊 Projects: Data</div>
+    <span data-target="q1" class="nav-item"><span class="nav-dot"></span>Q1: Exam Scores</span>
+    <span data-target="q2" class="nav-item"><span class="nav-dot"></span>Q2: Multi-Subject</span>
+    <span data-target="q3" class="nav-item"><span class="nav-dot"></span>Q3: People's Data</span>
+    <span data-target="q4" class="nav-item"><span class="nav-dot"></span>Q4: Employee HR</span>
+    <span data-target="q5" class="nav-item"><span class="nav-dot"></span>Q5: Spotify</span>
+    <span data-target="q6" class="nav-item"><span class="nav-dot"></span>Q6: Movies</span>
+    <span data-target="q7" class="nav-item"><span class="nav-dot"></span>Q7: Lemonade Stand</span>
+    <span data-target="q8" class="nav-item"><span class="nav-dot"></span>Q8: Weather</span>
+    <span data-target="q9" class="nav-item"><span class="nav-dot"></span>Q9: Screen Time</span>
+    <span data-target="q10" class="nav-item"><span class="nav-dot"></span>Q10: Tesla Data</span>
+    <span data-target="cleaning" class="nav-item"><span class="nav-dot"></span>Data Cleaning</span>
+    <span data-target="q11" class="nav-item"><span class="nav-dot"></span>Q11: Olympics</span>
+    <span data-target="q13" class="nav-item"><span class="nav-dot"></span>Q13: Cupcakes</span>
+    <span data-target="seaborn-s" class="nav-item"><span class="nav-dot"></span>Seaborn Section</span>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">🤖 Machine Learning</div>
+    <span data-target="ml-intro" class="nav-item"><span class="nav-dot"></span>ML Introduction</span>
+    <span data-target="classification" class="nav-item"><span class="nav-dot"></span>Classification</span>
+    <span data-target="regression" class="nav-item"><span class="nav-dot"></span>Regression</span>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">🎛️ Interactive Apps</div>
+    <span data-target="gradio" class="nav-item"><span class="nav-dot"></span>Gradio Intro</span>
+    <span data-target="apps" class="nav-item"><span class="nav-dot"></span>ML Apps</span>
+    <span data-target="cv" class="nav-item"><span class="nav-dot"></span>Image Tools</span>
+  </div>
+</nav>
+<main class="main">
+<div id="libs" class="big-section">
+  <div class="big-section-title">📦 Python Libraries for Data Science</div>
+  <div class="big-section-sub">Before writing a single line of analysis code, you need the right tools. Here's your complete toolkit explained — who made it, what it does, and why you need it.</div>
+
+  <div class="note concept">
+    <span class="note-icon">🧩</span>
+    <div class="note-content">
+      <strong>Library vs Module — What's the difference?</strong>
+      A <em>module</em> is a single <code>.py</code> file with reusable Python code. A <em>library</em> (package) is a folder full of related modules. Think of a library like a professional toolkit, and each module as a specific tool inside. When you type <code>import pandas as pd</code>, you're loading the entire Pandas toolkit into memory — hundreds of functions ready to use via <code>pd.something()</code>.
+    </div>
+  </div>
+
+  <div class="real-world">
+    <div class="real-world-title">WHO ACTUALLY USES THESE LIBRARIES?</div>
+    <div class="real-world-body">
+      <strong>Netflix</strong> uses Pandas + Scikit-learn to build its recommendation engine — the system that suggests your next binge show. <strong>Spotify</strong> uses them to compute Wrapped stats for 600 million users every year. <strong>ISRO</strong> uses NumPy (the engine underneath Pandas) for rocket trajectory calculations. <strong>Zomato</strong> uses these libraries to forecast order demand in each city. You're learning the exact tools these companies use — just starting with smaller datasets!
+    </div>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card"><div class="concept-emoji">🐼</div><div class="concept-name">Pandas</div><div class="concept-desc">Your smart data organizer. Handles tables (like Excel) inside Python. Can clean, filter, sort, and summarize millions of rows in milliseconds.</div></div>
+    <div class="concept-card"><div class="concept-emoji">📊</div><div class="concept-name">Matplotlib</div><div class="concept-desc">Your chart-drawing kit. Turns numbers into visuals — bar charts, line graphs, pie charts. The foundation of Python data visualization since 2003.</div></div>
+    <div class="concept-card"><div class="concept-emoji">🎨</div><div class="concept-name">Seaborn</div><div class="concept-desc">Built on Matplotlib. Makes beautiful charts with far less code. Includes 20+ real practice datasets (tips, flights, iris) built right in.</div></div>
+    <div class="concept-card"><div class="concept-emoji">🤖</div><div class="concept-name">Scikit-learn</div><div class="concept-desc">The ML engine. Trains models that recognize patterns and make predictions. Used by medical researchers, banks, and tech companies worldwide.</div></div>
+    <div class="concept-card"><div class="concept-emoji">🎛️</div><div class="concept-name">Gradio</div><div class="concept-desc">Wraps your ML model into a live web app — sliders, buttons, image uploads — in just 5 lines. No HTML or JavaScript needed. Share publicly!</div></div>
+  </div>
+
+  <div class="note tip">
+    <span class="note-icon">💡</span>
+    <div class="note-content">
+      <strong>Install everything at once:</strong>
+      <code>pip install pandas matplotlib seaborn scikit-learn gradio</code><br>
+      In Google Colab, Pandas, Matplotlib, Seaborn and Scikit-learn are pre-installed. Only run <code>!pip install gradio</code> for the last library.
+    </div>
+  </div>
+</div>
+<div id="dataframe" class="big-section">
+  <div class="big-section-title">📋 DataFrames &amp; Series</div>
+  <div class="big-section-sub">Pandas has two core data structures. Master these two and everything else will click naturally.</div>
+
+  <div class="real-world">
+    <div class="real-world-title">THINK OF IT LIKE THIS</div>
+    <div class="real-world-body">
+      Imagine the <strong>IPL scorecard</strong>: a big spreadsheet with player names as rows and columns like <em>Runs, Wickets, Balls, Average, Strike Rate</em>. That entire spreadsheet is a <strong>DataFrame</strong>. If you click on just the "Runs" column and drag it out — that's a <strong>Series</strong>. Pandas DataFrames are Excel-on-steroids: they can hold 10 million rows, do calculations in milliseconds, and never crash.
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-box">
+      <div class="compare-title blue">📋 DataFrame — The Table</div>
+      A <strong style="color:var(--text)">2D table</strong> with rows and columns. Each column can hold different data types (numbers, text, dates). This is the backbone of all data analysis.
+      <div class="code-block" style="margin-top:10px"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+data = {<span class="str">"Player"</span>: [<span class="str">"Kohli"</span>, <span class="str">"Rohit"</span>, <span class="str">"Dhoni"</span>],
+        <span class="str">"Runs"</span>:   [<span class="num">700</span>, <span class="num">580</span>, <span class="num">430</span>],
+        <span class="str">"Avg"</span>:    [<span class="num">49.5</span>, <span class="num">44.1</span>, <span class="num">38.7</span>]}
+df = pd.DataFrame(data)
+<span class="cm"># df is a 3-row, 3-column table</span></pre></div>
+    </div>
+    <div class="compare-box">
+      <div class="compare-title orange">📌 Series — One Column</div>
+      A <strong style="color:var(--text)">1D labeled list</strong>. Pulling one column from a DataFrame gives you a Series. It has an index and values — like a Python dictionary but faster.
+      <div class="code-block" style="margin-top:10px"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span></div><pre><span class="cm"># Single bracket → Series</span>
+runs = df[<span class="str">"Runs"</span>]
+<span class="cm"># 0    700</span>
+<span class="cm"># 1    580</span>
+<span class="cm"># 2    430</span>
+
+<span class="cm"># Double bracket → still a DataFrame</span>
+df[[<span class="str">"Player"</span>, <span class="str">"Runs"</span>]]</pre></div>
+    </div>
+  </div>
+
+  <div class="note tip">
+    <span class="note-icon">💡</span>
+    <div class="note-content">
+      <strong>Single vs Double brackets — a critical difference:</strong>
+      <code>df["col"]</code> returns a <em>Series</em> (no table structure). <code>df[["col"]]</code> returns a <em>DataFrame</em> (still a table with one column). The extra brackets preserve the table shape — very important when passing data into ML models which expect a 2D table as input!
+    </div>
+  </div>
+
+  <div class="note info">
+    <span class="note-icon">ℹ️</span>
+    <div class="note-content">
+      <strong>Essential exploration methods for any new DataFrame:</strong>
+      <code>df.head(5)</code> — first 5 rows &nbsp;·&nbsp; <code>df.tail(3)</code> — last 3 rows &nbsp;·&nbsp; <code>df.shape</code> — (rows, columns) &nbsp;·&nbsp; <code>df.columns</code> — column names &nbsp;·&nbsp; <code>df.dtypes</code> — data type of each column &nbsp;·&nbsp; <code>df.info()</code> — complete summary including nulls &nbsp;·&nbsp; <code>df.describe()</code> — stats for all numeric columns (mean, std, min, max, quartiles)
+    </div>
+  </div>
+</div>
+<div id="access" class="big-section">
+  <div class="big-section-title">🔍 Accessing &amp; Filtering Data</div>
+  <div class="big-section-sub">There are multiple ways to select rows, columns, or cells. Each method has a specific purpose.</div>
+
+  <table class="data-table">
+    <thead><tr><th>Method</th><th>Type</th><th>Example</th><th>Returns</th></tr></thead>
+    <tbody>
+      <tr><td><code>df["col"]</code></td><td><span class="badge blue">Column</span></td><td><code>df["Score"]</code></td><td>Series</td></tr>
+      <tr><td><code>df[["c1","c2"]]</code></td><td><span class="badge blue">Columns</span></td><td><code>df[["Name","Score"]]</code></td><td>DataFrame</td></tr>
+      <tr><td><code>.loc[row, col]</code></td><td><span class="badge purple">Label</span></td><td><code>df.loc[2, "Age"]</code></td><td>Value / Series</td></tr>
+      <tr><td><code>.iloc[row, col]</code></td><td><span class="badge orange">Position</span></td><td><code>df.iloc[0, 1]</code></td><td>Value / Series</td></tr>
+      <tr><td><code>df[condition]</code></td><td><span class="badge green">Filter</span></td><td><code>df[df["Score"] &gt; 80]</code></td><td>DataFrame</td></tr>
+    </tbody>
+  </table>
+
+  <div class="compare">
+    <div class="compare-box">
+      <div class="compare-title blue">📍 .loc — Label-based</div>
+      Uses row/column <strong style="color:var(--text)">names (labels)</strong>. End of range is <strong style="color:var(--text)">INCLUDED</strong>.<br><br>
+      <code>df.loc[2:5]</code> → rows 2, 3, 4, <strong style="color:var(--accent4)">5 included</strong><br>
+      <code>df.loc["Alice", "Score"]</code> → exact cell by name
+    </div>
+    <div class="compare-box">
+      <div class="compare-title orange">🔢 .iloc — Position-based</div>
+      Uses row/column <strong style="color:var(--text)">numbers (0, 1, 2…)</strong>. End of range is <strong style="color:var(--text)">EXCLUDED</strong> (like Python slices).<br><br>
+      <code>df.iloc[2:5]</code> → rows 2, 3, <strong style="color:var(--accent2)">4 only</strong><br>
+      <code>df.iloc[0, 1]</code> → row 0, column index 1
+    </div>
+  </div>
+
+  <div class="real-world">
+    <div class="real-world-title">FILTERING LIKE A ZOMATO DATA ANALYST</div>
+    <div class="real-world-body">
+      Imagine you're working at <strong>Zomato</strong> and have a DataFrame with restaurant data. Here's how you'd answer real business questions:<br>
+      <ul>
+        <li><strong>Show only top-rated restaurants:</strong> <code>df[df["rating"] &gt; 4.5]</code></li>
+        <li><strong>Restaurants in Mumbai OR Delhi:</strong> <code>df[(df["city"]=="Mumbai") | (df["city"]=="Delhi")]</code></li>
+        <li><strong>Chinese restaurants that deliver:</strong> <code>df[(df["cuisine"]=="Chinese") &amp; (df["delivery"]==True)]</code></li>
+        <li><strong>Search in 3 cities at once:</strong> <code>df[df["city"].isin(["Mumbai","Pune","Bangalore"])]</code></li>
+        <li><strong>Restaurants with "biryani" in name:</strong> <code>df[df["name"].str.contains("Biryani", case=False)]</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <span class="note-icon">⚠️</span>
+    <div class="note-content">
+      <strong>The parentheses mistake everyone makes:</strong>
+      When combining conditions with <code>&amp;</code> or <code>|</code>, ALWAYS wrap each condition in parentheses. <br>
+      ❌ Wrong: <code>df[df["a"]&gt;5 &amp; df["b"]=="x"]</code><br>
+      ✅ Correct: <code>df[(df["a"]&gt;5) &amp; (df["b"]=="x")]</code><br>
+      Python's operator precedence will cause a cryptic error without the parentheses.
+    </div>
+  </div>
+</div>
+<div id="aggregates" class="big-section">
+  <div class="big-section-title">📐 Aggregate &amp; GroupBy Functions</div>
+  <div class="big-section-sub">Aggregate functions collapse many values into one summary number. GroupBy lets you do this per category — one of data analysis's most powerful tools.</div>
+
+  <table class="data-table">
+    <thead><tr><th>Function</th><th>What it does</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><code>.sum()</code></td><td>Total of all values</td><td><code>df["Sales"].sum()</code></td></tr>
+      <tr><td><code>.mean()</code></td><td>Average (sum ÷ count)</td><td><code>df["Score"].mean()</code></td></tr>
+      <tr><td><code>.min()</code> / <code>.max()</code></td><td>Smallest / largest value</td><td><code>df["Age"].max()</code></td></tr>
+      <tr><td><code>.idxmin()</code> / <code>.idxmax()</code></td><td>Row INDEX of min/max</td><td><code>df["Salary"].idxmax()</code></td></tr>
+      <tr><td><code>.count()</code></td><td>Count non-null values</td><td><code>df["Name"].count()</code></td></tr>
+      <tr><td><code>.value_counts()</code></td><td>Count of each unique value</td><td><code>df["City"].value_counts()</code></td></tr>
+      <tr><td><code>.mode()[0]</code></td><td>Most frequent value</td><td><code>df["Genre"].mode()[0]</code></td></tr>
+      <tr><td><code>.describe()</code></td><td>Full stats summary (count, mean, std, min, max, quartiles)</td><td><code>df.describe()</code></td></tr>
+      <tr><td><code>.groupby(col).mean()</code></td><td>Average per category</td><td><code>df.groupby("City")["Salary"].mean()</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="real-world">
+    <div class="real-world-title">GROUPBY IN ACTION — BCCI MATCH DATA</div>
+    <div class="real-world-body">
+      Imagine you have a DataFrame of every IPL match with columns: <code>Player, Team, Runs, Wickets, Match</code>.<br>
+      <ul>
+        <li><strong>Total runs by each team:</strong> <code>df.groupby("Team")["Runs"].sum()</code></li>
+        <li><strong>Average runs per player:</strong> <code>df.groupby("Player")["Runs"].mean()</code></li>
+        <li><strong>Number of players per team:</strong> <code>df.groupby("Team")["Player"].count()</code></li>
+        <li><strong>Top scorer per team:</strong> <code>df.groupby("Team")["Runs"].max()</code></li>
+      </ul>
+      <strong>This is exactly how sports analytics dashboards are built.</strong> GroupBy is the secret weapon behind every leaderboard, comparison table, and trend report.
+    </div>
+  </div>
+
+  <div class="note concept">
+    <span class="note-icon">🧠</span>
+    <div class="note-content">
+      <strong>axis=0 vs axis=1 — which direction are we going?</strong>
+      <code>axis=0</code> (default) works <em>down</em> each column — e.g., get average of all Math scores in one column. <code>axis=1</code> works <em>across</em> each row — e.g., get average of one student's three subject scores. Memory trick: <code>axis=0</code> = down the rows (like a 0 is a tall oval ⬇️), <code>axis=1</code> = across columns (like a 1 is a horizontal stick ➡️).
+    </div>
+  </div>
+</div>
+<div id="q1" class="big-section">
+  <div class="big-section-title">🗂️ Projects: Data Analysis</div>
+  <div class="big-section-sub">Hands-on projects that progressively build your skills — from simple lists and bar charts to full data pipelines on real datasets.</div>
+<div id="q1i" class="card open">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">📊</span>
+      <div><div class="card-title">Q1 — Analyze Friends' Exam Scores</div><div class="card-subtitle">Lists · Statistics · Bar Chart · matplotlib</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q1 — Student Math Scores with Bar Chart</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create two lists: <code>students</code> (5 names) and <code>math_scores</code> (5 scores).</li><li>Calculate and print: <strong>average</strong> (<code>sum/len</code>), <strong>highest</strong> (<code>max()</code>), <strong>lowest</strong> (<code>min()</code>) score.</li><li>Plot a <strong>bar chart</strong>: X-axis → students, Y-axis → scores, color <code>'skyblue'</code>, title <code>"Math Scores of Friends"</code>, add X and Y labels.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 📊 Q1 — Student Math Scores with Bar Chart
+
+**Libraries:** `matplotlib.pyplot`
+
+### Tasks
+1. Create two lists: `students` (5 names) and `math_scores` (5 scores).
+2. Calculate and print:
+   - Average score: `sum(scores) / len(scores)`
+   - Highest score: `max(scores)`
+   - Lowest score: `min(scores)`
+3. Plot a bar chart:
+   - X-axis → student names
+   - Y-axis → scores
+   - Color → `'skyblue'`
+   - Add title: `"Math Scores of Friends"`
+   - Add X and Y labels
+
+**Starter Code:**
+```python
+import matplotlib.pyplot as plt
+students = ["Alice", "Bob", "Charlie", "Diana", "Eve"]
+math_scores = [88, 76, 93, 85, 91]
+# your code here
+```</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>What we're doing</strong> Store student data in plain Python lists, compute basic stats, then draw a bar chart. This is the classic 'hello world' of data visualization — the exact same pattern is used in school report systems and sports dashboards.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+<span class="cm"># Store student data in lists</span>
+students    = [<span class="str">"Alice"</span>, <span class="str">"Bob"</span>, <span class="str">"Charlie"</span>, <span class="str">"Diana"</span>, <span class="str">"Eve"</span>]
+math_scores = [<span class="num">88</span>, <span class="num">76</span>, <span class="num">93</span>, <span class="num">85</span>, <span class="num">91</span>]
+
+<span class="cm"># Calculate statistics</span>
+average = <span class="fn">sum</span>(math_scores) / <span class="fn">len</span>(math_scores)  <span class="cm"># sum ÷ count</span>
+highest = <span class="fn">max</span>(math_scores)   <span class="cm"># largest value in list</span>
+lowest  = <span class="fn">min</span>(math_scores)   <span class="cm"># smallest value in list</span>
+
+<span class="fn">print</span>(<span class="str">"Average Score:"</span>, average)   <span class="cm"># → 86.6</span>
+<span class="fn">print</span>(<span class="str">"Highest Score:"</span>, highest)   <span class="cm"># → 93</span>
+<span class="fn">print</span>(<span class="str">"Lowest Score: "</span>, lowest)    <span class="cm"># → 76</span>
+
+<span class="cm"># Draw the bar chart</span>
+plt.bar(students, math_scores, color=<span class="str">'skyblue'</span>)
+<span class="cm">#       ↑ x-axis    ↑ y-axis    ↑ bar fill color</span>
+
+plt.title(<span class="str">"Math Scores of Friends"</span>)
+plt.xlabel(<span class="str">"Students"</span>)
+plt.ylabel(<span class="str">"Scores"</span>)
+plt.show()</pre></div><div class="note tip"><span class="note-icon">💡</span><div class="note-content"><strong>Key insight: plt.bar(x, y)</strong> The first argument is your X-axis labels (categories), the second is Y-axis values (heights). Always add a title and axis labels — a chart without labels is as useless as a map without a legend. Use <code>plt.show()</code> at the very end to render it.</div></div></div></div>
+<div id="q2" class="card open">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">📚</span>
+      <div><div class="card-title">Q2 — Student Scores in Multiple Subjects</div><div class="card-subtitle">Pandas · DataFrame · Grouped Bar Chart</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q2 — Student Scores in Multiple Subjects</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a DataFrame with <strong>5 students</strong> and scores in <strong>Math, Science, and English</strong>.</li><li>Add a new <code>'Average'</code> column = mean of the 3 subjects per student (use <code>axis=1</code> to average across columns).</li><li>Print the <strong>average score per subject</strong> across all students (default <code>axis=0</code>).</li><li>Set the <code>'Student'</code> column as the DataFrame index using <code>.set_index()</code>.</li><li>Plot a <strong>grouped bar chart</strong> — each student's 3 subject scores shown side by side. Title: <code>"Scores of Students in Multiple Subjects"</code>. Rotate x-labels 45°.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 📚 Q2 — Student Scores in Multiple Subjects
+
+**Libraries:** `pandas`, `matplotlib.pyplot`
+
+### Tasks
+1. Create a DataFrame with 5 students and their scores in **Math**, **Science**, and **English**.
+2. Add a new column `"Average"` = mean of the 3 subject scores for each student (`axis=1`).
+3. Print the average score **per subject** (across all students, `axis=0`).
+4. Set the `"Student"` column as the DataFrame index using `.set_index()`.
+5. Plot a **grouped bar chart** of all 3 subjects side by side.
+   - Title: `"Scores of Students in Multiple Subjects"`
+   - Rotate x-labels 45°
+
+**Tip:** `df.set_index("Student", inplace=True)` then `df.plot(kind="bar")`</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>New concept: df.set_index()</strong> Normally DataFrame rows are numbered 0,1,2… Setting a column as the index means rows are now labeled by student name. This makes Pandas use the names automatically as the X-axis when you call <code>df.plot()</code> — you don't need to pass X separately.</div></div><div class="note info"><span class="note-icon">ℹ️</span><div class="note-content"><strong>axis=1 vs axis=0</strong> <code>axis=1</code> calculates <em>across</em> each row — so each student's three scores get averaged together. <code>axis=0</code> calculates <em>down</em> each column — so all students' Math scores get averaged together. Think of it as: axis=1 goes left→right (horizontal), axis=0 goes top→bottom (vertical).</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+data = {
+    <span class="str">"Student"</span>: [<span class="str">"Alice"</span>, <span class="str">"Bob"</span>, <span class="str">"Charlie"</span>, <span class="str">"Diana"</span>, <span class="str">"Eve"</span>],
+    <span class="str">"Math"</span>:    [<span class="num">88</span>, <span class="num">76</span>, <span class="num">93</span>, <span class="num">85</span>, <span class="num">91</span>],
+    <span class="str">"Science"</span>: [<span class="num">92</span>, <span class="num">80</span>, <span class="num">89</span>, <span class="num">88</span>, <span class="num">95</span>],
+    <span class="str">"English"</span>: [<span class="num">85</span>, <span class="num">79</span>, <span class="num">90</span>, <span class="num">84</span>, <span class="num">87</span>]
+}
+df = pd.DataFrame(data)
+
+<span class="cm"># Add average column — axis=1 means average ACROSS columns (per row)</span>
+df[<span class="str">"Average"</span>] = df[[<span class="str">"Math"</span>, <span class="str">"Science"</span>, <span class="str">"English"</span>]].mean(axis=<span class="num">1</span>)
+
+<span class="cm"># Average PER SUBJECT (across all students)</span>
+avg_per_subject = df[[<span class="str">"Math"</span>, <span class="str">"Science"</span>, <span class="str">"English"</span>]].mean()
+<span class="fn">print</span>(avg_per_subject)
+
+<span class="cm"># Set Student column as index → rows now labeled by name</span>
+df.set_index(<span class="str">"Student"</span>, inplace=<span class="kw">True</span>)
+
+<span class="cm"># Plot grouped bar chart</span>
+df[[<span class="str">"Math"</span>, <span class="str">"Science"</span>, <span class="str">"English"</span>]].plot(
+    kind=<span class="str">"bar"</span>,
+    figsize=(<span class="num">8</span>, <span class="num">6</span>),
+    color=[<span class="str">'skyblue'</span>, <span class="str">'salmon'</span>, <span class="str">'lightgreen'</span>]
+)
+plt.title(<span class="str">"Scores of Students in Multiple Subjects"</span>)
+plt.xlabel(<span class="str">"Students"</span>)
+plt.ylabel(<span class="str">"Scores"</span>)
+plt.ylim(<span class="num">0</span>, <span class="num">100</span>)
+plt.xticks(rotation=<span class="num">45</span>)   <span class="cm"># tilt labels 45° so they don't overlap</span>
+plt.legend(title=<span class="str">"Subjects"</span>)
+plt.show()</pre></div><div class="note tip"><span class="note-icon">💡</span><div class="note-content"><strong>The .plot() shortcut</strong> After <code>df.set_index('Student')</code>, calling <code>df[['Math','Science','English']].plot(kind='bar')</code> automatically uses student names as x-ticks and creates grouped bars for each column. Specify <code>figsize=(8,6)</code> to make it wide enough.</div></div></div></div>
+<div id="q3" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">👥</span>
+      <div><div class="card-title">Q3 — Analysing People's Data</div><div class="card-subtitle">Full DataFrame ops · filtering · sorting · .info() · .describe()</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q3 — Analysing People's Data</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a DataFrame with columns: <strong>Name, Age, City, Score</strong> (at least 5 rows).</li><li>Explore it: print <code>df.columns.tolist()</code>, <code>df.dtypes</code>, <code>df.info()</code>, <code>df.describe()</code>.</li><li>Calculate stats on <code>Age</code>: <code>.mean()</code>, <code>.min()</code>, <code>.max()</code>. Find the person with max and min age using <code>.idxmax()</code> / <code>.idxmin()</code>.</li><li>Filter by: age &gt; 25 · specific city · multiple conditions (<code>&amp;</code>, <code>|</code>) · <code>.isin()</code> · <code>.str.contains()</code>.</li><li>Sort by <strong>Age</strong> in ascending order using <code>.sort_values()</code>.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 👥 Q3 — Analysing People's Data
+
+**Libraries:** `pandas`
+
+### Tasks
+1. Create a DataFrame with columns: `Name`, `Age`, `City`, `Score`.
+2. Explore it:
+   - Print `df.columns.tolist()`, `df.dtypes`, `df.info()`, `df.describe()`
+3. Calculate stats on `Age`: `.mean()`, `.min()`, `.max()`
+4. Find the person with highest and lowest age using `.idxmax()` / `.idxmin()`.
+5. Filter the data:
+   - Show people older than 25
+   - Show people from "Chicago"
+   - Show people over 23 AND from "New York"
+   - Show people from "Chicago" OR "Los Angeles" using `.isin()`
+   - Show people whose name contains "A" using `.str.contains()`
+6. Sort by Age in ascending order using `.sort_values()`</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>Key methods for first-look at any dataset</strong> Every data analyst runs these exact commands on every new dataset before doing anything else: <code>.info()</code> tells you what columns you have and which have missing values. <code>.describe()</code> shows you the range, average, and spread of numbers. <code>.dtypes</code> shows you if numbers are stored as text (a common data quality problem).</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Real-world connection</strong> A data analyst at <strong>Swiggy</strong> receives a new dataset of customer orders. The <strong>first 10 minutes</strong> are always spent running <code>.info()</code>, <code>.describe()</code>, and basic filters — this is called Exploratory Data Analysis (EDA) and it's the starting point of every real data project.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+
+data = {
+    <span class="str">"Name"</span>: [<span class="str">"Alice"</span>, <span class="str">"Bob"</span>, <span class="str">"Charlie"</span>],
+    <span class="str">"Age"</span>:  [<span class="num">25</span>, <span class="num">30</span>, <span class="num">22</span>],
+    <span class="str">"City"</span>: [<span class="str">"New York"</span>, <span class="str">"Los Angeles"</span>, <span class="str">"Chicago"</span>]
+}
+df = pd.DataFrame(data)
+
+<span class="cm"># ── Explore the DataFrame ──────────────────────</span>
+<span class="fn">print</span>(df.columns.tolist())   <span class="cm"># ['Name', 'Age', 'City']</span>
+<span class="fn">print</span>(df.dtypes)             <span class="cm"># data type of each column</span>
+df.info()                    <span class="cm"># non-null counts + types</span>
+<span class="fn">print</span>(df.describe())         <span class="cm"># stats for numeric columns</span>
+
+<span class="cm"># ── Statistics ────────────────────────────────</span>
+<span class="fn">print</span>(df[<span class="str">"Age"</span>].mean())      <span class="cm"># → 25.67</span>
+<span class="fn">print</span>(df[<span class="str">"Age"</span>].min())       <span class="cm"># → 22</span>
+<span class="fn">print</span>(df[<span class="str">"Age"</span>].max())       <span class="cm"># → 30</span>
+
+<span class="cm"># Who is oldest/youngest?</span>
+<span class="fn">print</span>(df.loc[df[<span class="str">"Age"</span>].idxmax()])   <span class="cm"># Bob (age 30)</span>
+<span class="fn">print</span>(df.loc[df[<span class="str">"Age"</span>].idxmin()])   <span class="cm"># Charlie (age 22)</span>
+
+<span class="cm"># ── Add column ────────────────────────────────</span>
+df[<span class="str">"Score"</span>] = [<span class="num">90</span>, <span class="num">85</span>, <span class="num">88</span>]
+
+<span class="cm"># ── Filtering examples ────────────────────────</span>
+df[df[<span class="str">"Age"</span>] > <span class="num">25</span>]                                    <span class="cm"># single condition</span>
+df[df[<span class="str">"City"</span>] == <span class="str">"Chicago"</span>]                          <span class="cm"># exact match</span>
+df[(df[<span class="str">"Age"</span>] > <span class="num">23</span>) & (df[<span class="str">"City"</span>] == <span class="str">"New York"</span>)]  <span class="cm"># AND</span>
+df[(df[<span class="str">"Age"</span>] < <span class="num">25</span>) | (df[<span class="str">"City"</span>] == <span class="str">"Los Angeles"</span>)]<span class="cm"># OR</span>
+df[df[<span class="str">"City"</span>].isin([<span class="str">"Chicago"</span>, <span class="str">"New York"</span>])]        <span class="cm"># in list</span>
+df[df[<span class="str">"City"</span>].str.contains(<span class="str">"Los"</span>)]                  <span class="cm"># contains text</span>
+
+<span class="cm"># ── Sort ──────────────────────────────────────</span>
+df.sort_values(<span class="str">"Age"</span>, ascending=<span class="kw">True</span>)</pre></div><div class="note warn"><span class="note-icon">⚠️</span><div class="note-content"><strong>Multiple conditions gotcha</strong> Always wrap each condition in parentheses: <code>(df['Age']&gt;25) &amp; (df['City']=='Delhi')</code>. Without parentheses Python evaluates <code>&amp;</code> before <code>==</code> and you'll get a confusing TypeError.</div></div></div></div>
+<div id="q4" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">💼</span>
+      <div><div class="card-title">Q4 — Employee Data Analysis</div><div class="card-subtitle">Custom index · .loc · .iloc · filtering</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q4 — Employee Data Analysis</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a DataFrame with employee names as the <strong>index</strong> and columns: <strong>Salary, Department, Experience</strong>.</li><li>Use <code>.loc[]</code>: get details of one employee · multiple employees · a specific cell (Charlie's Dept) · multiple cells for one employee.</li><li>Use <code>.iloc[]</code>: first row &amp; column · rows 1–2 · all rows but only columns 1 and 2.</li><li>Filter: show only employees with <strong>5+ years</strong> of experience.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 💼 Q4 — Employee Data Analysis
+
+**Libraries:** `pandas`
+
+### Tasks
+1. Create a DataFrame with employee data:
+   - Index = employee names (Alice, Bob, Charlie, David)
+   - Columns: `Salary`, `Department`, `Experience`
+2. Select data using `.loc[]` (label-based):
+   - Get all details of "Bob"
+   - Get details of "Alice" and "Charlie"
+   - Get "Charlie"'s Department
+   - Get "David"'s Salary and Experience
+3. Select data using `.iloc[]` (position-based):
+   - First row, first column
+   - Rows 1 and 2 (Bob and Charlie)
+   - All rows, only columns 1 and 2 (Dept + Experience)
+4. Filter: show employees with **5 or more years** of experience.
+
+**Key Difference:** `.loc` uses labels, `.iloc` uses position numbers (0-based).</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>Why use a custom index?</strong> Setting employee names as the index lets you write <code>df.loc['Bob']</code> instead of <code>df.loc[1]</code>. It's like giving rows meaningful names instead of numbers — much more readable and less likely to cause off-by-one errors if rows get deleted or reordered.</div></div><div class="note info"><span class="note-icon">ℹ️</span><div class="note-content"><strong>.loc vs .iloc — a memory trick</strong> <code>.loc</code> = <strong>L</strong>abel-based (use the name). <code>.iloc</code> = <strong>I</strong>nteger position (use the number). When you do <code>df.loc[2:5]</code> the end 5 is included. When you do <code>df.iloc[2:5]</code> the end 5 is excluded — just like regular Python list slicing.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+
+data = {
+    <span class="str">"Salary"</span>:     [<span class="num">50000</span>, <span class="num">60000</span>, <span class="num">75000</span>, <span class="num">52000</span>],
+    <span class="str">"Department"</span>: [<span class="str">"HR"</span>, <span class="str">"IT"</span>, <span class="str">"Finance"</span>, <span class="str">"IT"</span>],
+    <span class="str">"Experience"</span>: [<span class="num">2</span>, <span class="num">5</span>, <span class="num">8</span>, <span class="num">3</span>]
+}
+<span class="cm"># Custom row index using employee names!</span>
+df = pd.DataFrame(data, index=[<span class="str">"Alice"</span>, <span class="str">"Bob"</span>, <span class="str">"Charlie"</span>, <span class="str">"David"</span>])
+
+<span class="cm"># ── Column selection ──────────────────────────</span>
+df[<span class="str">"Salary"</span>]                      <span class="cm"># → Series</span>
+df[[<span class="str">"Salary"</span>, <span class="str">"Experience"</span>]]      <span class="cm"># → DataFrame</span>
+
+<span class="cm"># ── Row selection with .loc (label-based) ─────</span>
+df.loc[<span class="str">"Bob"</span>]                     <span class="cm"># → Series (one employee)</span>
+df.loc[[<span class="str">"Bob"</span>]]                   <span class="cm"># → DataFrame (one row)</span>
+df.loc[[<span class="str">"Alice"</span>, <span class="str">"Charlie"</span>]]     <span class="cm"># → DataFrame (two rows)</span>
+
+<span class="cm"># ── Specific cells with .loc ──────────────────</span>
+df.loc[<span class="str">"Charlie"</span>, <span class="str">"Department"</span>]       <span class="cm"># → "Finance"</span>
+df.loc[<span class="str">"David"</span>, [<span class="str">"Salary"</span>, <span class="str">"Experience"</span>]]
+
+<span class="cm"># ── .iloc (position-based) ───────────────────</span>
+df.iloc[<span class="num">0</span>, <span class="num">0</span>]    <span class="cm"># 1st row, 1st col → Alice's Salary</span>
+df.iloc[<span class="num">1</span>:<span class="num">3</span>, :]  <span class="cm"># rows 1-2 (Bob + Charlie), all columns</span>
+df.iloc[:, <span class="num">1</span>:<span class="num">3</span>] <span class="cm"># all rows, columns 1-2</span>
+
+<span class="cm"># ── Filter employees with 5+ years experience ─</span>
+df[df[<span class="str">"Experience"</span>] >= <span class="num">5</span>]</pre></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>HR Analytics</strong> Companies like <strong>Infosys</strong> or <strong>TCS</strong> have HR DataFrames with 100,000+ employees. Queries like 'show all developers in Pune with 8+ years experience' use exactly the same loc/filter patterns you're practising here. The only difference is scale.</div></div></div></div>
+<div id="q5" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🎵</span>
+      <div><div class="card-title">Q5 — Spotify Playlist Analyzer</div><div class="card-subtitle">mode() · value_counts() · Bar Chart</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q5 — Spotify Playlist Analyzer</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a DataFrame with 4 tracks: columns <strong>Track, Genre, Duration</strong> (seconds), <strong>Danceability</strong> (0–1 scale).</li><li>Find and print the <strong>average duration</strong> of all songs.</li><li>Find the <strong>most popular genre</strong> using <code>.mode()[0]</code> on the Genre column.</li><li>Count songs per genre using <code>value_counts()</code>.</li><li>Plot a <strong>bar chart</strong> of genre counts. Title: <code>"Genre Distribution"</code>.</li></ol></div>
+      <div class="dl-links"><a href="https://docs.google.com/spreadsheets/d/1zStQk0tYOrFxbWWiqWd0zN8sBahGD5620XGRUR9udMU/edit?usp=sharing" target="_blank" class="dl-link">📊 Spotify Dataset (Google Sheets)</a></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🎵 Q5 — Spotify Playlist Analyzer
+
+**Libraries:** `pandas`, `matplotlib.pyplot`
+
+### Tasks
+1. Create a DataFrame with 4 songs:
+   - Columns: `Track`, `Genre`, `Duration` (seconds), `Danceability` (0–1)
+2. Find and print the **average duration** in seconds.
+3. Find the **most popular genre** using `.mode()[0]`.
+4. Count how many songs are in each genre using `.value_counts()`.
+5. Plot a **bar chart** of genre counts.
+   - Title: `"Genre Distribution"`
+   - Rotate x-labels to 0°
+
+**Note:** `.mode()` returns a Series (in case of ties), so use `[0]` to get the first/most common value.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>New method: .mode()</strong> <code>.mode()</code> returns the most frequently occurring value — the 'fashion' of statistics (most fashionable item). Since there can be ties, mode() returns a Series not a single value. Use <code>[0]</code> to grab the first (most common) one. Example: <code>['Pop', 'Rock', 'Pop', 'Jazz'] → .mode()[0] = 'Pop'</code></div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>How Spotify Wrapped works</strong> Every December, Spotify shows you your 'top 5 genres'. They do this by running <code>value_counts()</code> on all your streams from the year, then picking the top 5 entries. Your 'minutes listened' is <code>.sum()</code> of all track durations. The 'most streamed artist' is <code>.idxmax()</code> of a grouped count. You're learning the exact building blocks!</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+data = {
+    <span class="str">"Track"</span>:       [<span class="str">"Song A"</span>, <span class="str">"Song B"</span>, <span class="str">"Song C"</span>, <span class="str">"Song D"</span>],
+    <span class="str">"Genre"</span>:       [<span class="str">"Pop"</span>, <span class="str">"Rock"</span>, <span class="str">"Pop"</span>, <span class="str">"Jazz"</span>],
+    <span class="str">"Duration"</span>:    [<span class="num">210</span>, <span class="num">180</span>, <span class="num">200</span>, <span class="num">230</span>],   <span class="cm"># seconds</span>
+    <span class="str">"Danceability"</span>:[<span class="num">0.8</span>, <span class="num">0.6</span>, <span class="num">0.9</span>, <span class="num">0.5</span>]
+}
+df = pd.DataFrame(data)
+
+<span class="cm"># Average duration in seconds</span>
+<span class="fn">print</span>(<span class="str">"Avg Duration:"</span>, df[<span class="str">"Duration"</span>].mean())   <span class="cm"># → 205.0</span>
+
+<span class="cm"># Most popular genre (.mode() = most frequent value)</span>
+<span class="fn">print</span>(<span class="str">"Top Genre:"</span>, df[<span class="str">"Genre"</span>].mode()[<span class="num">0</span>])       <span class="cm"># → "Pop"</span>
+<span class="cm"># [0] because mode() returns a Series — grab first</span>
+
+<span class="cm"># Count per genre</span>
+<span class="fn">print</span>(df[<span class="str">"Genre"</span>].value_counts())
+<span class="cm"># Pop     2</span>
+<span class="cm"># Rock    1</span>
+<span class="cm"># Jazz    1</span>
+
+<span class="cm"># Bar chart of genre distribution</span>
+df[<span class="str">"Genre"</span>].value_counts().plot(kind=<span class="str">"bar"</span>, title=<span class="str">"Genre Distribution"</span>)
+plt.ylabel(<span class="str">"Count"</span>)
+plt.xticks(rotation=<span class="num">0</span>)
+plt.show()</pre></div></div></div>
+<div id="q6" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🍿</span>
+      <div><div class="card-title">Q6 — Movie Ratings & Genre Distribution</div><div class="card-subtitle">Pie Chart · autopct · genre counts</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q6 — Movie Ratings & Genre Distribution</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a DataFrame with <strong>5 movies</strong>: columns <strong>Movie, Genre, Rating</strong> (out of 10).</li><li>Calculate and print the <strong>average movie rating</strong>.</li><li>Count movies per genre using <code>value_counts()</code>.</li><li>Plot a <strong>pie chart</strong> with percentages using <code>autopct="%1.1f%%"</code>. Title: <code>"Genre Distribution"</code>. Set <code>ylabel("")</code> to hide the default label.</li></ol></div>
+      <div class="dl-links"><a href="https://docs.google.com/spreadsheets/d/1tI-wuE3yJR4Mjwxa5PfekyHSy56LlLiFXWTtUXFDtNg/edit?usp=sharing" target="_blank" class="dl-link">🎬 Movies Dataset (Google Sheets)</a></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🍿 Q6 — Movie Ratings & Genre Distribution
+
+**Libraries:** `pandas`, `matplotlib.pyplot`
+
+### Tasks
+1. Create a DataFrame with 5 movies:
+   - Columns: `Movie`, `Genre`, `Rating` (out of 10)
+2. Calculate and print the **average rating** across all movies.
+3. Count how many movies belong to each genre.
+4. Plot a **pie chart** of genre distribution:
+   - Use `autopct="%1.1f%%"` to show percentages on slices
+   - Add a title: `"Genre Distribution"`
+   - Set `ylabel("")` to hide the default label
+
+**Tip:** `df["Genre"].value_counts().plot(kind="pie", autopct="%1.1f%%")`</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>Pie charts and autopct</strong> Pie charts show proportions of a whole — best when you have 3–6 categories that add up to 100%. The <code>autopct</code> parameter adds text to each slice: <code>%1.1f</code> means 1 digit before decimal, 1 after (e.g., 40.0). The <code>%%</code> escapes to print a literal percent sign. Without autopct your slices show no values at all.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>IMDb and BoxOffice Mojo</strong> <strong>IMDb</strong> and <strong>BoxOffice Mojo</strong> do exactly this analysis on their database of 500,000+ films. Their genre distribution pie charts, average rating by genre, and year-over-year trends all use Pandas groupby + matplotlib visualizations internally.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+data = {
+    <span class="str">"Movie"</span>:  [<span class="str">"Inception"</span>, <span class="str">"Titanic"</span>, <span class="str">"Avatar"</span>, <span class="str">"The Matrix"</span>, <span class="str">"Avengers"</span>],
+    <span class="str">"Genre"</span>:  [<span class="str">"Sci-Fi"</span>, <span class="str">"Romance"</span>, <span class="str">"Sci-Fi"</span>, <span class="str">"Action"</span>, <span class="str">"Action"</span>],
+    <span class="str">"Rating"</span>: [<span class="num">8.8</span>, <span class="num">7.8</span>, <span class="num">7.9</span>, <span class="num">8.7</span>, <span class="num">8.0</span>]
+}
+df = pd.DataFrame(data)
+
+<span class="fn">print</span>(<span class="str">"Average Rating:"</span>, df[<span class="str">"Rating"</span>].mean())  <span class="cm"># → 8.24</span>
+
+<span class="cm"># Pie chart: proportions of each genre</span>
+<span class="cm"># value_counts() gives count per genre</span>
+df[<span class="str">"Genre"</span>].value_counts().plot(
+    kind=<span class="str">"pie"</span>,
+    autopct=<span class="str">"%1.1f%%"</span>   <span class="cm"># shows "40.0%" on each slice</span>
+)
+plt.title(<span class="str">"Genre Distribution"</span>)
+plt.ylabel(<span class="str">""</span>)           <span class="cm"># hide the default "Genre" y-label</span>
+plt.show()</pre></div></div></div>
+<div id="q7" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🍋</span>
+      <div><div class="card-title">Q7 — Lemonade Stand Sales Trend</div><div class="card-subtitle">Line Chart · marker · grid · time trends</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q7 — Lemonade Stand Sales Trend</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a DataFrame with 7 days of lemonade sales: columns <strong>Day</strong> (Mon–Sun), <strong>Sales</strong> (cups sold).</li><li>Plot a <strong>line chart</strong>: X-axis → Day, Y-axis → Sales.</li><li>Add: marker <code>'o'</code> for dots at each data point, grid with <code>plt.grid(True)</code>, title <code>"Lemonade Sales Trend"</code>, axis labels.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🍋 Q7 — Lemonade Stand Sales Trend
+
+**Libraries:** `pandas`, `matplotlib.pyplot`
+
+### Tasks
+1. Create a DataFrame with daily sales data for a week:
+   - Columns: `Day` (Mon–Sun), `Sales` (cups sold)
+2. Plot a **line chart** of sales over the week:
+   - X-axis → Day, Y-axis → Sales
+   - Add marker: `marker='o'`
+   - Add a grid: `plt.grid(True)`
+   - Title: `"Lemonade Sales Trend"`
+   - Add axis labels
+
+**Why line chart?** Line charts are best for showing how values change over time (trends). Bar charts compare categories; line charts show progression.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>When to use a line chart vs bar chart</strong> Use a <strong>line chart</strong> when showing how something changes over TIME (days, weeks, months, years) — it emphasizes the trend and continuity. Use a <strong>bar chart</strong> when comparing discrete CATEGORIES (cities, products, genres) — it emphasizes the individual values. Mixing them up is one of the most common visualization mistakes.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Stock market charts</strong> Every stock price chart (NSE, BSE, Nasdaq) is just a line chart of price over time. Candlestick charts are fancier versions. <strong>Zerodha Kite</strong> uses Highcharts (a JS library) for the visuals, but the underlying data is processed in Python with Pandas and NumPy before being sent to the browser.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+data = {
+    <span class="str">"Day"</span>:   [<span class="str">"Mon"</span>, <span class="str">"Tue"</span>, <span class="str">"Wed"</span>, <span class="str">"Thu"</span>, <span class="str">"Fri"</span>, <span class="str">"Sat"</span>, <span class="str">"Sun"</span>],
+    <span class="str">"Sales"</span>: [<span class="num">30</span>, <span class="num">40</span>, <span class="num">25</span>, <span class="num">50</span>, <span class="num">45</span>, <span class="num">60</span>, <span class="num">55</span>]
+}
+df = pd.DataFrame(data)
+
+plt.plot(df[<span class="str">"Day"</span>], df[<span class="str">"Sales"</span>], marker=<span class="str">'o'</span>)
+<span class="cm"># marker='o' adds a circle ● at each data point</span>
+plt.title(<span class="str">"Lemonade Sales Trend"</span>)
+plt.xlabel(<span class="str">"Day"</span>)
+plt.ylabel(<span class="str">"Cups Sold"</span>)
+plt.xticks(rotation=<span class="num">45</span>)
+plt.grid(<span class="kw">True</span>)   <span class="cm"># adds faint grid lines for easier reading</span>
+plt.show()</pre></div></div></div>
+<div id="q8" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🌦️</span>
+      <div><div class="card-title">Q8 — Weather Pattern Tracker</div><div class="card-subtitle">Dual Y-axis · twinx() · multi-line chart</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q8 — Weather Pattern Tracker</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a DataFrame with 5 days: columns <strong>Day, Temp</strong> (°C), <strong>Humidity</strong> (%).</li><li>Plot Temperature as a line with marker <code>'o'</code> (blue). Use <code>ax1 = plt.gca()</code>.</li><li>Create a second Y-axis: <code>ax2 = ax1.twinx()</code>. Plot Humidity with marker <code>'x'</code> (orange/red).</li><li>Label both Y-axes. Add combined legend, title <code>"Weather Patterns"</code>, and grid.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🌦️ Q8 — Weather Pattern Tracker
+
+**Libraries:** `pandas`, `matplotlib.pyplot`
+
+### Tasks
+1. Create a DataFrame with 5 days of weather data:
+   - Columns: `Day`, `Temp` (°C), `Humidity` (%)
+2. Plot **Temperature** as a line with marker `'o'` (blue).
+3. Use `ax1.twinx()` to create a **second Y-axis** on the right.
+4. Plot **Humidity** on the second axis with marker `'x'` (red/orange).
+5. Add:
+   - Title: `"Weather Patterns"`
+   - Axis labels for both Y-axes
+   - A combined legend using `lines1 + lines2`
+   - Grid
+
+**Key Concept:** `twinx()` creates a second Y-axis sharing the same X-axis — essential when two datasets have very different scales.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>Why do we need twinx()?</strong> Temperature (0–40°C) and Humidity (0–100%) have completely different scales. If you plot them on the same Y-axis, the smaller-range data (temperature) looks flat and unreadable. <code>ax1.twinx()</code> creates a second Y-axis on the right side, sharing the same X-axis — each line gets its own scale and both are readable.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Weather apps and IMD</strong> The <strong>India Meteorological Department (IMD)</strong> publishes weather data as CSV files. Apps like <strong>Mausam</strong> and <strong>Weather.com</strong> download these, process them with Pandas, and display dual-axis charts exactly like this one — temperature on the left axis, humidity or rainfall on the right.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+data = {
+    <span class="str">"Day"</span>:      [<span class="str">"Mon"</span>, <span class="str">"Tue"</span>, <span class="str">"Wed"</span>, <span class="str">"Thu"</span>, <span class="str">"Fri"</span>],
+    <span class="str">"Temp"</span>:     [<span class="num">30</span>, <span class="num">32</span>, <span class="num">29</span>, <span class="num">35</span>, <span class="num">28</span>],
+    <span class="str">"Humidity"</span>: [<span class="num">70</span>, <span class="num">65</span>, <span class="num">72</span>, <span class="num">60</span>, <span class="num">75</span>]
+}
+df = pd.DataFrame(data)
+
+<span class="cm"># fig = the whole canvas | ax1 = the primary plot area</span>
+fig, ax1 = plt.subplots()
+
+<span class="cm"># Plot Temperature on primary y-axis (left)</span>
+temp_line,  = ax1.plot(df[<span class="str">"Day"</span>], df[<span class="str">"Temp"</span>],
+                       marker=<span class="str">"o"</span>, color=<span class="str">"red"</span>, label=<span class="str">"Temp (°C)"</span>)
+ax1.set_xlabel(<span class="str">"Day"</span>)
+ax1.set_ylabel(<span class="str">"Temperature (°C)"</span>, color=<span class="str">"red"</span>)
+
+<span class="cm"># Create secondary y-axis (right) that SHARES the x-axis</span>
+ax2 = ax1.twinx()
+hum_line, = ax2.plot(df[<span class="str">"Day"</span>], df[<span class="str">"Humidity"</span>],
+                     marker=<span class="str">"x"</span>, color=<span class="str">"green"</span>, label=<span class="str">"Humidity (%)"</span>)
+ax2.set_ylabel(<span class="str">"Humidity (%)"</span>, color=<span class="str">"green"</span>)
+
+<span class="cm"># Combine both legends into one</span>
+plt.legend(handles=[temp_line, hum_line])
+plt.title(<span class="str">"Weather Patterns"</span>)
+plt.show()</pre></div></div></div>
+<div id="q9" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">📱</span>
+      <div><div class="card-title">Q9 — Screen Time vs Mood Rating</div><div class="card-subtitle">Scatter Plot · correlation visualization</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q9 — Screen Time vs Mood Rating</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a DataFrame with screen time (hrs/day) and mood rating (1–10) for several people.</li><li>Plot a <strong>scatter plot</strong>: X-axis → ScreenTime, Y-axis → MoodRating, color purple, point size <code>s=100</code>.</li><li>Add title <code>"Screen Time vs Mood Rating"</code>, axis labels, and grid.</li><li>Observe: does more screen time correlate with lower or higher mood?</li></ol></div>
+      <div class="dl-links"><a href="https://www.kaggle.com/datasets/adharshinikumar/screentime-vs-mentalwellness-survey-2025?resource=download" target="_blank" class="dl-link">📱 Screen Time Dataset (Kaggle)</a></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 📱 Q9 — Screen Time vs Mood Rating
+
+**Libraries:** `pandas`, `matplotlib.pyplot`
+
+### Tasks
+1. Create a DataFrame with data for several people:
+   - Columns: `ScreenTime` (hours/day), `MoodRating` (1–10)
+2. Plot a **scatter plot**:
+   - X-axis → Screen Time, Y-axis → Mood Rating
+   - Use `color='purple'`, `s=100` (point size)
+   - Add title: `"Screen Time vs Mood Rating"`
+   - Add axis labels and grid
+3. Observe and describe the pattern: does more screen time correlate with lower or higher mood?
+
+**Scatter plots** show the relationship between two numeric variables. If points trend downward left-to-right, it's a negative correlation.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>What is correlation?</strong> Scatter plots reveal the <strong>relationship</strong> between two numeric variables. If points form a line going down-left-to-right (⬇️), it's a <em>negative correlation</em> — one goes up, the other goes down. If points go up-left-to-right (⬆️), it's <em>positive</em>. If they're scattered randomly, there's <em>no correlation</em>. This is the visual foundation for machine learning regression.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Digital wellbeing research</strong> <strong>Apple Screen Time</strong> and <strong>Google Digital Wellbeing</strong> teams actually run scatter plot analyses on anonymized usage data to study exactly this relationship. Research published in journals like <em>JMIR</em> uses Python scatter plots and correlation matrices on survey data from thousands of participants to study screen time effects.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+data = {
+    <span class="str">"ScreenTime"</span>: [<span class="num">2</span>, <span class="num">4</span>, <span class="num">6</span>, <span class="num">8</span>, <span class="num">10</span>],
+    <span class="str">"MoodRating"</span>: [<span class="num">8</span>, <span class="num">7</span>, <span class="num">6</span>, <span class="num">4</span>, <span class="num">3</span>]
+}
+df = pd.DataFrame(data)
+
+<span class="cm"># Scatter: x=ScreenTime, y=MoodRating, s=dot size</span>
+df.plot(kind=<span class="str">"scatter"</span>, x=<span class="str">"ScreenTime"</span>, y=<span class="str">"MoodRating"</span>,
+        color=<span class="str">"purple"</span>, s=<span class="num">100</span>)
+plt.title(<span class="str">"Screen Time vs Mood Rating"</span>)
+plt.xlabel(<span class="str">"Screen Time (hours)"</span>)
+plt.ylabel(<span class="str">"Mood Rating"</span>)
+plt.grid(<span class="kw">True</span>)
+plt.show()
+<span class="cm"># Insight: As screen time ↑, mood rating ↓ (negative correlation)</span></pre></div></div></div>
+<div id="q10" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">⚡</span>
+      <div><div class="card-title">Q10 — Tesla Data Analysis</div><div class="card-subtitle">Real dataset · groupby · value_counts · multi-chart</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q10 — Tesla Data Analysis (Real Dataset)</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Download the Tesla dataset from Kaggle. Load it: <code>pd.read_csv('tesla.csv')</code>. Print columns and first 5 rows.</li><li>Use <code>value_counts()</code>: which model appears most? Which region has most deliveries? Records per year?</li><li>Use <code>groupby()</code>: average battery capacity; average driving range per model; average CO₂ saved; average cost 2015–2025.</li><li>Bar charts: total deliveries by model; total deliveries by region.</li><li>Line charts: global deliveries 2015–2025; average car cost over the years.</li></ol></div>
+      <div class="dl-links"><a href="https://www.kaggle.com/datasets/nalisha/tesla-ea-deliveries-and-production-data20152025" target="_blank" class="dl-link">⚡ Tesla Dataset (Kaggle)</a></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## ⚡ Q10 — Tesla Data Analysis (Real Dataset)
+
+**Libraries:** `pandas`, `matplotlib.pyplot`
+
+### Tasks
+1. Download the Tesla dataset from Kaggle and load it:
+   ```python
+   df = pd.read_csv("tesla.csv")
+   ```
+2. Explore the data: print column names and first 5 rows.
+3. Answer with `value_counts()`:
+   - Which Tesla model appears most?
+   - Which region has the most deliveries?
+   - How many records per year?
+4. Calculate averages:
+   - Average battery capacity across all models
+   - Average driving range per model (use `groupby`)
+   - Average CO₂ emissions saved
+   - Average car cost 2015–2025
+5. Create charts:
+   - Bar chart: total deliveries by model
+   - Bar chart: total deliveries by region
+   - Line chart: global deliveries 2015–2025
+   - Line chart: average car cost over the years</div></div><div class="note info"><span class="note-icon">📥</span><div class="note-content"><strong>Downloading the dataset</strong> Go to Kaggle.com, search for 'Tesla delivery data', download the CSV, and upload it to your Colab session using the folder icon on the left. Then <code>df = pd.read_csv('tesla.csv')</code> loads it. Always run <code>df.head()</code> and <code>df.columns.tolist()</code> first to understand what you're working with — column names differ between datasets.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>This is real data science</strong> Tesla actually publishes quarterly delivery reports as PDFs. Data journalists at <strong>Bloomberg</strong> and <strong>Reuters</strong> scrape and aggregate this data, then use Pandas and Matplotlib to generate the charts you see in articles about 'Tesla deliveries hit record high'. You are doing the same analysis they do.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+df = pd.read_csv(<span class="str">"tesla.csv"</span>)
+<span class="fn">print</span>(df.columns.tolist())   <span class="cm"># always check column names first!</span>
+<span class="fn">print</span>(df.head())              <span class="cm"># peek at first 5 rows</span>
+
+<span class="cm"># ── value_counts questions ─────────────────────────</span>
+df[<span class="str">"Model"</span>].value_counts()              <span class="cm"># most common model</span>
+df[<span class="str">"Year"</span>].value_counts()               <span class="cm"># records per year</span>
+
+<span class="cm"># ── groupby questions ──────────────────────────────</span>
+<span class="cm"># Which region has most deliveries?</span>
+df.groupby(<span class="str">"Region"</span>)[<span class="str">"Estimated_Deliveries"</span>].sum()
+
+<span class="cm"># Average range per model</span>
+df.groupby(<span class="str">"Model"</span>)[<span class="str">"Range_km"</span>].mean()
+
+<span class="cm"># ── Simple statistics ─────────────────────────────</span>
+df[<span class="str">"Battery_Capacity_kWh"</span>].mean()       <span class="cm"># avg battery</span>
+df[<span class="str">"CO2_Saved_tons"</span>].mean()             <span class="cm"># avg CO₂ saved</span>
+
+<span class="cm"># ── Line charts ───────────────────────────────────</span>
+plt.ticklabel_format(style=<span class="str">'plain'</span>)    <span class="cm"># prevent scientific notation on axis</span>
+
+df.groupby(<span class="str">"Year"</span>)[<span class="str">"Estimated_Deliveries"</span>].sum().plot()
+plt.title(<span class="str">"Tesla Global Deliveries 2015–2025"</span>)
+plt.show()</pre></div><div class="note warn"><span class="note-icon">⚠️</span><div class="note-content"><strong>Large numbers on axis</strong> Tesla's delivery numbers are in the hundreds of thousands. Matplotlib will show them in scientific notation (e.g., 1e5) by default. To force regular numbers, add: <code>plt.gca().get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, p: format(int(x), ',')))</code></div></div></div></div>
+<div id="cleaning" class="card open">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🧹</span>
+      <div><div class="card-title">Data Cleaning — Making Messy Data Usable</div><div class="card-subtitle">dropna · fillna · to_datetime · drop_duplicates · reset_index</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Data Cleaning — Fix a Health Dataset</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Load <code>health.csv</code> using Pandas. Check for missing values: <code>df.isnull().sum()</code>.</li><li>Fill missing <code>Calories</code> with the column mean: <code>df['Calories'].fillna(df['Calories'].mean(), inplace=True)</code>.</li><li>Convert <code>Date</code> column to datetime: <code>df['Date'] = pd.to_datetime(df['Date'])</code>.</li><li>Drop remaining rows with nulls: <code>df.dropna(inplace=True)</code>.</li><li>Fix a wrong value: row 7 has Duration = 450, correct it to 45.</li><li>Remove duplicate rows: <code>df.drop_duplicates(inplace=True)</code>.</li><li>Reset the index after removing rows: <code>df.reset_index(drop=True, inplace=True)</code>.</li></ol></div>
+      <div class="dl-links"><a href="https://docs.google.com/spreadsheets/d/1VHjW3EUY2E5xM8vR_ZN_CpCn6-60ja-2/edit?gid=1592848524#gid=1592848524" target="_blank" class="dl-link">🏥 health.csv (Google Sheets)</a><a href="https://www.w3schools.com/python/pandas/pandas_cleaning.asp" target="_blank" class="dl-link">📖 Data Cleaning Reference (W3Schools)</a></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🧹 Data Cleaning — Fix a Health Dataset
+
+**Libraries:** `pandas`
+
+### Why Clean Data?
+"Garbage in, garbage out" — a model trained on dirty data gives wrong answers.
+
+### Tasks
+1. Load `health.csv` into a DataFrame.
+2. Check for missing values: `df.isnull().sum()`
+3. Fill missing `Calories` values with the column mean:
+   ```python
+   df["Calories"].fillna(df["Calories"].mean(), inplace=True)
+   ```
+4. Convert `Date` column to datetime format:
+   ```python
+   df["Date"] = pd.to_datetime(df["Date"])
+   ```
+5. Drop any remaining rows with missing values: `df.dropna(inplace=True)`
+6. Fix a wrong value: row 7 has Duration = 450, correct it to 45.
+7. Remove duplicate rows: `df.drop_duplicates(inplace=True)`
+8. Reset the index: `df.reset_index(drop=True, inplace=True)`
+9. Print the cleaned DataFrame.</div></div><div class="note warn"><span class="note-icon">⚠️</span><div class="note-content"><strong>Garbage in, garbage out</strong> This is the most important phrase in data science. If your input data has missing values, wrong formats, duplicates, or typos — every chart and every ML prediction you build on top of it will be wrong too. Real datasets are always dirty. A typical data science project spends 60–80% of its time on data cleaning, not on building models.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Healthcare data cleaning at Apollo Hospitals</strong> When hospital staff enter patient records by hand, they make typos (<code>Duration: 450</code> instead of <code>45</code>), leave fields blank, and enter dates in different formats (01/03/2024 vs March 1, 2024 vs 2024-03-01). <strong>Apollo</strong>, <strong>Fortis</strong>, and every hospital chain has data engineering teams whose entire job is to run exactly these cleaning steps on health records before they can be analyzed or used for AI.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+
+df = pd.read_csv(<span class="str">"health.csv"</span>)
+
+<span class="cm"># 1. Fill missing Calories with mean (smart default)</span>
+mean_cal = df[<span class="str">"Calories"</span>].mean()
+df.fillna({<span class="str">"Calories"</span>: mean_cal}, inplace=<span class="kw">True</span>)
+
+<span class="cm"># 2. Fix date column format</span>
+df[<span class="str">"Date"</span>] = pd.to_datetime(df[<span class="str">"Date"</span>])   <span class="cm"># converts strings → dates</span>
+
+<span class="cm"># 3. Drop rows that still have missing values</span>
+df.dropna(inplace=<span class="kw">True</span>)
+
+<span class="cm"># 4. Fix a known wrong value</span>
+df.loc[<span class="num">7</span>, <span class="str">"Duration"</span>] = <span class="num">45</span>   <span class="cm"># row 7 had 450 instead of 45</span>
+
+<span class="cm"># 5. Remove duplicate rows</span>
+df.drop_duplicates(inplace=<span class="kw">True</span>)
+
+<span class="cm"># 6. Reset index to 0,1,2... after removing rows</span>
+df.reset_index(drop=<span class="kw">True</span>, inplace=<span class="kw">True</span>)
+<span class="cm"># drop=True: don't add old index as a column</span></pre></div><div class="note concept"><span class="note-icon">🧠</span><div class="note-content"><strong>The 7 data quality issues</strong> <strong>1.</strong> Missing values (NaN) <strong>2.</strong> Wrong data types (number stored as string) <strong>3.</strong> Wrong values (450 instead of 45) <strong>4.</strong> Duplicate rows <strong>5.</strong> Inconsistent categories ('Mumbai', 'mumbai', 'MUMBAI') <strong>6.</strong> Outliers (someone's age is 999) <strong>7.</strong> Mixed date formats. Pandas has a tool to fix every single one of these.</div></div></div></div>
+<div id="q11" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🏅</span>
+      <div><div class="card-title">Q11 — Olympic Medal Tally</div><div class="card-subtitle">Stacked Bar Chart · tight_layout</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q11 — Olympic Medal Tally</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a DataFrame with 5 countries and their <strong>Gold, Silver, Bronze</strong> medal counts.</li><li>Add a <code>Total</code> column. Print the country with the most total medals.</li><li>Plot a <strong>stacked bar chart</strong>: each bar = one country, segments = Gold/Silver/Bronze stacked.</li><li>Title: <code>"Olympic Medal Tally"</code>. Rotate x-labels 45°. Use <code>plt.tight_layout()</code>.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🏅 Q11 — Olympic Medal Tally
+
+**Libraries:** `pandas`, `matplotlib.pyplot`
+
+### Tasks
+1. Create a DataFrame with 5 countries and their **Gold**, **Silver**, **Bronze** medal counts.
+2. Add a `Total` column = sum of all 3 medal types.
+3. Print the country with the most total medals.
+4. Plot a **stacked bar chart**:
+   - Each bar = one country
+   - Segments = Gold, Silver, Bronze stacked
+   - Colors: gold/silver/bronze shades
+   - Title: `"Olympic Medal Tally"`
+   - Rotate x-labels 45°
+   - Use `plt.tight_layout()` to fix overlapping
+
+**Tip:** `df.set_index("Country")[["Gold","Silver","Bronze"]].plot(kind="bar", stacked=True)`</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>Stacked bar charts</strong> A stacked bar chart shows BOTH the total (height of full bar) AND the composition (colored segments). Use when you care about how categories break down into sub-categories — like medals by type, sales by product, or budget by department. Add <code>stacked=True</code> to <code>df.plot(kind='bar')</code>. Always call <code>plt.tight_layout()</code> to stop labels overlapping.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Paris Olympics 2024 medal table</strong> The official <strong>Olympics medal tracker</strong> on olympics.com displays exactly this stacked bar visualization. The underlying data is a DataFrame grouped by country with Gold/Silver/Bronze columns. News agencies like <strong>BBC Sport</strong> and <strong>ESPN</strong> auto-generate these charts from the live feed using Python scripts.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+data = {
+    <span class="str">"Country"</span>: [<span class="str">"USA"</span>, <span class="str">"China"</span>, <span class="str">"India"</span>, <span class="str">"UK"</span>, <span class="str">"Germany"</span>],
+    <span class="str">"Gold"</span>:    [<span class="num">39</span>, <span class="num">38</span>, <span class="num">50</span>, <span class="num">22</span>, <span class="num">10</span>],
+    <span class="str">"Silver"</span>:  [<span class="num">20</span>, <span class="num">32</span>, <span class="num">20</span>, <span class="num">21</span>, <span class="num">11</span>],
+    <span class="str">"Bronze"</span>:  [<span class="num">33</span>, <span class="num">18</span>, <span class="num">45</span>, <span class="num">23</span>, <span class="num">16</span>]
+}
+df = pd.DataFrame(data)
+df[<span class="str">"Total"</span>] = df[<span class="str">"Gold"</span>] + df[<span class="str">"Silver"</span>] + df[<span class="str">"Bronze"</span>]
+df.set_index(<span class="str">"Country"</span>, inplace=<span class="kw">True</span>)
+
+<span class="cm"># Stacked bar chart</span>
+df[[<span class="str">"Gold"</span>, <span class="str">"Silver"</span>, <span class="str">"Bronze"</span>]].plot(
+    kind=<span class="str">"bar"</span>, stacked=<span class="kw">True</span>
+)
+plt.title(<span class="str">"Olympic Medal Tally"</span>)
+plt.ylabel(<span class="str">"Medals"</span>)
+plt.xticks(rotation=<span class="num">45</span>)
+plt.tight_layout()   <span class="cm"># auto-fix label overlap</span>
+plt.show()</pre></div></div></div>
+<div id="q13" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🧁</span>
+      <div><div class="card-title">Q13 — Average Satisfaction per Cupcake Flavor</div><div class="card-subtitle">groupby · mean · bar pipeline</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q13 — Average Satisfaction per Cupcake Flavor</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a DataFrame with cupcake survey results: columns <strong>Flavor</strong> (Chocolate/Vanilla/Strawberry) and <strong>Satisfaction</strong> (1–5). At least 6 rows with repeated flavors.</li><li>Group by <code>Flavor</code> and calculate the <strong>average satisfaction</strong>: <code>df.groupby('Flavor')['Satisfaction'].mean()</code>. Print the result.</li><li>Plot a <strong>bar chart</strong> of average satisfaction: color <code>'skyblue'</code>, Y-axis 0–5, title <code>"Average Satisfaction per Flavor"</code>.</li></ol></div>
+      <div class="dl-links"><a href="https://www.kaggle.com/datasets/roshni123456789/cupcake-shop-survey/data" target="_blank" class="dl-link">🧁 Cupcake Survey Dataset (Kaggle)</a></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🧁 Q13 — Average Satisfaction per Cupcake Flavor
+
+**Libraries:** `pandas`, `matplotlib.pyplot`
+
+### Tasks
+1. Create a DataFrame with cupcake survey results:
+   - Columns: `Flavor` (Chocolate/Vanilla/Strawberry), `Satisfaction` (1–5)
+   - Include at least 6 rows with repeated flavors
+2. Group by `Flavor` and find the **average satisfaction** per flavor:
+   ```python
+   avg = df.groupby("Flavor")["Satisfaction"].mean()
+   ```
+3. Print the result.
+4. Plot a **bar chart** of average satisfaction:
+   - Color: `'skyblue'`, Y-axis range 0–5
+   - Title: `"Average Satisfaction per Flavor"`
+
+**The groupby pipeline:** group → aggregate → plot is one of the most common patterns in data analysis.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>The groupby-aggregate-plot pipeline</strong> Group → Aggregate → Plot is the single most repeated pattern in data analysis. You'll use it constantly: group sales by region → sum them → plot a bar chart. Group orders by product → count them → plot. Group test scores by class → find the mean → plot. Once this 3-step pattern clicks, you can answer almost any 'compare by category' business question.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Product feedback at Swiggy / Blinkit</strong> After a customer rates their delivery, <strong>Blinkit</strong> and <strong>Swiggy Instamart</strong> run exactly this analysis on product feedback. They groupby product name, aggregate the ratings with mean, and rank products by average satisfaction — that's how the 'bestseller' badge gets assigned.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+data = {
+    <span class="str">"Flavor"</span>:       [<span class="str">"Chocolate"</span>, <span class="str">"Vanilla"</span>, <span class="str">"Strawberry"</span>, <span class="str">"Chocolate"</span>, <span class="str">"Vanilla"</span>],
+    <span class="str">"Satisfaction"</span>: [<span class="num">4</span>, <span class="num">5</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>]
+}
+df = pd.DataFrame(data)
+
+<span class="cm"># Step 1: Group by Flavor, Step 2: Mean of Satisfaction per group</span>
+avg = df.groupby(<span class="str">"Flavor"</span>)[<span class="str">"Satisfaction"</span>].mean()
+<span class="fn">print</span>(avg)
+<span class="cm"># Chocolate     4.0</span>
+<span class="cm"># Strawberry    3.0</span>
+<span class="cm"># Vanilla       5.0</span>
+
+<span class="cm"># Step 3: Plot</span>
+avg.plot(kind=<span class="str">"bar"</span>, color=<span class="str">"skyblue"</span>,
+         title=<span class="str">"Average Satisfaction per Flavor"</span>)
+plt.ylabel(<span class="str">"Avg Satisfaction"</span>)
+plt.ylim(<span class="num">0</span>, <span class="num">5</span>)
+plt.show()</pre></div></div></div>
+</div>
+<div id="seaborn-s" class="big-section">
+  <div class="big-section-title">🎨 Seaborn — Beautiful Charts, Faster</div>
+  <div class="big-section-sub">Seaborn is built on Matplotlib but produces publication-quality charts in far fewer lines of code. It also ships with 20+ real datasets built right in.</div>
+  <div class="note concept">
+    <span class="note-icon">🎨</span>
+    <div class="note-content">
+      <strong>Why use Seaborn instead of Matplotlib?</strong>
+      Matplotlib gives you full control but requires many styling lines. Seaborn has beautiful defaults — smart colors, gridlines, and font sizes — that make charts look professional instantly. Use both: Seaborn for quick exploration, Matplotlib for custom fine-tuning. Import with <code>import seaborn as sns</code>.
+    </div>
+  </div>
+  <div class="real-world">
+    <div class="real-world-title">SEABORN'S BUILT-IN DATASETS — USE THEM FOR PRACTICE</div>
+    <div class="real-world-body">
+      Run <code>sns.get_dataset_names()</code> to see ~20 built-in datasets. Key ones: <strong>tips</strong> (restaurant bills), <strong>iris</strong> (flower measurements used in every ML textbook), <strong>flights</strong> (monthly airline data 1949–1960), <strong>titanic</strong> (passenger survival — used in Kaggle competitions), <strong>mpg</strong> (car fuel efficiency). These datasets appear in research papers, university courses, and ML books worldwide.
+    </div>
+  </div>
+<div id="q14" class="card open">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">📋</span>
+      <div><div class="card-title">Q14 — Restaurant Tips Data Exploration</div><div class="card-subtitle">seaborn datasets · describe · groupby · sort · filter</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q14 — Restaurant Tips Data Exploration</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Import seaborn. List all built-in datasets: <code>sns.get_dataset_names()</code>. Load tips: <code>df = sns.load_dataset('tips')</code>.</li><li>Explore: print <code>df.head()</code>, <code>df.tail()</code>, <code>df.info()</code>, <code>df.describe()</code>.</li><li>Analyse: count entries per <code>day</code>, average <code>total_bill</code> per day, check missing values with <code>df.isnull().sum()</code>.</li><li>Sort by <code>total_bill</code> descending and print the top 5 highest bills.</li><li>Filter: show all rows where <code>total_bill &gt; 20</code>.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🍽️ Q14 — Restaurant Tips Data Exploration (Seaborn)
+
+**Libraries:** `seaborn`, `pandas`
+
+### Tasks
+1. Import seaborn and list all available datasets: `sns.get_dataset_names()`
+2. Load the `tips` dataset: `df = sns.load_dataset("tips")`
+3. Explore it:
+   - Print first 5 rows (`.head()`) and last 5 rows (`.tail()`)
+   - Print column info (`.info()`) and statistics (`.describe()`)
+4. Analyse:
+   - Count entries per `day` using `.value_counts()`
+   - Average `total_bill` per day using `.groupby()`
+   - Check for missing values: `df.isnull().sum()`
+5. Sort by `total_bill` descending, show top 5 highest bills.
+6. Filter: show all rows where `total_bill &gt; 20`.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>About the tips dataset</strong> 244 restaurant records with columns: <code>total_bill</code>, <code>tip</code>, <code>sex</code>, <code>smoker</code>, <code>day</code>, <code>time</code>, <code>size</code> (party size). It's perfect for practising groupby, filtering, and visualization all in one. Notice that <code>day</code> and <code>sex</code> are stored as Pandas <em>Categorical</em> dtype — Seaborn handles them automatically.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>How restaurants use data analytics</strong> <strong>Dineout</strong> and <strong>EazyDiner</strong> analyze exactly this type of data from partner restaurants to answer: Which days need extra staff? Do larger parties tip more? Are lunch guests or dinner guests more valuable? Groupby + mean + sort_values answers all of these.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">seaborn</span> <span class="kw">as</span> <span class="imp">sns</span>
+<span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+
+<span class="cm"># List all built-in seaborn datasets</span>
+<span class="fn">print</span>(sns.get_dataset_names())
+
+<span class="cm"># Load the 'tips' dataset (restaurant bills + tips)</span>
+df = sns.load_dataset(<span class="str">"tips"</span>)
+
+<span class="fn">print</span>(df.head())          <span class="cm"># first 5 rows</span>
+<span class="fn">print</span>(df.tail())          <span class="cm"># last 5 rows</span>
+df.info()                 <span class="cm"># column types + null counts</span>
+<span class="fn">print</span>(df.describe())      <span class="cm"># numeric summary stats</span>
+
+<span class="cm"># Unique count per day</span>
+<span class="fn">print</span>(df[<span class="str">"day"</span>].value_counts())
+
+<span class="cm"># Average bill per day</span>
+<span class="fn">print</span>(df.groupby(<span class="str">"day"</span>)[<span class="str">"total_bill"</span>].mean())
+
+<span class="cm"># Missing values check</span>
+<span class="fn">print</span>(df.isnull().sum())
+
+<span class="cm"># Top 5 highest bills</span>
+<span class="fn">print</span>(df.sort_values(<span class="str">"total_bill"</span>, ascending=<span class="kw">False</span>).head(<span class="num">5</span>))
+
+<span class="cm"># Bills over $20</span>
+<span class="fn">print</span>(df[df[<span class="str">"total_bill"</span>] > <span class="num">20</span>])</pre></div></div></div>
+<div id="q15" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🚗</span>
+      <div><div class="card-title">Q15 — Car MPG Correlation Analysis</div><div class="card-subtitle">Correlation matrix · scatter · seaborn</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Q15 — Car MPG Correlation Analysis</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Load the <code>mpg</code> dataset from seaborn. Drop rows with missing values (<code>dropna</code>).</li><li>Calculate the <strong>correlation matrix</strong> for <code>mpg</code>, <code>horsepower</code>, <code>weight</code> using <code>.corr()</code> and print it.</li><li>Interpret: values near −1 = strong negative, near +1 = strong positive, near 0 = no relationship.</li><li>Plot a scatter of <code>weight</code> (X) vs <code>mpg</code> (Y). Title: <code>"Car Weight vs MPG"</code>. Describe the pattern.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🚗 Q15 — Car MPG Correlation Analysis
+
+**Libraries:** `seaborn`, `pandas`, `matplotlib.pyplot`
+
+### Tasks
+1. Load the `mpg` dataset from seaborn: `df = sns.load_dataset("mpg")`
+2. Remove rows with missing values: `df.dropna(inplace=True)`
+3. Calculate the **correlation matrix** for `mpg`, `horsepower`, and `weight`:
+   ```python
+   df[["mpg","horsepower","weight"]].corr()
+   ```
+4. Interpret the results:
+   - Values close to -1 = strong negative correlation
+   - Values close to +1 = strong positive correlation
+   - Values close to 0 = no relationship
+5. Create a **scatter plot**: Weight (x) vs MPG (y).
+   - Title: `"Car Weight vs MPG"`
+   - Describe the relationship you observe.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>Correlation — the foundation of ML</strong> Correlation tells you how much two variables move together. The <code>.corr()</code> matrix shows every pair: weight vs mpg, horsepower vs mpg, weight vs horsepower. If two features are highly correlated (e.g. 0.95), one is often redundant for ML. If a feature has high correlation with the TARGET (what you're predicting), it's a useful predictor. This is called feature selection.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Car manufacturers and fuel standards</strong> <strong>Tata Motors</strong>, <strong>Maruti Suzuki</strong>, and every car company uses correlation analysis between weight, engine displacement, aerodynamic drag, and fuel economy. The EPA publishes this data for all vehicles sold since 1984 — the same dataset you're using here, just more recent.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">seaborn</span> <span class="kw">as</span> <span class="imp">sns</span>
+<span class="kw">import</span> <span class="imp">matplotlib.pyplot</span> <span class="kw">as</span> <span class="imp">plt</span>
+
+df = sns.load_dataset(<span class="str">"mpg"</span>).dropna()
+
+<span class="cm"># Correlation matrix (how do these 3 columns relate?)</span>
+<span class="fn">print</span>(df[[<span class="str">"mpg"</span>, <span class="str">"horsepower"</span>, <span class="str">"weight"</span>]].corr())
+
+<span class="cm"># Interpretation:</span>
+<span class="cm"># mpg vs horsepower → -0.78 : more power = worse mileage</span>
+<span class="cm"># mpg vs weight     → -0.83 : heavier car = worse mileage</span>
+<span class="cm"># horsepower vs weight → +0.86 : bigger car = more power</span>
+<span class="cm"># Diagonal is always 1.0 (variable vs itself)</span>
+
+df.plot(kind=<span class="str">"scatter"</span>, x=<span class="str">"weight"</span>, y=<span class="str">"mpg"</span>)
+plt.title(<span class="str">"Car Weight vs MPG"</span>)
+plt.show()</pre></div></div></div>
+</div>
+<div id="ml-intro" class="big-section">
+  <div class="big-section-title">🤖 Machine Learning — Introduction</div>
+  <div class="big-section-sub">Machine Learning teaches computers to find patterns in data and make predictions — without being explicitly programmed for every case.</div>
+
+  <div class="real-world">
+    <div class="real-world-title">ML IS EVERYWHERE AROUND YOU</div>
+    <div class="real-world-body">
+      <strong>Gmail Spam Filter</strong> — classifies emails as spam/not-spam (classification). <strong>Google Maps ETA</strong> — predicts your arrival time (regression). <strong>YouTube Recommendations</strong> — clusters similar videos and users (clustering). <strong>Face Unlock on your phone</strong> — identifies whether your face matches the stored one (classification). <strong>ChatGPT</strong> — predicts the most likely next word given all previous words (a very fancy regression). Every one of these uses the same fundamental principles you're about to learn.
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="compare-box">
+      <div class="compare-title purple">🏷️ Classification — "Which category is this?"</div>
+      <p style="color:var(--muted);font-size:13px;line-height:1.7">Output is a <strong style="color:var(--text)">label / class</strong>. Examples: Is this email spam? Will this student pass? What dog breed is this? Is this tumor malignant?</p>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Algorithms: Logistic Regression, Decision Tree, Random Forest, SVM, KNN</p>
+    </div>
+    <div class="compare-box">
+      <div class="compare-title blue">📈 Regression — "What number will this be?"</div>
+      <p style="color:var(--muted);font-size:13px;line-height:1.7">Output is a <strong style="color:var(--text)">number</strong>. Examples: What will this house cost? How many units will we sell next month? What score will this student get?</p>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px">Algorithms: Linear Regression, Ridge, Lasso, Polynomial Regression</p>
+    </div>
+  </div>
+
+  <div class="note concept">
+    <span class="note-icon">🔄</span>
+    <div class="note-content">
+      <strong>The Universal ML Workflow — 5 steps every project follows:</strong>
+      <ol style="padding-left:16px;margin-top:6px;line-height:2">
+        <li><strong>Collect &amp; Clean Data</strong> — the dataset is your raw material</li>
+        <li><strong>Separate Features (X) and Target (y)</strong> — X = inputs, y = what you want to predict</li>
+        <li><strong>Create &amp; Train the Model</strong> — <code>model = Algorithm(); model.fit(X, y)</code></li>
+        <li><strong>Make Predictions</strong> — <code>model.predict(new_data)</code></li>
+        <li><strong>Evaluate</strong> — accuracy_score (classification) or MAE/R² (regression)</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="note tip">
+    <span class="note-icon">💡</span>
+    <div class="note-content">
+      <strong>Golden rule: Features (X) must be numbers.</strong>
+      Scikit-learn models only understand numbers. Text like "pass/fail" or "Brown/Black" must be converted BEFORE training. For text targets: <code>LabelEncoder</code> converts "pass" → 0, "fail" → 1. For text features with no order: <code>pd.get_dummies()</code> creates 0/1 columns. Always check <code>df.dtypes</code> before calling <code>model.fit()</code>.
+    </div>
+  </div>
+</div>
+<div id="classification" class="big-section">
+  <div class="big-section-title">🎯 Classification Projects</div>
+  <div class="big-section-sub">Classification models predict which category/class a new input belongs to.</div>
+<div id="c1" class="card open">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">📝</span>
+      <div><div class="card-title">C1 — Predict Student Pass / Fail</div><div class="card-subtitle">LogisticRegression · string cleaning · accuracy_score</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">C1 — Predict Student Pass / Fail</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a dataset with 4 students: features <strong>attendance</strong> (as '60%' strings) and <strong>assignments</strong> (out of 10). Target: <code>'pass'</code> or <code>'fail'</code>.</li><li>Convert attendance strings to integers: <code>df['attendance'].str.replace('%','').astype(int)</code>.</li><li>Separate <code>X</code> (features) and <code>y</code> (target). Train: <code>model = LogisticRegression(); model.fit(X, y)</code>.</li><li>Predict for new student: <code>attendance=70, assignments=5</code>. Print the result.</li><li>Print training accuracy using <code>accuracy_score(y, model.predict(X))</code>.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 📝 C1 — Predict Student Pass / Fail
+
+**Libraries:** `pandas`, `sklearn.linear_model.LogisticRegression`
+
+### Tasks
+1. Create a dataset with 4 students:
+   - Features: `attendance` ("60%", "40%"...) and `assignments` (out of 10)
+   - Target: `"pass"` or `"fail"`
+2. Convert the attendance column from string ("60%") to integer (60):
+   ```python
+   df["attendance"] = df["attendance"].str.replace("%","").astype(int)
+   ```
+3. Separate features (`X`) and target (`y`).
+4. Train a `LogisticRegression()` model: `model.fit(X, y)`
+5. Predict the result for a new student with `attendance=70, assignments=5`.
+6. Print the accuracy on the training data using `accuracy_score(y, model.predict(X))`.
+
+**Logistic Regression** predicts a category (pass/fail) — don't be confused by the word "regression" in the name!</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>Logistic Regression — don't be fooled by the name</strong> Despite the word 'regression', Logistic Regression is used for <em>classification</em>. It predicts a probability (0 to 1) and then classifies: if probability &gt; 0.5 → Class A, else → Class B. The attendance column is stored as strings ('60%') because that's how it was typed — we must strip the '%' and convert to integer before the model can use it.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Student early warning systems</strong> Many universities use exactly this model for <strong>early student warning systems</strong>. <strong>NMIMS</strong>, <strong>VIT</strong>, and several IITs run logistic regression on attendance, assignment submission, and quiz scores to flag students at risk of failing — enabling counsellors to intervene early. The model you're building here is a simplified version of that.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">from</span> <span class="imp">sklearn.linear_model</span> <span class="kw">import</span> <span class="cls">LogisticRegression</span>
+<span class="kw">from</span> <span class="imp">sklearn.metrics</span> <span class="kw">import</span> <span class="cls">accuracy_score</span>
+
+data = {
+    <span class="str">"student"</span>:     [<span class="str">"Sammy"</span>, <span class="str">"John"</span>, <span class="str">"Simran"</span>, <span class="str">"Tina"</span>],
+    <span class="str">"attendance"</span>:  [<span class="str">"60%"</span>,  <span class="str">"40%"</span>,  <span class="str">"20%"</span>,    <span class="str">"90%"</span>],
+    <span class="str">"assignments"</span>: [<span class="num">10</span>, <span class="num">5</span>, <span class="num">8</span>, <span class="num">8</span>],
+    <span class="str">"target"</span>:      [<span class="str">"pass"</span>, <span class="str">"pass"</span>, <span class="str">"fail"</span>, <span class="str">"pass"</span>]
+}
+df = pd.DataFrame(data)
+
+<span class="cm"># Convert "60%" string → 60 (number)</span>
+df[<span class="str">"attendance"</span>] = df[<span class="str">"attendance"</span>].str.replace(<span class="str">"%"</span>, <span class="str">""</span>).astype(<span class="fn">int</span>)
+
+<span class="cm"># Features (X) and Target (y)</span>
+X = df[[<span class="str">"attendance"</span>, <span class="str">"assignments"</span>]]
+y = df[<span class="str">"target"</span>]
+
+<span class="cm"># Train the model</span>
+model = <span class="cls">LogisticRegression</span>()
+model.fit(X, y)
+
+<span class="cm"># Predict for a new student: 70% attendance, 5 assignments</span>
+prediction = model.predict([[<span class="num">70</span>, <span class="num">5</span>]])
+<span class="fn">print</span>(<span class="str">"Prediction:"</span>, prediction[<span class="num">0</span>])   <span class="cm"># → "pass" or "fail"</span>
+
+<span class="cm"># Accuracy on training data</span>
+y_pred = model.predict(X)
+<span class="fn">print</span>(<span class="str">"Accuracy:"</span>, <span class="fn">accuracy_score</span>(y, y_pred))</pre></div><div class="note warn"><span class="note-icon">⚠️</span><div class="note-content"><strong>Training accuracy vs real accuracy</strong> Evaluating a model on the same data it trained on is cheating — the model has already 'memorized' those answers. In real projects, you split data into 80% training and 20% testing: <code>from sklearn.model_selection import train_test_split</code>. We skip this here because our dataset is tiny (4 rows), but always remember this rule for real projects.</div></div></div></div>
+<div id="c2" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🏥</span>
+      <div><div class="card-title">C2 — Predict Diabetes</div><div class="card-subtitle">Multiple features · binary classification · medical data</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">C2 — Predict Diabetes</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a dataset with <strong>10 patients</strong>: features <strong>Age, BloodPressure, Glucose, BMI</strong>. Target: <code>Diabetes</code> (1 = yes, 0 = no).</li><li>Separate <code>X = df.drop('Diabetes', axis=1)</code> and <code>y = df['Diabetes']</code>.</li><li>Train a <code>LogisticRegression()</code> model.</li><li>Predict for: Age=55, BP=125, Glucose=160, BMI=27. Print <code>'Diabetes'</code> or <code>'No Diabetes'</code>.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🏥 C2 — Predict Diabetes
+
+**Libraries:** `pandas`, `sklearn.linear_model.LogisticRegression`
+
+### Tasks
+1. Create a dataset with **10 patients**:
+   - Features: `Age`, `BloodPressure`, `Glucose`, `BMI`
+   - Target: `Diabetes` → `1` (has it), `0` (doesn't)
+2. Separate features (`X = df.drop("Diabetes", axis=1)`) and target (`y`).
+3. Train a `LogisticRegression()` model.
+4. Predict the outcome for a new patient with:
+   - Age=55, BloodPressure=125, Glucose=160, BMI=27
+5. Print `"Diabetes"` if prediction is `1`, else `"No Diabetes"`.
+
+**Real World:** The Pima Indians Diabetes Dataset (from UCI Machine Learning Repo) uses the same features to predict diabetes in thousands of real patients. You're building the same kind of model used in medical research!</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>Multiple numeric features</strong> This project uses 4 features (Age, BP, Glucose, BMI) instead of 2. The model learns a <em>decision boundary in 4D space</em> — which combinations of all 4 values predict diabetes. The code is identical to C1 except you pass a DataFrame as X instead of two columns, because <code>df.drop('Diabetes', axis=1)</code> removes only the target column and keeps all others.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>The Pima Indians Diabetes Dataset</strong> The famous <strong>Pima Indians Diabetes Dataset</strong> from the UCI Machine Learning Repository uses the exact same 8 features (Age, BMI, Glucose, BloodPressure, Insulin, etc.) to predict diabetes in 768 Pima women. It has been cited in over 1,000 academic papers. Your 10-row toy version uses the same logic — just scaled down. The real dataset is free on Kaggle.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">from</span> <span class="imp">sklearn.linear_model</span> <span class="kw">import</span> <span class="cls">LogisticRegression</span>
+
+data = {
+    <span class="str">"Age"</span>:           [<span class="num">45</span>, <span class="num">50</span>, <span class="num">30</span>, <span class="num">28</span>, <span class="num">60</span>, <span class="num">35</span>, <span class="num">40</span>, <span class="num">55</span>, <span class="num">48</span>, <span class="num">33</span>],
+    <span class="str">"BloodPressure"</span>: [<span class="num">120</span>,<span class="num">130</span>,<span class="num">110</span>,<span class="num">105</span>,<span class="num">140</span>,<span class="num">118</span>,<span class="num">125</span>,<span class="num">135</span>,<span class="num">128</span>,<span class="num">112</span>],
+    <span class="str">"Glucose"</span>:       [<span class="num">150</span>,<span class="num">160</span>,<span class="num">110</span>,<span class="num">100</span>,<span class="num">180</span>,<span class="num">130</span>,<span class="num">145</span>,<span class="num">170</span>,<span class="num">155</span>,<span class="num">115</span>],
+    <span class="str">"BMI"</span>:           [<span class="num">28</span>, <span class="num">30</span>, <span class="num">22</span>, <span class="num">24</span>, <span class="num">32</span>, <span class="num">26</span>, <span class="num">27</span>, <span class="num">29</span>, <span class="num">31</span>, <span class="num">23</span>],
+    <span class="str">"Diabetes"</span>:      [<span class="num">1</span>,  <span class="num">1</span>,  <span class="num">0</span>,  <span class="num">0</span>,  <span class="num">1</span>,  <span class="num">0</span>,  <span class="num">1</span>,  <span class="num">1</span>,  <span class="num">1</span>,  <span class="num">0</span>]
+}
+df = pd.DataFrame(data)
+
+X = df.drop(<span class="str">"Diabetes"</span>, axis=<span class="num">1</span>)   <span class="cm"># all columns except target</span>
+y = df[<span class="str">"Diabetes"</span>]
+
+model = <span class="cls">LogisticRegression</span>()
+model.fit(X, y)
+
+<span class="cm"># Predict new patient: Age=55, BP=125, Glucose=160, BMI=27</span>
+prediction = model.predict([[<span class="num">55</span>, <span class="num">125</span>, <span class="num">160</span>, <span class="num">27</span>]])
+result = <span class="str">"Diabetes"</span> <span class="kw">if</span> prediction[<span class="num">0</span>] == <span class="num">1</span> <span class="kw">else</span> <span class="str">"No Diabetes"</span>
+<span class="fn">print</span>(result)</pre></div></div></div>
+<div id="c3" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🐕</span>
+      <div><div class="card-title">C3 — Predict Dog Breed</div><div class="card-subtitle">One-hot encoding · get_dummies · reindex · multi-class</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">C3 — Predict Dog Breed</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a dataset with 12 dogs: numeric features <strong>weight, height, age</strong> + categorical feature <strong>color</strong> (Brown/Black/White). Target: <strong>breed</strong> (Labrador/Poodle/Husky/Beagle).</li><li>Convert <code>color</code> to dummy columns: <code>df_d = pd.get_dummies(df, columns=['color'])</code>.</li><li>Separate <code>X</code> and <code>y</code>. Train <code>LogisticRegression(max_iter=2000)</code>.</li><li>Create a new dog: <code>weight=25, height=55, age=4, color='White'</code>. Apply <code>get_dummies()</code> then <code>reindex(columns=X.columns, fill_value=0)</code>.</li><li>Print the predicted breed.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🐕 C3 — Predict Dog Breed
+
+**Libraries:** `pandas`, `sklearn.linear_model.LogisticRegression`
+
+### Tasks
+1. Create a dataset with 12 dogs:
+   - Numeric features: `weight`, `height`, `age`
+   - Categorical feature: `color` (Brown/Black/White)
+   - Target: `breed` (Labrador/Poodle/Husky/Beagle)
+2. Convert `color` column to dummy variables:
+   ```python
+   df_d = pd.get_dummies(df, columns=["color"])
+   ```
+3. Separate `X` and `y`. Train `LogisticRegression(max_iter=2000)`.
+4. Create a new dog: `weight=25, height=55, age=4, color="White"`.
+5. Apply `get_dummies` to the new dog, then `reindex` to match training columns:
+   ```python
+   new.reindex(columns=X.columns, fill_value=0)
+   ```
+6. Print the predicted breed.
+
+**One-Hot Encoding:** ML can't work with text like "Brown". `get_dummies()` converts it to 3 columns: `color_Brown`, `color_Black`, `color_White`, each containing 0 or 1.</div></div><div class="note warn"><span class="note-icon">⚠️</span><div class="note-content"><strong>One-Hot Encoding — the categorical data problem</strong> ML models only understand numbers. When you have a 'color' column with values 'Brown', 'Black', 'White', you can't just assign them 1, 2, 3 — the model would think White (3) is 'more color' than Brown (1), which makes no sense. <code>pd.get_dummies()</code> creates 3 separate columns: <code>color_Brown</code>, <code>color_Black</code>, <code>color_White</code>. Each is 0 or 1. No false ordering.</div></div><div class="note warn"><span class="note-icon">⚠️</span><div class="note-content"><strong>The reindex() trick is critical</strong> When you apply <code>get_dummies()</code> to a single new dog with color 'White', you only get ONE column: <code>color_White</code>. But the model was trained with THREE columns: <code>color_Black, color_Brown, color_White</code>. The <code>.reindex(columns=X.columns, fill_value=0)</code> adds the missing columns with value 0. Without this, the model will throw an error.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Computer Vision and pet apps</strong> <strong>PetFinder.my</strong> and <strong>Microsoft's Custom Vision</strong> use multi-class classification (exactly like this, but with image features instead of weight/height) to identify dog breeds from photos. The largest breed classification models have 120+ classes (breeds). <strong>Google Lens</strong> uses a deep learning version of this very concept.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">from</span> <span class="imp">sklearn.linear_model</span> <span class="kw">import</span> <span class="cls">LogisticRegression</span>
+
+data = {
+    <span class="str">"weight"</span>: [<span class="num">30</span>,<span class="num">25</span>,<span class="num">28</span>,<span class="num">20</span>,<span class="num">35</span>,<span class="num">22</span>,<span class="num">40</span>,<span class="num">18</span>,<span class="num">32</span>,<span class="num">15</span>,<span class="num">25</span>,<span class="num">10</span>],
+    <span class="str">"height"</span>: [<span class="num">60</span>,<span class="num">55</span>,<span class="num">58</span>,<span class="num">50</span>,<span class="num">65</span>,<span class="num">52</span>,<span class="num">70</span>,<span class="num">45</span>,<span class="num">68</span>,<span class="num">40</span>,<span class="num">56</span>,<span class="num">38</span>],
+    <span class="str">"age"</span>:    [<span class="num">5</span>, <span class="num">4</span>, <span class="num">6</span>, <span class="num">3</span>, <span class="num">7</span>, <span class="num">2</span>, <span class="num">6</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">2</span>],
+    <span class="str">"color"</span>:  [<span class="str">"Brown"</span>,<span class="str">"Black"</span>,<span class="str">"Black"</span>,<span class="str">"White"</span>,<span class="str">"Brown"</span>,<span class="str">"White"</span>,
+              <span class="str">"Black"</span>,<span class="str">"Brown"</span>,<span class="str">"Brown"</span>,<span class="str">"White"</span>,<span class="str">"Black"</span>,<span class="str">"White"</span>],
+    <span class="str">"breed"</span>:  [<span class="str">"Labrador"</span>]*<span class="num">3</span> + [<span class="str">"Poodle"</span>]*<span class="num">3</span> + [<span class="str">"Husky"</span>]*<span class="num">3</span> + [<span class="str">"Beagle"</span>]*<span class="num">3</span>
+}
+df = pd.DataFrame(data)
+
+<span class="cm"># Convert "color" text column → numeric dummy columns</span>
+df_dummies = pd.get_dummies(df, columns=[<span class="str">"color"</span>])
+<span class="cm"># Creates: color_Black, color_Brown, color_White (all 0 or 1)</span>
+
+X = df_dummies.drop(<span class="str">"breed"</span>, axis=<span class="num">1</span>)
+y = df_dummies[<span class="str">"breed"</span>]
+
+model = <span class="cls">LogisticRegression</span>(max_iter=<span class="num">2000</span>)
+<span class="cm"># max_iter=2000: give model more steps to find the best answer</span>
+model.fit(X, y)
+
+<span class="cm"># Predict new dog: weight=25, height=55, age=4, color=White</span>
+new_dog = pd.DataFrame({<span class="str">"weight"</span>:[<span class="num">25</span>],<span class="str">"height"</span>:[<span class="num">55</span>],<span class="str">"age"</span>:[<span class="num">4</span>],<span class="str">"color"</span>:[<span class="str">"White"</span>]})
+new_dummy = pd.get_dummies(new_dog, columns=[<span class="str">"color"</span>])
+<span class="cm"># Align columns with training data</span>
+new_dummy = new_dummy.reindex(columns=X.columns, fill_value=<span class="num">0</span>)
+
+<span class="fn">print</span>(<span class="str">"Predicted breed:"</span>, model.predict(new_dummy)[<span class="num">0</span>])</pre></div></div></div>
+</div>
+<div id="regression" class="big-section">
+  <div class="big-section-title">📈 Regression Projects</div>
+  <div class="big-section-sub">Regression models predict a continuous number — a price, a score, a temperature, a count.</div>
+
+  <div class="note concept">
+    <span class="note-icon">📐</span>
+    <div class="note-content">
+      <strong>Key Evaluation Metrics for Regression:</strong>
+      <strong>MAE</strong> (Mean Absolute Error) — average distance between predicted and actual value, in the same unit as your data. If MAE = 15 for house prices in $1000s, your model is off by $15,000 on average. Lower is better.<br>
+      <strong>R² Score</strong> (R-squared) — how much of the variance in y the model explains. <code>1.0</code> = perfect prediction. <code>0.0</code> = no better than predicting the average every time. <code>0.85</code> means the model explains 85% of the variation. Higher is better.
+    </div>
+  </div>
+  <div class="formula">y = b₀ + b₁·x₁ + b₂·x₂ + ... &nbsp;(Linear Regression finds the best values of b₀, b₁, b₂...)</div>
+<div id="r1" class="card open">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">📖</span>
+      <div><div class="card-title">R1 — Predict Exam Scores</div><div class="card-subtitle">LinearRegression · multiple features · predict</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">R1 — Predict Exam Scores</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create training data as lists of lists: <code>X</code> = [[study_hrs, sleep_hrs, practice_tests], ...] for 4 students. <code>y</code> = [exam_score, ...].</li><li>Train: <code>model = LinearRegression(); model.fit(X, y)</code>.</li><li>Predict the score for: <code>study=6hrs, sleep=6hrs, tests=2</code>. Print the result.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 📖 R1 — Predict Exam Scores
+
+**Libraries:** `sklearn.linear_model.LinearRegression`
+
+### Tasks
+1. Create training data (no need for a DataFrame):
+   - `X` = list of lists: [study_hours, sleep_hours, practice_tests]
+   - `y` = list of exam scores
+2. Train a `LinearRegression()` model: `model.fit(X, y)`
+3. Predict the score for a student with: `study=6hrs, sleep=6hrs, tests=2`
+4. Print the predicted score.
+
+**Linear Regression** finds the best straight line (or flat plane) through your data. Given new inputs, it predicts where the output would fall on that line.
+
+**Real World:** Netflix uses regression to predict how many stars you'd give an unwatched movie. Amazon uses it to forecast demand for products.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>How Linear Regression learns</strong> Linear regression finds the best flat plane through your data points. After <code>model.fit(X, y)</code>, the model has learned weights (coefficients) for each feature: maybe study_hours matters 3x more than sleep, and practice_tests matters 2x. When you call <code>model.predict([[6,6,2]])</code>, it applies those learned weights to the new inputs.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Used literally everywhere</strong> Netflix predicts how many stars you'd give an unwatched movie (regression on viewing history). Amazon predicts demand for 350 million products every day. CBSE uses regression to moderate paper difficulty across different exam centres. Uber's surge pricing algorithm uses regression to predict demand in each zone 15 minutes ahead. You're learning the fundamental building block behind all of these.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">from</span> <span class="imp">sklearn.linear_model</span> <span class="kw">import</span> <span class="cls">LinearRegression</span>
+
+<span class="cm"># Features: [Study Hours/day, Sleep Hours/day, Practice Tests]</span>
+X = [[<span class="num">8</span>,<span class="num">7</span>,<span class="num">3</span>], [<span class="num">4</span>,<span class="num">5</span>,<span class="num">1</span>], [<span class="num">10</span>,<span class="num">8</span>,<span class="num">4</span>], [<span class="num">2</span>,<span class="num">4</span>,<span class="num">0</span>]]
+y = [<span class="num">92</span>, <span class="num">65</span>, <span class="num">96</span>, <span class="num">50</span>]   <span class="cm"># Exam Scores</span>
+
+model = <span class="cls">LinearRegression</span>()
+model.fit(X, y)   <span class="cm"># model learns the pattern</span>
+
+<span class="cm"># Predict score for: 6h study, 6h sleep, 2 practice tests</span>
+predicted = model.predict([[<span class="num">6</span>, <span class="num">6</span>, <span class="num">2</span>]])
+<span class="fn">print</span>(<span class="str">"Predicted Score:"</span>, predicted[<span class="num">0</span>])</pre></div></div></div>
+<div id="r2" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🏠</span>
+      <div><div class="card-title">R2 — Predict House Prices</div><div class="card-subtitle">MAE · R² Score · model evaluation</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">R2 — Predict House Prices</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Create a dataset with house features: <strong>Size (m²), Rooms, Age (years)</strong>. Target: <strong>Price</strong> (in $1000s).</li><li>Train a <code>LinearRegression()</code> model.</li><li>Predict the price for: Size=110, Rooms=3, Age=6. Print the result.</li><li>Evaluate: calculate <code>mean_absolute_error(y, model.predict(X))</code> and <code>r2_score(y, model.predict(X))</code>. Print and interpret both.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🏠 R2 — Predict House Prices
+
+**Libraries:** `sklearn.linear_model.LinearRegression`, `sklearn.metrics`
+
+### Tasks
+1. Create a dataset with house features: `Size (m²)`, `Rooms`, `Age (years)`.
+2. Target: `Price` (in thousands $).
+3. Train a `LinearRegression()` model.
+4. Predict the price of a house: Size=110, Rooms=3, Age=6 years.
+5. Evaluate the model:
+   - `MAE = mean_absolute_error(y, model.predict(X))`
+   - `R² = r2_score(y, model.predict(X))`
+6. Interpret:
+   - **MAE**: average error in thousands $
+   - **R² close to 1.0**: model explains most of the variance
+   - **R² close to 0**: model is barely better than guessing
+
+**Real World:** Zillow, MagicBricks, and NoBroker use similar regression models to estimate property prices from size, location, and age.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>Interpreting MAE and R²</strong> If your MAE is 12 and prices are in $1000s, your model is off by about $12,000 on average — is that acceptable? Depends on the house price range. If houses cost $500k–$2M, MAE of $12k is excellent. If they cost $50k–$100k, it's terrible. R² = 0.95 means the model explains 95% of the variation in house prices. R² = 0.3 means you should collect more/better features.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Zillow, MagicBricks, NoBroker</strong> <strong>Zillow's Zestimate</strong> (US), <strong>MagicBricks</strong> and <strong>NoBroker</strong> (India) estimate property prices using regression with features including size, bedrooms, location (as latitude/longitude), age, floor number, and nearby amenities. Their models are much more complex (gradient boosting on 100+ features) but the core principle — predict a price from numeric features — is exactly what you're practising.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">from</span> <span class="imp">sklearn.linear_model</span> <span class="kw">import</span> <span class="cls">LinearRegression</span>
+<span class="kw">from</span> <span class="imp">sklearn.metrics</span> <span class="kw">import</span> mean_absolute_error, r2_score
+
+<span class="cm"># Features: [Size m², Rooms, Age years]</span>
+X = [[<span class="num">120</span>,<span class="num">3</span>,<span class="num">5</span>], [<span class="num">80</span>,<span class="num">2</span>,<span class="num">10</span>], [<span class="num">150</span>,<span class="num">4</span>,<span class="num">2</span>], [<span class="num">100</span>,<span class="num">3</span>,<span class="num">8</span>]]
+y = [<span class="num">250</span>, <span class="num">180</span>, <span class="num">300</span>, <span class="num">210</span>]   <span class="cm"># Prices in $1000</span>
+
+model = <span class="cls">LinearRegression</span>()
+model.fit(X, y)
+
+<span class="cm"># Predict price for 110m², 3 rooms, 6 years old</span>
+<span class="fn">print</span>(<span class="str">"Predicted Price:"</span>, model.predict([[<span class="num">110</span>,<span class="num">3</span>,<span class="num">6</span>]])[<span class="num">0</span>], <span class="str">"k$"</span>)
+
+<span class="cm"># Evaluate model</span>
+y_pred = model.predict(X)
+<span class="fn">print</span>(<span class="str">"MAE:"</span>, mean_absolute_error(y, y_pred))
+<span class="fn">print</span>(<span class="str">"R²: "</span>, r2_score(y, y_pred))
+<span class="cm"># R² = 1.0 means perfect (overfitting with tiny dataset!)</span></pre></div><div class="note warn"><span class="note-icon">⚠️</span><div class="note-content"><strong>Overfitting: the enemy of real ML</strong> When you train and test on the same data (as we do here), the model looks better than it actually is. In real projects, always split: <code>X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)</code>. Train on <code>X_train</code>, evaluate on <code>X_test</code>. The model has never seen test data, so the score is honest.</div></div></div></div>
+</div>
+<div id="gradio" class="big-section">
+  <div class="big-section-title">🎛️ Gradio — Turn ML into a Web App</div>
+  <div class="big-section-sub">Gradio wraps your Python function in a real web interface in just 5–10 lines. No HTML, CSS, or JavaScript needed.</div>
+
+  <div class="note concept">
+    <span class="note-icon">⚡</span>
+    <div class="note-content">
+      <strong>How Gradio works:</strong>
+      You write a Python function that takes inputs and returns outputs. Gradio auto-generates the web form around it — text boxes, sliders, image uploaders, buttons, output panels. <code>gr.Blocks()</code> gives you full layout control. <code>demo.launch()</code> starts a local web server and opens the app in your browser. In Colab, it gives you a public URL you can share with anyone.
+    </div>
+  </div>
+
+  <div class="real-world">
+    <div class="real-world-title">GRADIO IN THE REAL WORLD</div>
+    <div class="real-world-body">
+      <strong>Hugging Face Spaces</strong> (the GitHub for AI apps) hosts over 500,000 Gradio demos — including demos by researchers at <strong>Google</strong>, <strong>Meta AI</strong>, <strong>Stability AI</strong>, and <strong>Mistral</strong>. Every time you try a demo on Hugging Face, you're using a Gradio app. The same library you're learning here powers demos used by millions of people daily.
+    </div>
+  </div>
+<div id="gradio-hw" class="card open">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">👋</span>
+      <div><div class="card-title">Hello World in Gradio</div><div class="card-subtitle">gr.Blocks · Textbox · Button · .click()</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Hello World in Gradio</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Write a function <code>greet(name)</code> that returns <code>'Hello ' + name + '!'</code>.</li><li>Use <code>gr.Blocks()</code> to build the layout: add a <code>gr.Textbox</code> for name input, another for output, and a <code>gr.Button('Greet')</code>.</li><li>Connect the button: <code>btn.click(fn=greet, inputs=name, outputs=output)</code>.</li><li>Launch with <code>demo.launch()</code> — a tab should open in your browser (or Colab shows a link).</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 👋 Hello World in Gradio
+
+**Library:** `gradio`
+
+### Tasks
+1. Define a function `greet(name)` that returns `"Hello " + name + "!"`
+2. Use `gr.Blocks()` to build the app layout:
+   ```python
+   with gr.Blocks() as demo:
+       name = gr.Textbox(label="Your Name")
+       output = gr.Textbox(label="Greeting")
+       btn = gr.Button("Greet")
+       btn.click(fn=greet, inputs=name, outputs=output)
+   demo.launch()
+   ```
+3. Run the code — a browser tab should open with your app!
+
+**How Gradio works:** You write a Python function. Gradio auto-generates the web form (inputs, buttons, outputs). No HTML or JavaScript needed.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>The 3 parts of any Gradio app</strong> Every Gradio app has the same structure: (1) <strong>Function</strong> — your Python logic that processes inputs and returns outputs. (2) <strong>Layout</strong> — <code>gr.Blocks()</code> with inputs, outputs, and controls arranged how you like. (3) <strong>Events</strong> — <code>.click()</code>, <code>.change()</code>, or <code>.submit()</code> that trigger your function when a user interacts. Master this pattern and you can build any ML web app.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">gradio</span> <span class="kw">as</span> <span class="imp">gr</span>
+
+<span class="kw">def</span> <span class="fn">greet</span>(name):
+    <span class="kw">return</span> <span class="str">"Hello "</span> + name + <span class="str">"!"</span>
+
+<span class="cm"># gr.Blocks() = the container for your entire app</span>
+<span class="kw">with</span> gr.Blocks() <span class="kw">as</span> demo:
+
+    name   = gr.Textbox(label=<span class="str">"Name"</span>)       <span class="cm"># text input</span>
+    output = gr.Textbox(label=<span class="str">"Output"</span>)     <span class="cm"># text output</span>
+    btn    = gr.Button(<span class="str">"Greet"</span>)             <span class="cm"># button</span>
+
+    <span class="cm"># When btn clicked → call greet(name) → show in output</span>
+    btn.click(fn=greet, inputs=name, outputs=output)
+
+demo.launch()   <span class="cm"># starts the web server</span></pre></div></div></div>
+</div>
+<div id="apps" class="big-section"><div class="big-section-title">🌟 Interactive ML Apps</div><div class="big-section-sub">Real ML models wrapped in shareable Gradio interfaces.</div>
+<div id="iris" class="card open">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🌸</span>
+      <div><div class="card-title">Iris Flower Classifier</div><div class="card-subtitle">RandomForestClassifier · Seaborn dataset · Gradio</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Iris Flower Classifier</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Load the <code>iris</code> dataset from seaborn. Features: <strong>sepal_length, sepal_width, petal_length, petal_width</strong>. Target: <strong>species</strong>.</li><li>Train a <code>RandomForestClassifier()</code> model.</li><li>Write <code>predict_iris(sl, sw, pl, pw)</code> that returns the predicted species.</li><li>Build a Gradio app: title via <code>gr.Markdown</code>, 4 <code>gr.Number</code> inputs with defaults, a result <code>gr.Textbox</code>, and a Classify button.</li><li>Connect button to function and launch.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🌸 Iris Flower Classifier (Gradio App)
+
+**Libraries:** `seaborn`, `sklearn.ensemble.RandomForestClassifier`, `gradio`
+
+### Tasks
+1. Load the `iris` dataset from seaborn.
+2. Use all 4 measurements as features (sepal_length, sepal_width, petal_length, petal_width). Target = `species`.
+3. Train a `RandomForestClassifier()`.
+4. Write `predict_iris(sl, sw, pl, pw)` that returns the predicted species name.
+5. Build a Gradio app with:
+   - A title using `gr.Markdown("# 🌸 Iris Flower Prediction")`
+   - 4 `gr.Number` inputs with default values
+   - A result `gr.Textbox`
+   - A "Classify" button
+6. Connect button to function and launch.
+
+**RandomForest** builds 100 decision trees and takes a vote — much more accurate than a single tree.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>Random Forest — the ensemble approach</strong> Random Forest builds 100 different decision trees (each trained on a slightly different random sample of the data) and takes a majority vote. The 'wisdom of crowds' effect makes it far more accurate and robust than any single tree. It's also resistant to overfitting and works well on both classification and regression. When in doubt, Random Forest is often the safest first model to try.</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>The Iris dataset's history</strong> The Iris dataset was collected in 1936 by statistician <strong>Ronald Fisher</strong>. It measures the petals and sepals of 150 iris flowers across 3 species (setosa, versicolor, virginica). It's been used in literally every ML textbook ever written and is the 'Hello World' of machine learning classification. You're following in the footsteps of 80 years of data scientists.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">seaborn</span> <span class="kw">as</span> <span class="imp">sns</span>
+<span class="kw">import</span> <span class="imp">gradio</span> <span class="kw">as</span> <span class="imp">gr</span>
+<span class="kw">from</span> <span class="imp">sklearn.ensemble</span> <span class="kw">import</span> <span class="cls">RandomForestClassifier</span>
+
+<span class="cm"># Load Iris dataset and train model</span>
+iris = sns.load_dataset(<span class="str">"iris"</span>)
+X = iris.drop(<span class="str">"species"</span>, axis=<span class="num">1</span>)
+y = iris[<span class="str">"species"</span>]    <span class="cm"># text labels work directly!</span>
+
+model = <span class="cls">RandomForestClassifier</span>()
+model.fit(X, y)
+
+<span class="kw">def</span> <span class="fn">predict_iris</span>(sepal_length, sepal_width, petal_length, petal_width):
+    result = model.predict([[sepal_length, sepal_width, petal_length, petal_width]])
+    <span class="kw">return</span> result[<span class="num">0</span>]   <span class="cm"># returns "setosa", "versicolor", or "virginica"</span>
+
+<span class="kw">with</span> gr.Blocks() <span class="kw">as</span> demo:
+    gr.Markdown(<span class="str">"# 🌸 Iris Flower Prediction"</span>)
+
+    <span class="cm"># Number inputs for measurements</span>
+    sl = gr.Number(label=<span class="str">"Sepal Length (cm)"</span>, value=<span class="num">5.1</span>)
+    sw = gr.Number(label=<span class="str">"Sepal Width (cm)"</span>,  value=<span class="num">3.5</span>)
+    pl = gr.Number(label=<span class="str">"Petal Length (cm)"</span>, value=<span class="num">1.4</span>)
+    pw = gr.Number(label=<span class="str">"Petal Width (cm)"</span>,  value=<span class="num">0.2</span>)
+
+    output = gr.Textbox(label=<span class="str">"Predicted Species"</span>)
+    gr.Button(<span class="str">"Classify"</span>).click(
+        fn=predict_iris, inputs=[sl, sw, pl, pw], outputs=output
+    )
+
+demo.launch()</pre></div></div></div>
+<div id="wine" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🍷</span>
+      <div><div class="card-title">Wine Quality Classifier</div><div class="card-subtitle">sklearn.datasets · load_wine · Gradio sliders</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Wine Quality Classifier</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Load the built-in wine dataset: <code>from sklearn.datasets import load_wine; wine = load_wine()</code>.</li><li>Train a <code>RandomForestClassifier</code> to predict wine class (0, 1, or 2).</li><li>Write a predict function that takes all 13 chemical features and returns the class name.</li><li>Build a Gradio app with a <code>gr.Slider</code> for each feature (min/max from dataset). Show predicted class in a Textbox.</li><li>Launch and test with different slider values.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🍷 Wine Quality Classifier (Gradio App)
+
+**Libraries:** `sklearn.datasets.load_wine`, `sklearn.ensemble.RandomForestClassifier`, `gradio`
+
+### Tasks
+1. Load the built-in wine dataset:
+   ```python
+   from sklearn.datasets import load_wine
+   wine = load_wine()
+   ```
+2. Train a `RandomForestClassifier` to predict the wine class (0, 1, or 2).
+3. Write a predict function that takes all 13 chemical features.
+4. Build a Gradio app with a `gr.Slider` for each feature (use dataset min/max values).
+5. Show the predicted class name (wine.target_names) in a Textbox.
+
+**Real World:** Wine producers use chemical analysis (acidity, alcohol, sulfur) to predict quality class before bottling.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>sklearn's built-in datasets</strong> Scikit-learn comes with several classic datasets built in — no downloading needed: <code>load_iris()</code>, <code>load_wine()</code>, <code>load_diabetes()</code>, <code>load_digits()</code>, <code>load_boston()</code>, <code>fetch_california_housing()</code>. Each returns a bunch object with <code>.data</code> (features as numpy array), <code>.target</code> (labels), <code>.feature_names</code>, and <code>.DESCR</code> (description).</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Wine certification and fraud detection</strong> The UCI Wine Dataset comes from chemical analysis of wines from 3 Italian wineries. <strong>FSSAI</strong> (India's food safety regulator) uses similar chemical profiles to verify wine authenticity and detect adulteration. Machine learning classification models flag suspicious batches automatically — the same technique you're implementing here.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">gradio</span> <span class="kw">as</span> <span class="imp">gr</span>
+<span class="kw">import</span> <span class="imp">pandas</span> <span class="kw">as</span> <span class="imp">pd</span>
+<span class="kw">from</span> <span class="imp">sklearn.ensemble</span> <span class="kw">import</span> <span class="cls">RandomForestClassifier</span>
+<span class="kw">from</span> <span class="imp">sklearn.datasets</span> <span class="kw">import</span> load_wine
+
+<span class="cm"># Load built-in wine dataset (178 wines, 13 chemical features)</span>
+wine = load_wine()
+df = pd.DataFrame(wine.data, columns=wine.feature_names)
+df[<span class="str">"target"</span>] = wine.target   <span class="cm"># 0, 1, or 2 (wine class)</span>
+
+X = df.drop(<span class="str">"target"</span>, axis=<span class="num">1</span>)
+y = df[<span class="str">"target"</span>]
+
+model = <span class="cls">RandomForestClassifier</span>()
+model.fit(X, y)
+
+<span class="kw">def</span> <span class="fn">predict_wine</span>(alcohol, malic_acid, ash, alcalinity_of_ash, magnesium,
+                  total_phenols, flavanoids, nonflavanoid_phenols,
+                  proanthocyanins, color_intensity, hue, od280, proline):
+    inputs = [[alcohol, malic_acid, ash, alcalinity_of_ash, magnesium,
+               total_phenols, flavanoids, nonflavanoid_phenols,
+               proanthocyanins, color_intensity, hue, od280, proline]]
+    pred = model.predict(inputs)[<span class="num">0</span>]
+    <span class="kw">return</span> <span class="str">f"Wine Class {pred} (</span>{wine.target_names[pred]}<span class="str">)"</span>
+
+<span class="cm"># Build sliders for each feature automatically</span>
+<span class="kw">with</span> gr.Blocks() <span class="kw">as</span> demo:
+    gr.Markdown(<span class="str">"# 🍷 Wine Quality Classifier"</span>)
+    inputs = [gr.Slider(label=col,
+                        minimum=<span class="fn">float</span>(X[col].min()),
+                        maximum=<span class="fn">float</span>(X[col].max()),
+                        value=<span class="fn">float</span>(X[col].mean()))
+              <span class="kw">for</span> col <span class="kw">in</span> X.columns]
+    output = gr.Textbox(label=<span class="str">"Predicted Wine Class"</span>)
+    gr.Button(<span class="str">"Predict"</span>).click(fn=predict_wine, inputs=inputs, outputs=output)
+
+demo.launch()</pre></div></div></div>
+</div>
+<div id="cv" class="big-section"><div class="big-section-title">🖼️ Image Processing with PIL &amp; KMeans</div><div class="big-section-sub">Computer vision projects using PIL for image manipulation and KMeans clustering for color analysis.</div>
+<div id="color" class="card open">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🎨</span>
+      <div><div class="card-title">Dominant Color Detection (KMeans Clustering)</div><div class="card-subtitle">PIL · numpy · KMeans · Euclidean distance · Gradio</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Dominant Color Detection (KMeans Clustering)</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li>Write <code>color_name(rgb)</code>: takes RGB tuple, returns closest named color using Euclidean distance formula.</li><li>Write <code>predict_color(img)</code>: resize to 150×150 → convert to numpy array → reshape to <code>(n, 3)</code> → run <code>KMeans(n_clusters=3)</code> → return dominant color name and RGB.</li><li>Build a Gradio app: <code>gr.Image(type='pil')</code> input, Textbox output, Predict button.</li><li>(Optional) Add custom CSS to style the Gradio app.</li></ol></div>
+      <div class="dl-links"><a href="https://docs.google.com/document/d/1AXgbyJTcvNAlGPNsXVpS2RX-w0dyJ68OwBWKUguv1EI/edit?usp=sharing" target="_blank" class="dl-link">📄 Project Documentation (Google Docs)</a><a href="https://drive.google.com/drive/folders/1_sptsoFj63WMGYpDzCjnFT4wokOVYPVf?usp=drive_link" target="_blank" class="dl-link">📁 OpenCV Projects Folder (Drive)</a></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🎨 Dominant Color Detection (KMeans + Gradio)
+
+**Libraries:** `PIL`, `numpy`, `sklearn.cluster.KMeans`, `gradio`
+
+### Tasks
+1. Write `color_name(rgb)`: takes an RGB tuple, returns the closest named color (Red, Green, Blue, Yellow, etc.) using Euclidean distance.
+2. Write `predict_color(img)`:
+   - Resize image to 150×150 (for speed)
+   - Convert to numpy array, reshape to (n_pixels, 3)
+   - Run `KMeans(n_clusters=3)` to find 3 color clusters
+   - Return the cluster center with the most pixels = dominant color
+3. Build a Gradio app:
+   - Input: `gr.Image(type="pil")`
+   - Output: `gr.Textbox`
+   - Button: "Predict Color"
+4. Test with different images.
+
+**KMeans Clustering** groups similar pixels together. The center of the largest group = the dominant color.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>How KMeans clustering works on images</strong> Every pixel is an [R, G, B] point in 3D color space. KMeans groups all pixels into 3 clusters by finding 3 center-points that minimize the total distance. After convergence, the <em>center of the largest cluster</em> is the dominant color — the color most pixels are 'near to'. Then we find the closest named color using Euclidean distance: √((R1-R2)² + (G1-G2)² + (B1-B2)²). This is unsupervised learning — no labels needed!</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Design tools and e-commerce</strong> <strong>Adobe Color</strong>, <strong>Canva</strong>, and <strong>Pinterest</strong> use dominant color extraction to organize their image libraries. <strong>Myntra</strong> and <strong>Nykaa</strong> use it to categorize clothing by color for the 'shop by color' filter. <strong>Google Images</strong> color filter does the same — extract the dominant color from each image, then filter by requested color.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">gradio</span> <span class="kw">as</span> <span class="imp">gr</span>
+<span class="kw">import</span> <span class="imp">numpy</span> <span class="kw">as</span> <span class="imp">np</span>
+<span class="kw">from</span> <span class="imp">PIL</span> <span class="kw">import</span> <span class="cls">Image</span>
+<span class="kw">from</span> <span class="imp">sklearn.cluster</span> <span class="kw">import</span> <span class="cls">KMeans</span>
+
+<span class="kw">def</span> <span class="fn">color_name</span>(rgb):
+    <span class="str">"""Find the closest named color to an RGB value"""</span>
+    colors = {
+        <span class="str">"Red"</span>:(<span class="num">255</span>,<span class="num">0</span>,<span class="num">0</span>), <span class="str">"Green"</span>:(<span class="num">0</span>,<span class="num">255</span>,<span class="num">0</span>), <span class="str">"Blue"</span>:(<span class="num">0</span>,<span class="num">0</span>,<span class="num">255</span>),
+        <span class="str">"Yellow"</span>:(<span class="num">255</span>,<span class="num">255</span>,<span class="num">0</span>), <span class="str">"Orange"</span>:(<span class="num">255</span>,<span class="num">165</span>,<span class="num">0</span>),
+        <span class="str">"Black"</span>:(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>), <span class="str">"White"</span>:(<span class="num">255</span>,<span class="num">255</span>,<span class="num">255</span>),
+        <span class="str">"Gray"</span>:(<span class="num">128</span>,<span class="num">128</span>,<span class="num">128</span>), <span class="str">"Purple"</span>:(<span class="num">128</span>,<span class="num">0</span>,<span class="num">128</span>)
+    }
+    best, min_dist = <span class="str">"Unknown"</span>, <span class="fn">float</span>(<span class="str">"inf"</span>)
+    <span class="kw">for</span> name, value <span class="kw">in</span> colors.items():
+        <span class="cm"># Euclidean distance: sqrt((R1-R2)²+(G1-G2)²+(B1-B2)²)</span>
+        dist = np.linalg.norm(np.array(rgb) - np.array(value))
+        <span class="kw">if</span> dist < min_dist:
+            min_dist, best = dist, name
+    <span class="kw">return</span> best
+
+<span class="kw">def</span> <span class="fn">predict_color</span>(img):
+    img  = img.resize((<span class="num">150</span>, <span class="num">150</span>))           <span class="cm"># shrink for speed</span>
+    pixels = np.array(img).reshape((-<span class="num">1</span>, <span class="num">3</span>))  <span class="cm"># (22500, 3) — all pixels</span>
+
+    kmeans = <span class="cls">KMeans</span>(n_clusters=<span class="num">3</span>, n_init=<span class="num">10</span>)
+    kmeans.fit(pixels)
+    <span class="cm"># cluster_centers_ contains the average RGB of each cluster</span>
+    dominant = kmeans.cluster_centers_[<span class="num">0</span>].astype(<span class="fn">int</span>)
+    rgb = <span class="fn">tuple</span>(dominant)
+    <span class="kw">return</span> <span class="str">f"🎯 Dominant Color: </span>{<span class="fn">color_name</span>(rgb)}<span class="str">\n🔢 RGB: </span>{rgb}<span class="str">"</span>
+
+<span class="kw">with</span> gr.Blocks() <span class="kw">as</span> demo:
+    gr.Markdown(<span class="str">"## 🎨 Color Prediction from Image"</span>)
+    image  = gr.Image(type=<span class="str">"pil"</span>, label=<span class="str">"Upload Image"</span>)
+    output = gr.Textbox(label=<span class="str">"Result"</span>)
+    gr.Button(<span class="str">"Predict Color"</span>).click(predict_color, inputs=image, outputs=output)
+
+demo.launch()</pre></div></div></div>
+<div id="imgtools" class="card">
+  <div class="card-header" onclick="toggle(this)">
+    <div class="card-title-row"><span class="card-icon">🔲</span>
+      <div><div class="card-title">Image Resizer &amp; Grayscale Converter</div><div class="card-subtitle">PIL · .resize() · .convert('L') · Gradio</div></div></div>
+    <span class="card-chevron">▾</span></div>
+  <div class="card-body"><div class="problem-box">
+        <div class="problem-header"><div><div class="problem-label">📋 PROBLEM STATEMENT</div><div class="problem-title">Image Resizer & Grayscale Converter</div></div>
+        <button class="copy-problem-btn" onclick="copyProblem(this)">📋 Copy for Students</button></div>
+        <ol class="problem-task"><li><strong>Resizer:</strong> Write <code>resize_image(img, width, height)</code> using <code>img.resize((int(width), int(height)))</code>. Build a Gradio app with side-by-side images and two Number inputs.</li><li><strong>Grayscale:</strong> Write <code>to_gray(img)</code> using <code>img.convert('L')</code>. Build a Gradio app with side-by-side images.</li><li>For both: use <code>type='pil'</code> in <code>gr.Image()</code> — this passes a PIL Image object to your function instead of a NumPy array.</li></ol></div>
+      <div class="md-box"><div class="md-box-header"><span class="md-box-label">📝 MARKDOWN — SEND TO STUDENTS</span><button class="md-copy-btn" onclick="copyMd(this)">📋 Copy Markdown</button></div>
+        <div class="md-content">## 🖼️ Image Resizer & Grayscale Converter
+
+**Libraries:** `PIL`, `gradio`
+
+### Task A — Image Resizer
+1. Write `resize_image(img, width, height)` using `img.resize((int(width), int(height)))`.
+2. Build a Gradio app with:
+   - Image input and output side by side (`gr.Row()`)
+   - Two `gr.Number` inputs for width and height
+   - A "Resize" button
+
+### Task B — Grayscale Converter
+1. Write `to_gray(img)` using `img.convert("L")`.
+2. Build a Gradio app with side-by-side input/output and a "Convert" button.
+
+**Important:** Use `type="pil"` in `gr.Image()` for both apps — this gives you a PIL Image object instead of a NumPy array, which is what PIL's `.resize()` and `.convert()` methods need.</div></div><div class="note concept"><span class="note-icon">🎯</span><div class="note-content"><strong>PIL Image modes explained</strong> PIL (Python Imaging Library) represents images internally using 'modes'. <code>'RGB'</code> = 3 channels (Red, Green, Blue), each 0–255. <code>'L'</code> = Luminance (grayscale), single channel 0–255. <code>'RGBA'</code> = RGB + Alpha (transparency). Converting 'RGB' to 'L' averages the three color channels weighted by how the human eye perceives brightness (Green contributes most, Blue least).</div></div><div class="note real"><span class="note-icon">🌍</span><div class="note-content"><strong>Image processing is everywhere</strong> <strong>WhatsApp</strong> compresses images automatically on upload (resize + quality reduction). <strong>Google Photos</strong> converts to grayscale for its B&W filter. Medical imaging apps convert X-rays and MRIs from DICOM format to grayscale arrays for AI analysis. <strong>Instagram</strong> filters are complex transformations of the same PIL-style pixel operations you're learning here.</div></div><div class="code-block"><div class="code-header"><div class="code-dots"><div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="kw">import</span> <span class="imp">gradio</span> <span class="kw">as</span> <span class="imp">gr</span>
+<span class="kw">from</span> <span class="imp">PIL</span> <span class="kw">import</span> <span class="cls">Image</span>
+
+<span class="cm"># ── Image Resizer ─────────────────────────────</span>
+<span class="kw">def</span> <span class="fn">resize_image</span>(img, width, height):
+    <span class="kw">return</span> img.resize((<span class="fn">int</span>(width), <span class="fn">int</span>(height)))
+
+<span class="kw">with</span> gr.Blocks() <span class="kw">as</span> app:
+    gr.Markdown(<span class="str">"# 🖼️ Image Resizer"</span>)
+    <span class="kw">with</span> gr.Row():
+        input_img  = gr.Image(type=<span class="str">"pil"</span>, label=<span class="str">"Upload"</span>)
+        output_img = gr.Image(type=<span class="str">"pil"</span>, label=<span class="str">"Resized"</span>)
+    width_in  = gr.Number(label=<span class="str">"Width"</span>)
+    height_in = gr.Number(label=<span class="str">"Height"</span>)
+    gr.Button(<span class="str">"Resize"</span>).click(resize_image,
+        inputs=[input_img, width_in, height_in], outputs=output_img)
+
+app.launch()
+
+<span class="cm"># ── Grayscale Converter ───────────────────────</span>
+<span class="kw">def</span> <span class="fn">to_gray</span>(img):
+    <span class="kw">return</span> img.convert(<span class="str">"L"</span>)   <span class="cm"># "L" = Lightness (grayscale)</span>
+
+<span class="kw">with</span> gr.Blocks() <span class="kw">as</span> app2:
+    <span class="kw">with</span> gr.Row():
+        inp = gr.Image(type=<span class="str">"pil"</span>, label=<span class="str">"Upload"</span>)
+        out = gr.Image(type=<span class="str">"pil"</span>, label=<span class="str">"Grayscale"</span>)
+    gr.Button(<span class="str">"Convert"</span>).click(to_gray, inputs=inp, outputs=out)
+
+app2.launch()</pre></div></div></div>
+</div>
+<div class="big-section" style="padding-bottom:60px">
+  <div class="big-section-title">⚡ Quick Reference Card</div>
+  <div class="big-section-sub">The 20 most-used commands in this entire guide.</div>
+  <table class="data-table">
+    <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><code>pd.DataFrame(dict)</code></td><td>Create a table from a dictionary</td></tr>
+      <tr><td><code>df.head() / df.tail()</code></td><td>First/last 5 rows</td></tr>
+      <tr><td><code>df.info()</code></td><td>Column types, null counts, memory</td></tr>
+      <tr><td><code>df.describe()</code></td><td>Stats: count, mean, std, min, max, quartiles</td></tr>
+      <tr><td><code>df["col"].mean()</code></td><td>Average of a column</td></tr>
+      <tr><td><code>df["col"].value_counts()</code></td><td>Count of each unique value</td></tr>
+      <tr><td><code>df[df["col"] > val]</code></td><td>Filter rows by condition</td></tr>
+      <tr><td><code>df.groupby("col").mean()</code></td><td>Average per category</td></tr>
+      <tr><td><code>df.sort_values("col")</code></td><td>Sort rows by a column</td></tr>
+      <tr><td><code>df.dropna()</code></td><td>Remove rows with missing values</td></tr>
+      <tr><td><code>df.fillna(val)</code></td><td>Replace missing values with val</td></tr>
+      <tr><td><code>df.drop_duplicates()</code></td><td>Remove duplicate rows</td></tr>
+      <tr><td><code>pd.get_dummies(df, columns=[...])</code></td><td>One-hot encode text columns</td></tr>
+      <tr><td><code>pd.to_datetime(df["col"])</code></td><td>Convert to datetime type</td></tr>
+      <tr><td><code>plt.bar(x, y)</code></td><td>Simple bar chart</td></tr>
+      <tr><td><code>plt.plot(x, y, marker='o')</code></td><td>Line chart with dots</td></tr>
+      <tr><td><code>plt.scatter(x, y)</code></td><td>Scatter plot</td></tr>
+      <tr><td><code>model.fit(X, y)</code></td><td>Train an ML model</td></tr>
+      <tr><td><code>model.predict(new_data)</code></td><td>Make predictions with trained model</td></tr>
+      <tr><td><code>r2_score(y, y_pred)</code></td><td>R² score for regression models</td></tr>
+    </tbody>
+  </table>
+</div>
+</main></div>
+<script>
+function toggle(header){
+  const card = header.parentElement;
+  card.classList.toggle('open');
+}
+function copyCode(btn){
+  const pre = btn.closest('.code-block').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(()=>{
+    btn.textContent='copied!';
+    setTimeout(()=>btn.textContent='copy',1500);
+  });
+}
+function copyProblem(btn){
+  const box = btn.closest('.problem-box');
+  const title = box.querySelector('.problem-title')?.innerText||'';
+  const items = box.querySelectorAll('.problem-task li');
+  let txt = title + '\n\n';
+  items.forEach((li,i)=>{txt+=(i+1)+'. '+li.innerText+'\n';});
+  navigator.clipboard.writeText(txt.trim()).then(()=>{
+    btn.textContent='✅ Copied!';
+    setTimeout(()=>btn.textContent='📋 Copy for Students',2000);
+  });
+}
+function copyMd(btn){
+  const content = btn.closest('.md-box').querySelector('.md-content');
+  const raw = content.textContent;
+  navigator.clipboard.writeText(raw.trim()).then(()=>{
+    btn.textContent='✅ Copied!';
+    setTimeout(()=>btn.textContent='📋 Copy Markdown',2000);
+  });
+}
+// Sidebar scroll navigation
+document.querySelectorAll('.nav-item[data-target]').forEach(item=>{
+  item.addEventListener('click',function(){
+    const id=this.getAttribute('data-target');
+    const el=document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+// Active state on scroll
+const navItems=document.querySelectorAll('.nav-item[data-target]');
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navItems.forEach(n=>n.classList.remove('active'));
+      const a=document.querySelector(`.nav-item[data-target="${e.target.id}"]`);
+      if(a) a.classList.add('active');
+    }
+  });
+},{rootMargin:'0px 0px -60% 0px',threshold:0});
+document.querySelectorAll('[id]').forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>

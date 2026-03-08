@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Design Notes – Grade 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--yellow:#FFD60A;--orange:#FF6B35;--purple:#7B2FBE;--teal:#0EA5E9;--green:#22C55E;--pink:#EC4899;--dark:#1E1B4B;--sidebar-w:270px;--bg:#F8F7FF}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark);display:flex;min-height:100vh}
+#sidebar{width:var(--sidebar-w);background:var(--dark);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;padding-bottom:30px}
+#sidebar-header{background:linear-gradient(135deg,var(--purple),var(--teal));padding:20px 16px 16px;text-align:center}
+#sidebar-header .logo{font-size:2rem}
+#sidebar-header h2{color:#fff;font-family:'Fredoka One',cursive;font-size:1.1rem;margin-top:6px;line-height:1.3}
+.nav-group{margin-top:10px}
+.nav-group-title{color:var(--yellow);font-size:0.65rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:10px 18px 4px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:9px 18px;color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;font-weight:600;transition:all 0.2s;border-left:3px solid transparent}
+.nav-link:hover,.nav-link.active{color:#fff;background:rgba(255,255,255,0.08);border-left-color:var(--yellow)}
+.nav-link .icon{font-size:1.1rem;min-width:20px}
+#main{margin-left:var(--sidebar-w);flex:1;padding:0}
+#hero{background:linear-gradient(135deg,var(--dark) 0%,#312E81 60%,var(--purple) 100%);color:#fff;padding:60px 50px 50px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(255,214,10,0.15) 0%,transparent 70%);top:-100px;right:-100px;border-radius:50%}
+#hero h1{font-family:'Fredoka One',cursive;font-size:2.8rem;line-height:1.2}
+#hero h1 span{color:var(--yellow)}
+#hero p{font-size:1.1rem;margin-top:12px;color:rgba(255,255,255,0.85);max-width:600px}
+.badge-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:5px 14px;border-radius:20px;font-size:0.8rem;font-weight:700}
+.section{padding:50px 50px 40px;border-bottom:2px dashed #e2e0f0}
+.section:nth-child(even){background:#fff}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.section-num{background:var(--purple);color:#fff;font-family:'Fredoka One',cursive;font-size:1.4rem;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.section-header h2{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--dark)}
+.section-header .emoji{font-size:1.8rem}
+.project-tag{display:inline-block;background:var(--orange);color:#fff;font-size:0.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:6px;margin-bottom:8px}
+.concept-tag{display:inline-block;background:var(--teal);color:#fff;font-size:0.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:6px;margin-bottom:8px;margin-left:6px}
+.info-box{border-radius:14px;padding:18px 22px;margin:18px 0;display:flex;gap:14px;align-items:flex-start}
+.info-box .box-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
+.info-box h4{font-size:0.95rem;font-weight:800;margin-bottom:5px}
+.info-box p,.info-box ul{font-size:0.9rem;line-height:1.6}
+.info-box ul{padding-left:18px}
+.info-box.yellow{background:#FFF9E0;border-left:4px solid var(--yellow)}
+.info-box.green{background:#ECFDF5;border-left:4px solid var(--green)}
+.info-box.pink{background:#FDF2F8;border-left:4px solid var(--pink)}
+.info-box.teal{background:#F0F9FF;border-left:4px solid var(--teal)}
+.info-box.orange{background:#FFF4EE;border-left:4px solid var(--orange)}
+.info-box.purple{background:#F5F3FF;border-left:4px solid var(--purple)}
+.code-block{background:#1E1B4B;border-radius:12px;margin:16px 0;overflow:hidden}
+.code-label{background:rgba(255,255,255,0.08);color:var(--yellow);font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:'Source Code Pro',monospace;font-size:0.78rem;line-height:1.65;color:#e2e8f0;white-space:pre;max-height:500px;overflow-y:auto}
+.real-life{background:linear-gradient(135deg,#FFF9E0,#FFF4EE);border:2px solid var(--yellow);border-radius:14px;padding:18px 22px;margin:18px 0}
+.real-life h4{color:var(--orange);font-weight:800;font-size:0.95rem;margin-bottom:8px}
+.real-life p{font-size:0.88rem;line-height:1.6}
+.nice-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.88rem}
+.nice-table th{background:var(--dark);color:#fff;padding:10px 14px;text-align:left;font-weight:700}
+.nice-table td{padding:9px 14px;border-bottom:1px solid #e2e0f0}
+.nice-table tr:nth-child(even) td{background:#f5f3ff}
+.steps{margin:16px 0}
+.step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.step-num{background:var(--purple);color:#fff;font-weight:800;font-size:0.85rem;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step p{font-size:0.9rem;line-height:1.6;margin:0}
+.sub-section{margin-top:32px;padding-top:24px;border-top:1px solid #e2e0f0}
+h3{font-size:1.15rem;color:var(--purple);margin:20px 0 10px;font-weight:800}
+p{font-size:0.92rem;line-height:1.7;margin-bottom:10px}
+ul,ol{padding-left:22px;font-size:0.9rem;line-height:1.8}
+strong{color:var(--dark)}
+code{background:#ede9fe;color:var(--purple);padding:2px 7px;border-radius:5px;font-family:'Source Code Pro',monospace;font-size:0.82rem;font-weight:600}
+#sidebar::-webkit-scrollbar{width:5px}
+#sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2);border-radius:10px}
+@media(max-width:900px){#sidebar{width:220px}#main{margin-left:220px}.section{padding:30px 24px}#hero{padding:40px 24px}}
+
+    .preview-section{margin:24px 0 8px}
+    .preview-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#7B2FBE,#0EA5E9);color:#fff;border:none;padding:12px 24px;border-radius:30px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 16px rgba(123,47,190,0.3)}
+    .preview-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(123,47,190,0.45)}
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;align-items:center;justify-content:center;padding:20px}
+    .modal-overlay.active{display:flex}
+    .modal-box{background:#fff;border-radius:18px;overflow:hidden;width:90vw;max-width:960px;height:86vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+    .modal-header{background:linear-gradient(135deg,#1E1B4B,#312E81);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;font-family:'Fredoka One',cursive;font-size:1.1rem;flex-shrink:0}
+    .modal-close{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:6px 16px;border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.85rem}
+    .modal-close:hover{background:rgba(255,255,255,0.25)}
+    .preview-iframe{width:100%;flex:1;border:none}
+
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <div id="sidebar-header"><div class="logo">🌐</div><h2>Web Design<br>Grade 6 Notes</h2></div>
+  <div class="nav-group">
+    <div class="nav-group-title">Projects</div>
+    <a href="#p1a" class="nav-link"><span class="icon">🍯</span> 1a. Honeycomb Bakery</a>
+    <a href="#p1b" class="nav-link"><span class="icon">🧑‍💻</span> 1b. My Portfolio</a>
+    <a href="#p2"  class="nav-link"><span class="icon">☕</span> 2. Cafe Novo</a>
+    <a href="#p3"  class="nav-link"><span class="icon">✈️</span> 3. Travel Diaries</a>
+    <a href="#p4"  class="nav-link"><span class="icon">⭐</span> 4. Favicons</a>
+    <a href="#p5"  class="nav-link"><span class="icon">🎨</span> 5. Templates</a>
+    <a href="#p6"  class="nav-link"><span class="icon">🤖</span> 6. AI Websites</a>
+    <a href="#p7"  class="nav-link"><span class="icon">🐙</span> 7. GitHub Upload</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">Key Concepts</div>
+    <a href="#p1a" class="nav-link"><span class="icon">📦</span> Inline / Block</a>
+    <a href="#p1b" class="nav-link"><span class="icon">📌</span> Fixed Navbar</a>
+    <a href="#p2"  class="nav-link"><span class="icon">🔗</span> External CSS</a>
+    <a href="#p2"  class="nav-link"><span class="icon">🏷️</span> Tables &amp; Lists</a>
+    <a href="#p3"  class="nav-link"><span class="icon">🖼️</span> Multi-page Site</a>
+    <a href="#p3"  class="nav-link"><span class="icon">🎬</span> Audio &amp; Video</a>
+    <a href="#p4"  class="nav-link"><span class="icon">🔖</span> Favicon</a>
+    <a href="#p5"  class="nav-link"><span class="icon">📐</span> Templates</a>
+    <a href="#p6"  class="nav-link"><span class="icon">✨</span> AI Tools</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<section id="hero">
+  <h1>🌟 Web Design<br><span>Grade 6 – Full Course Notes</span></h1>
+  <p>Complete teaching notes with all original student project code, real-life examples, and live output previews for every project!</p>
+  <div class="badge-row">
+    <span class="badge">📁 7 Projects</span><span class="badge">🧠 HTML &amp; CSS</span>
+    <span class="badge">🎬 Audio &amp; Video</span><span class="badge">🐙 GitHub</span>
+    <span class="badge">🤖 AI Tools</span><span class="badge">👁️ Live Previews</span>
+    <span class="badge">💻 Full Student Code</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ 1a ═══ -->
+<section class="section" id="p1a">
+  <div class="section-header">
+    <div class="section-num">1a</div><span class="emoji">🍯</span>
+    <h2>Honeycomb Bakery</h2>
+  </div>
+  <span class="project-tag">Project</span>
+  <span class="concept-tag">Inline CSS</span>
+  <span class="concept-tag">Block / Inline / Inline-Block</span>
+  <span class="concept-tag">Box Model</span>
+
+  <div class="preview-section">
+      <button class="preview-btn" onclick="openPreview('honeycomb')">👁️ View Live Output: 🍯 Honeycomb Bakery</button>
+    </div>
+    <div class="modal-overlay" id="modal-honeycomb" onclick="closePreviewIfOverlay(event,'honeycomb')">
+      <div class="modal-box">
+        <div class="modal-header"><span>🍯 Honeycomb Bakery – Live Output</span><button class="modal-close" onclick="closePreview('honeycomb')">✕ Close</button></div>
+        <iframe srcdoc="<!DOCTYPE html>
+<html>
+<head>
+    <title>🍯 Honeycomb Bakery 🧁</title>
+</head>
+<body style=&quot;background-color: rgba(245, 240, 173, 0.969)&quot;>
+    <div style=&quot;font-size:4rem;text-align:center;margin-top:20px&quot;>🍯</div>
+    <h1 style=&quot;text-align: center&quot;>🍯 Honeycomb Bakery 🧁</h1>
+    <hr color=&quot;pink&quot; width=47%>
+    <div style=&quot;width:90%; margin: auto; background-color: rgba(239, 127, 157, 0.436);padding:20px;border-radius: 50px;box-shadow: 10px 10px 10px rgba(213, 137, 220, 0.422);&quot;>
+        <h3 style=&quot;color: rgb(235, 74, 16)&quot;>🧁The Bakery</h3>
+        <p>Honeycomb Bakery is your cozy corner for ☀️ breakfast, 🥪 lunch, and 🍪 sweet treats! Our menu changes with the seasons 🌸🍂 to showcase the freshest ingredients in 🥖 breads, 🥐 pastries, and 🍰 desserts—baked with <b>love 💛 in every bite.</b></p>
+        <h3 style=&quot;color: rgb(235, 74, 16)&quot;>🎂 Custom Orders</h3>
+        <p>You have fun... <i>we'll handle the baking</i>. Celebrate life's sweet moments… we'll handle the baked goods! Honeycomb Bakery can create everything from cute brunch boxes 🥯 to elegant wedding cakes 💍 and corporate treats 🎉.</p>
+        <h3 style=&quot;color: rgb(235, 74, 16)&quot;>📍⏰Location and Hours</h3>
+        <p>Seekonk, Massachusetts;<br>
+        Monday through Thursday 11am to 9pm,<br>
+        Friday and Saturday, 11am to midnight</p>
+    </div>
+</body>
+</html>" class="preview-iframe"></iframe>
+      </div>
+    </div>
+
+  <div class="real-life"><h4>🌍 Real-Life Connection</h4>
+  <p>Think of a restaurant menu board. The big heading "Welcome!" is like a <strong>block element</strong> — it takes the whole row. The word "🍯 Honey" sitting beside other text is an <strong>inline element</strong> — it doesn't push things to the next line. A photo in a magazine that sits beside text but can also be resized = <strong>inline-block</strong>!</p></div>
+
+  <h3>📚 Concept: Inline vs Block vs Inline-Block</h3>
+  <table class="nice-table">
+    <tr><th>Type</th><th>New Line?</th><th>Width/Height?</th><th>Examples</th></tr>
+    <tr><td><strong>Block</strong></td><td>✅ Yes</td><td>✅ Full width</td><td><code>&lt;div&gt;</code>, <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code></td></tr>
+    <tr><td><strong>Inline</strong></td><td>❌ No</td><td>❌ Content only</td><td><code>&lt;span&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;b&gt;</code></td></tr>
+    <tr><td><strong>Inline-Block</strong></td><td>❌ No</td><td>✅ Can set size</td><td><code>display: inline-block</code></td></tr>
+  </table>
+  <div class="info-box yellow"><span class="box-icon">💡</span><div><h4>Memory Trick</h4><p><strong>Block</strong> = Takes the whole line &nbsp;|&nbsp; <strong>Inline</strong> = Lives inside a sentence &nbsp;|&nbsp; <strong>Inline-Block</strong> = Sits beside text AND can be resized</p></div></div>
+
+  <h3>💻 Full Project Code</h3>
+  <div class="code-block"><div class="code-label">index.html – Honeycomb Bakery (complete file)</div><pre>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;🍯 Honeycomb Bakery 🧁&lt;/title&gt;
+    &lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"&gt;
+&lt;/head&gt;
+&lt;body style="background-color: rgba(245, 240, 173, 0.969)"&gt;
+    &lt;img src="honeycomb.png" style="height:150px; display: block; margin: auto;border-radius: 50%;"&gt;
+    &lt;h1 style="text-align: center"&gt;🍯 Honeycomb Bakery 🧁&lt;/h1&gt;
+    &lt;hr color="pink" width=47%&gt;
+    
+    &lt;div style="width:700px; margin: auto; background-color: rgba(239, 127, 157, 0.436);padding:20px;border-radius: 50px;box-shadow: 10px 10px 10px rgba(213, 137, 220, 0.422);"&gt;
+        &lt;h3 style="color: rgb(235, 74, 16)"&gt;🧁The Bakery&lt;/h3&gt;
+        &lt;p&gt;Honeycomb Bakery is your cozy corner for ☀️ breakfast, 🥪 lunch, and 🍪 sweet treats! Our menu changes with the seasons 🌸🍂 to showcase the freshest ingredients in 🥖 breads, 🥐 pastries, and 🍰 desserts—baked with &lt;b&gt;love 💛 in every bite.&lt;/b&gt;&lt;/p&gt;
+        &lt;h3 style="color: rgb(235, 74, 16)"&gt;🎂 Custom Orders&lt;/h3&gt;
+        &lt;p&gt;You have fun... &lt;i&gt;we'll handle the baking&lt;/i&gt;.Celebrate life’s sweet moments… we’ll handle the baked goods! Honeycomb Bakery can create everything from cute brunch boxes 🥯 to elegant wedding cakes 💍 and corporate treats 🎉.&lt;/p&gt;
+        &lt;h3 style="color: rgb(235, 74, 16)"&gt;📍⏰Location and Hours&lt;/h3&gt;
+        &lt;p&gt;Seekonk,Massachusetts;&lt;br&gt;
+        Monday through Thursday 11am to 9pm,&lt;br&gt;
+        Friday and Saturday, 11am to midnight&lt;/p&gt;
+        
+   
+       
+        
+    &lt;/div&gt;
+    &lt;/div&gt;
+    
+    
+
+    
+&lt;/body&gt;
+
+
+
+
+
+
+&lt;/html&gt;&lt;!--
+
+inline Elements:- 
+Flow: Inline elements are positioned within the flow of text or other inline elements. 
+They do not start on a new line and instead flow alongside other elements.
+
+Dimensions: These elements do not honor the width and height properties. 
+They only occupy as much space as their content requires.
+
+Margins and Padding: Inline elements handle horizontal margins and padding but may not properly handle vertical margins and padding.
+Usage: Typically used for small pieces of content or text within a block-level container. Common examples include links and spans.
+
+
+block Elements:- 
+Flow: Block elements start on a new line and take up the full width of their parent container by default.
+They push subsequent elements to the next line.
+
+Dimensions: These elements fully respect the width and height properties. 
+They can be sized and will expand to the width of their container unless otherwise specified.
+Margins and Padding: Block elements handle all margins and padding, including vertical margins and padding, 
+which affect the layout and spacing around the element.
+
+Usage: Typically used for creating sections of content or larger structural elements on a page. Examples include paragraphs, headers, and divs.
+
+
+
+inline-block Elements:- 
+Flow: Inline-block elements behave like inline elements in that they do not start on a new line.
+ However, they can be sized with width and height properties.
+
+Dimensions: These elements respect the width and height properties, allowing them to have defined dimensions.
+Margins and Padding: Inline-block elements handle both horizontal and vertical margins and padding.
+
+Usage: Useful when you want elements to appear next to each other horizontally but also need to define their size.
+ This can be helpful for layout and design where both alignment and sizing are necessary.
+
+
+
+
+
+
+
+
+
+
+--&gt;</pre></div>
+
+  <div class="info-box green"><span class="box-icon">🎯</span><div><h4>What You Learned</h4><ul>
+    <li>Using <code>style=""</code> directly inside HTML tags (inline CSS)</li>
+    <li>Using <code>rgba()</code> for semi-transparent colors</li>
+    <li>Making circular images with <code>border-radius: 50%</code></li>
+    <li>Centering with <code>display: block; margin: auto</code></li>
+    <li>Adding card shadows with <code>box-shadow</code></li>
+    <li>Understanding inline, block, and inline-block behaviour</li>
+  </ul></div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ 1b ═══ -->
+<section class="section" id="p1b">
+  <div class="section-header">
+    <div class="section-num">1b</div><span class="emoji">🧑‍💻</span>
+    <h2>My Portfolio</h2>
+  </div>
+  <span class="project-tag">Project</span>
+  <span class="concept-tag">Internal CSS</span>
+  <span class="concept-tag">Fixed Navbar</span>
+  <span class="concept-tag">Anchor Links</span>
+  <span class="concept-tag">scroll-margin-top</span>
+
+  <div class="preview-section">
+      <button class="preview-btn" onclick="openPreview('portfolio')">👁️ View Live Output: 🧑‍💻 My Portfolio</button>
+    </div>
+    <div class="modal-overlay" id="modal-portfolio" onclick="closePreviewIfOverlay(event,'portfolio')">
+      <div class="modal-box">
+        <div class="modal-header"><span>🧑‍💻 My Portfolio – Live Output</span><button class="modal-close" onclick="closePreview('portfolio')">✕ Close</button></div>
+        <iframe srcdoc="<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=&quot;utf-8&quot; />
+    <title>My Profile</title>
+    <style>
+        body{ font-family: Arial, Helvetica, sans-serif; margin:0; background-color: beige; }
+        nav{ height:50px; text-align: center; background-color:rgb(129, 69, 127); padding-top: 15px; position:sticky; top:0; width:100%; z-index:99; }
+        nav a{ text-decoration: none; margin: 0px 10px; color:rgb(0, 204, 255); cursor:pointer; }
+        nav a:hover{ color:rgb(174, 226, 43); }
+        nav a.active{ color:rgb(174,226,43); border-bottom:2px solid rgb(174,226,43); }
+        .part{ background-color: lightblue; padding:20px; margin:20px auto; border-radius:10px; box-shadow:5px 5px 10px lightblue; width:70%; }
+        h1{ text-align:center; color:purple; text-shadow:2px 2px 8px purple; }
+        ul{ line-height:1.8; }
+        .contact-box{ text-align:center; font-size:18px; }
+        .page{ display:none; } .page.show{ display:block; }
+    </style>
+</head>
+<body>
+<nav>
+    <a onclick=&quot;go('home',this)&quot; class=&quot;active&quot;>Home</a>
+    <a onclick=&quot;go('about',this)&quot;>About Me</a>
+    <a onclick=&quot;go('hobbies',this)&quot;>My Hobbies</a>
+    <a onclick=&quot;go('achievements',this)&quot;>My Achievements</a>
+    <a onclick=&quot;go('contact',this)&quot;>Contact</a>
+</nav>
+<div id=&quot;home&quot; class=&quot;page show&quot;>
+<div class=&quot;part&quot;>
+    <h1>Home</h1>
+    <p>Hello! Welcome to my personal profile page.</p>
+    <p>My name is <b>[Your Name]</b>. I am passionate about learning new technologies, especially coding and digital creativity. This website gives a brief overview of who I am, my interests, achievements, and how you can connect with me.</p>
+    <p>I believe technology is not just about computers — it is about solving problems, thinking logically, and creating innovative solutions that can help people in everyday life.</p>
+</div>
+</div>
+<div id=&quot;about&quot; class=&quot;page&quot;>
+<div class=&quot;part&quot;>
+    <h1>About Me</h1>
+    <p>I am a student and a technology enthusiast who enjoys learning programming, exploring AI tools, and building creative digital projects.</p>
+    <p>My goals include improving my coding skills, developing problem-solving abilities, and creating useful applications that can make learning fun and interactive.</p>
+    <p>I enjoy teamwork, continuous learning, and sharing knowledge with others. I believe curiosity and consistency are the keys to success.</p>
+</div>
+</div>
+<div id=&quot;hobbies&quot; class=&quot;page&quot;>
+<div class=&quot;part&quot;>
+    <h1>Hobbies</h1>
+    <ul>
+        <li>💻 Coding and creating small projects</li>
+        <li>📚 Reading technology and science articles</li>
+        <li>🎮 Playing strategy and logic games</li>
+        <li>🎨 Designing creative digital content</li>
+        <li>🎵 Listening to music</li>
+        <li>🏃 Playing outdoor sports</li>
+    </ul>
+</div>
+</div>
+<div id=&quot;achievements&quot; class=&quot;page&quot;>
+<div class=&quot;part&quot;>
+    <h1>Achievements</h1>
+    <ul>
+        <li>Completed beginner and intermediate coding courses</li>
+        <li>Created personal projects using HTML and CSS</li>
+        <li>Participated in school technology competitions</li>
+        <li>Presented a project on future technology/AI</li>
+        <li>Received appreciation for creativity and teamwork</li>
+    </ul>
+</div>
+</div>
+<div id=&quot;contact&quot; class=&quot;page&quot;>
+<div class=&quot;part&quot;>
+    <h1>Contact</h1>
+    <div class=&quot;contact-box&quot;>
+        <p>📧 Email: yourname@email.com</p>
+        <p>📱 Phone: +91 XXXXX XXXXX</p>
+        <p>🌐 Website: www.myprofile.com</p>
+        <p>📍 Location: Pune, India</p>
+    </div>
+</div>
+</div>
+<script>
+function go(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
+  document.getElementById(name).classList.add('show');
+  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+  if(el)el.classList.add('active');
+}
+document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+</script>
+</body>
+</html>" class="preview-iframe"></iframe>
+      </div>
+    </div>
+
+  <div class="real-life"><h4>🌍 Real-Life Connection</h4>
+  <p>A book's table of contents takes you straight to a chapter — that's exactly what <strong>anchor links</strong> do! The fixed navbar is like the <strong>McDonald's golden arches</strong> — no matter where you are in the building, the logo stays visible at the top.</p></div>
+
+  <h3>💻 Full Project Code</h3>
+  <div class="code-block"><div class="code-label">portfolio.html – My Portfolio (complete file with internal CSS)</div><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;title&gt;My Profile&lt;/title&gt;
+
+    &lt;style&gt;
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            margin:0;
+            background-color: beige;
+        }
+
+        /*nav bar styling*/
+nav{
+    height:50px;
+
+   /* display: flex;  
+   background-color: rgb(7, 152, 84);
+   justify-content:center;
+   align-items: center; */
+/* easy way */
+   text-align: center;
+   background-color:rgb(129, 69, 127);
+   padding-top: 15px;
+
+   /* to fix the nav bar on top */
+   position:fixed;
+   width: 98%;
+   left: 0;/*  For margin: auto to center an element with absolute/fixed positioning, all sides must be defined. */
+   right: 0; /*strick to the right*/
+   top:0;/*stick to the top */
+   margin: auto;  
+}
+nav a{
+   text-decoration: none;
+   margin: 0px 10px 0px 10px; /*margin: top right bottom left;*/
+   color:rgb(0, 204, 255);
+}
+nav a:hover{
+            color:rgb(174, 226, 43);
+}
+#about,#home,#hobbies,#achievements,#contact{
+  scroll-margin-top: 50px;      /* 50 is ht of nav bar, this is added to avoid overlap*/
+}
+
+
+
+
+
+       
+
+        .part{
+            background-color: lightblue;
+            padding:20px;
+             margin:70px auto;   /* centers the box  - top/bottom left/right*/ 
+            border-radius:10px;
+            box-shadow:5px 5px 10px lightblue;
+            width:70%; 
+        }
+
+        h1{
+            text-align:center;
+            color:purple;
+            text-shadow:2px 2px 8px purple;
+        }
+
+        ul{
+            line-height:1.8;
+        }
+
+        .contact-box{
+            text-align:center;
+            font-size:18px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;nav&gt;
+    &lt;a href="#home"&gt;Home&lt;/a&gt;
+    &lt;a href="#about"&gt;About Me&lt;/a&gt;
+    &lt;a href="#hobbies"&gt;My Hobbies&lt;/a&gt; 
+    &lt;a href="#achievements"&gt;My Achievements&lt;/a&gt;
+    &lt;a href="#contact"&gt;Contact&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;div id="home" class="part"&gt;
+    &lt;h1&gt;Home&lt;/h1&gt;
+    &lt;p&gt;Hello! Welcome to my personal profile page.&lt;/p&gt;
+    &lt;p&gt;
+        My name is &lt;b&gt;[Your Name]&lt;/b&gt;. I am passionate about learning new technologies,
+        especially coding and digital creativity. This website gives a brief overview
+        of who I am, my interests, achievements, and how you can connect with me.
+    &lt;/p&gt;
+    &lt;p&gt;
+        I believe technology is not just about computers — it is about solving
+        problems, thinking logically, and creating innovative solutions that
+        can help people in everyday life.
+    &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="about" class="part"&gt;
+    &lt;h1&gt;About Me&lt;/h1&gt;
+    &lt;p&gt;
+        I am a student and a technology enthusiast who enjoys learning programming,
+        exploring AI tools, and building creative digital projects.
+    &lt;/p&gt;
+
+    &lt;p&gt;
+        My goals include improving my coding skills, developing problem-solving
+        abilities, and creating useful applications that can make learning fun
+        and interactive.
+    &lt;/p&gt;
+
+    &lt;p&gt;
+        I enjoy teamwork, continuous learning, and sharing knowledge with others.
+        I believe curiosity and consistency are the keys to success.
+    &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div id="hobbies" class="part"&gt;
+    &lt;h1&gt;Hobbies&lt;/h1&gt;
+    &lt;ul&gt;
+        &lt;li&gt;💻 Coding and creating small projects&lt;/li&gt;
+        &lt;li&gt;📚 Reading technology and science articles&lt;/li&gt;
+        &lt;li&gt;🎮 Playing strategy and logic games&lt;/li&gt;
+        &lt;li&gt;🎨 Designing creative digital content&lt;/li&gt;
+        &lt;li&gt;🎵 Listening to music&lt;/li&gt;
+        &lt;li&gt;🏃 Playing outdoor sports&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div id="achievements" class="part"&gt;
+    &lt;h1&gt;Achievements&lt;/h1&gt;
+    &lt;ul&gt;
+        &lt;li&gt;Completed beginner and intermediate coding courses&lt;/li&gt;
+        &lt;li&gt;Created personal projects using HTML and CSS&lt;/li&gt;
+        &lt;li&gt;Participated in school technology competitions&lt;/li&gt;
+        &lt;li&gt;Presented a project on future technology/AI&lt;/li&gt;
+        &lt;li&gt;Received appreciation for creativity and teamwork&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div id="contact" class="part"&gt;
+    &lt;h1&gt;Contact&lt;/h1&gt;
+    &lt;div class="contact-box"&gt;
+        &lt;p&gt;📧 Email: yourname@email.com&lt;/p&gt;
+        &lt;p&gt;📱 Phone: +91 XXXXX XXXXX&lt;/p&gt;
+        &lt;p&gt;🌐 Website: www.myprofile.com&lt;/p&gt;
+        &lt;p&gt;📍 Location: Pune, India&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+
+  <div class="info-box yellow"><span class="box-icon">💡</span><div><h4>Key Trick: scroll-margin-top</h4>
+  <p>When you use <code>position: fixed</code> for the navbar, it covers the top of sections when you click anchor links. Fix it by adding:</p>
+  <p><code>#about, #home, #hobbies, #achievements, #contact { scroll-margin-top: 50px; }</code></p>
+  <p>The value (50px) should match your navbar height!</p></div></div>
+
+  <div class="info-box green"><span class="box-icon">🎯</span><div><h4>What You Learned</h4><ul>
+    <li>Writing CSS inside <code>&lt;style&gt;</code> in <code>&lt;head&gt;</code> (internal CSS)</li>
+    <li>Making a sticky navbar with <code>position: fixed; top: 0</code></li>
+    <li>Jumping to sections on the same page using <code>href="#id"</code></li>
+    <li>Fixing scroll overlap with <code>scroll-margin-top</code></li>
+    <li>Using <code>text-shadow</code> for headings</li>
+  </ul></div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ 2 ═══ -->
+<section class="section" id="p2">
+  <div class="section-header">
+    <div class="section-num">2</div><span class="emoji">☕</span>
+    <h2>Cafe Novo</h2>
+  </div>
+  <span class="project-tag">Project</span>
+  <span class="concept-tag">External CSS</span>
+  <span class="concept-tag">HTML Tables</span>
+  <span class="concept-tag">Nested Lists</span>
+  <span class="concept-tag">Custom Bullets</span>
+  <span class="concept-tag">Contact Form</span>
+  <span class="concept-tag">Flexbox</span>
+
+  <div class="preview-section">
+      <button class="preview-btn" onclick="openPreview('cafe')">👁️ View Live Output: ☕ Cafe Novo</button>
+    </div>
+    <div class="modal-overlay" id="modal-cafe" onclick="closePreviewIfOverlay(event,'cafe')">
+      <div class="modal-box">
+        <div class="modal-header"><span>☕ Cafe Novo – Live Output</span><button class="modal-close" onclick="closePreview('cafe')">✕ Close</button></div>
+        <iframe srcdoc="<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=&quot;utf-8&quot;>
+    <title>Cafe Novo</title>
+    <style>body{ font-family: Arial, sans-serif; line-height: 1.6; }
+nav{ height:80px; text-align: center; background-color:rgb(7, 152, 84); padding-top: 15px; position:sticky; top:0; width:100%; z-index:99; }
+nav a{ text-decoration: none; margin: 0px 10px; color:rgb(0, 4, 255); cursor:pointer; }
+nav a.active{ color:#fff; border-bottom:2px solid #fff; }
+header{ background-color: gold; text-align: center; }
+header img{ height:200px; width:200px; border:1px solid rgb(231,197,10); border-radius:50px; box-shadow:10px 10px 10px yellow; }
+h1{ text-align: center; padding-top:20px; }
+.side{ display: flex; justify-content: center; }
+.side p{ width:500px; text-align: justify; margin-right: 20px; }
+#about{ background-color: lavender; }
+#menu{ background-color: burlywood; }
+table,th,td{ border: 1px solid black; border-collapse: collapse; margin:auto; }
+thead{ background-color: brown; color: white; }
+tbody{ background-color: bisque; }
+th,td{ padding:6px 12px; }
+h2{ text-align: center; }
+#menu ol{ width: max-content; margin: auto; }
+#menu ol li::marker{ color: brown; font-size: 25px; }
+#menu ul li{ list-style-type: none; background-image: url('https://png.pngtree.com/png-vector/20240512/ourmid/pngtree-this-photo-portrays-a-single-coffee-bean-isolated-against-blank-backdrop-png-image_12439812.png'); background-size: 15px 15px; background-repeat: no-repeat; padding-left: 25px; line-height: 20px; }
+#ss{ display: flex; justify-content: center; align-items: center; flex-wrap:wrap; }
+.service img{ height:50%; width:90%; border-radius:100px; }
+.service{ border: 1px solid black; margin:10px; width:30%; min-width:200px; height:400px; padding: 10px; background-color: antiquewhite; text-align: center; }
+#services{ background-color: rgb(231, 218, 150); padding:10px 0; margin:10px 0; }
+.form-group{ display: flex; flex-direction: column; max-width:400px; margin:10px auto; }
+.form-group label{ font-size: 1.1rem; margin-bottom: 5px; color: #333; }
+.form-group input, .form-group textarea{ padding: 10px; font-size: 1rem; border: 1px solid #ddd; border-radius: 5px; width: 100%; }
+.submit-btn{ padding: 10px 20px; background-color: rgb(7, 152, 84); color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 1.2rem; display:block; margin:10px auto; }
+footer{ background-color: gold; color: #fff; padding: 20px 0; text-align: center; margin-top:10px; }
+footer p{ font-size: 1rem; color: black; }
+.page{ display:none; } .page.show{ display:block; }</style>
+</head>
+<body>
+<nav>
+    <a onclick=&quot;go('home-sec',this)&quot; class=&quot;active&quot;>Home</a>
+    <a onclick=&quot;go('about-sec',this)&quot;>About Us</a>
+    <a onclick=&quot;go('menu-sec',this)&quot;>Menu</a>
+    <a onclick=&quot;go('services-sec',this)&quot;>Services</a>
+    <a onclick=&quot;go('contact-sec',this)&quot;>Contact</a>
+</nav>
+<div id=&quot;home-sec&quot; class=&quot;page show&quot;>
+<header>
+    <h1>Cafe Novo</h1>
+    <p>Tastes like never before</p>
+    <div style=&quot;font-size:5rem&quot;>☕</div>
+</header>
+</div>
+<div id=&quot;about-sec&quot; class=&quot;page&quot;>
+<h1>About Us</h1>
+<div class=&quot;side&quot;>
+<p>Welcome to Café Novo, where tradition meets innovation! Nestled in the heart of the community, we're more than just a café—we're a destination for those who seek a delightful escape, a great cup of coffee, and an inviting atmosphere. At Café Novo, we take pride in crafting every cup with care, sourcing premium beans from sustainable farms around the world. Whether you're stopping by for a morning boost, a cozy brunch, or an evening treat, our menu is thoughtfully curated to offer something for everyone. Our mission is simple: to serve exceptional coffee, artisanal bites, and unforgettable moments. Each sip, each dish, and each interaction at Café Novo is designed to make you feel right at home. Step in, savor the aroma, and experience the warm hospitality that has made Café Novo a local favorite. We look forward to sharing our love for coffee, community, and creativity with you. Here's to new flavors, new connections, and a new kind of café experience.</p>
+<div style=&quot;font-size:5rem;align-self:center&quot;>☕</div>
+</div>
+</div>
+<div id=&quot;menu-sec&quot; class=&quot;page&quot;>
+<h1>Our top 5 picks</h1>
+<ol>
+    <li>Espresso - $2.50<ul><li>Small</li><li>Medium</li><li>Large</li></ul></li>
+    <li>Avocado Toast - $5.50<ul><li>With egg</li><li>Without egg</li></ul></li>
+    <li>Caesar Salad - $7.00<ul><li>Regular</li><li>Grilled Chicken</li><li>Vegan</li></ul></li>
+    <li>Grilled Cheese Sandwich - $6.00<ul><li>Cheddar</li><li>Swiss</li><li>Gouda</li></ul></li>
+    <li>Chocolate Lava Cake - $5.50<ul><li>Single Serve</li><li>Sharing Size</li></ul></li>
+</ol>
+<h1>Café Menu with Prices</h1>
+<h2>Beverages</h2>
+<table><thead><tr><th>Item</th><th>Price</th></tr></thead><tbody>
+<tr><td>Espresso</td><td>$2.50</td></tr><tr><td>Americano</td><td>$3.00</td></tr>
+<tr><td>Cappuccino</td><td>$3.50</td></tr><tr><td>Latte</td><td>$3.75</td></tr>
+<tr><td>Mocha</td><td>$4.00</td></tr><tr><td>Flat White</td><td>$3.80</td></tr>
+<tr><td>Iced Americano</td><td>$3.25</td></tr><tr><td>Cold Brew</td><td>$4.00</td></tr>
+</tbody></table>
+<h2>Desserts</h2>
+<table><thead><tr><th>Item</th><th>Price</th></tr></thead><tbody>
+<tr><td>Chocolate Lava Cake</td><td>$5.50</td></tr><tr><td>Tiramisu</td><td>$6.00</td></tr>
+<tr><td>Cheesecake (New York, Blueberry)</td><td>$6.50</td></tr>
+<tr><td>Macarons (Assorted Flavors)</td><td>$3.00</td></tr>
+<tr><td>Ice Cream Sundaes</td><td>$4.50</td></tr>
+</tbody></table>
+</div>
+<div id=&quot;services-sec&quot; class=&quot;page&quot;>
+<h1>Our services</h1>
+<div id=&quot;ss&quot;>
+<div class=&quot;service&quot;><div style=&quot;font-size:3rem&quot;>☕</div><h3>Fresh Coffee</h3><p>Experience the finest freshly brewed coffee, made with premium beans, served just the way you like it.</p></div>
+<div class=&quot;service&quot;><div style=&quot;font-size:3rem&quot;>🥐</div><h3>Pastries &amp;amp; Snacks</h3><p>Enjoy a selection of freshly baked pastries and snacks, perfect for pairing with your favorite coffee.</p></div>
+<div class=&quot;service&quot;><div style=&quot;font-size:3rem&quot;>🛋️</div><h3>Cozy Atmosphere</h3><p>Relax in our cozy and welcoming environment, designed for you to unwind and enjoy your time with friends or by yourself.</p></div>
+</div>
+</div>
+<div id=&quot;contact-sec&quot; class=&quot;page&quot;>
+<h2 style=&quot;text-align:center;padding:20px&quot;>Contact Us</h2>
+<p style=&quot;text-align:center&quot;>We'd love to hear from you! Please fill out the form below to get in touch with us.</p>
+<div class=&quot;form-group&quot;><label>Full Name</label><input type=&quot;text&quot; placeholder=&quot;Your Name&quot;></div>
+<div class=&quot;form-group&quot;><label>Email Address</label><input type=&quot;email&quot; placeholder=&quot;Your Email&quot;></div>
+<div class=&quot;form-group&quot;><label>Message</label><textarea rows=&quot;4&quot; placeholder=&quot;Your Message&quot;></textarea></div>
+<button class=&quot;submit-btn&quot;>Send Message</button>
+<footer><p>&amp;copy; 2025 Cafe Novo. All Rights Reserved.</p></footer>
+</div>
+<script>
+function go(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
+  document.getElementById(name).classList.add('show');
+  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+  if(el)el.classList.add('active');
+}
+document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+</script>
+</body></html>" class="preview-iframe"></iframe>
+      </div>
+    </div>
+
+  <div class="real-life"><h4>🌍 Real-Life Connection</h4>
+  <p>A school timetable is an HTML table — rows are time slots, columns are subjects! The external CSS file is like a café's <strong>interior designer's rulebook</strong> — all style rules in one place, shared by every page of the site.</p></div>
+
+  <h3>💻 Full Project Code</h3>
+  <div class="code-block"><div class="code-label">index.html – Cafe Novo (complete HTML file)</div><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta http-equiv="content-type" content="text/html; charset=utf-8" /&gt;
+        &lt;title&gt;Cafe Novo&lt;/title&gt;
+        &lt;link rel="stylesheet" href="style.css"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;nav&gt;
+            &lt;a href="#"&gt;Home&lt;/a&gt;
+            &lt;a href="#about"&gt;About Us&lt;/a&gt;
+            &lt;a href="#menu"&gt;Menu&lt;/a&gt;
+            &lt;a href="#services"&gt;Services&lt;/a&gt;
+            &lt;a href="#contact"&gt;Contact&lt;/a&gt;
+        &lt;/nav&gt;
+        &lt;br&gt;
+        &lt;br&gt;
+        &lt;br&gt;
+        &lt;header&gt;
+            &lt;h1&gt;Cafe Novo&lt;/h1&gt;
+            &lt;p&gt;Tastes like never before&lt;/p&gt;
+            &lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3-6WhdCjld4q3J1EDGbj3pyu5LKjhDAtRJA&amp;s" alt="intro"&gt;
+            
+        &lt;/header&gt;
+        
+        &lt;!--About us div--&gt;
+        &lt;div id="about"&gt;
+            &lt;h1&gt;About Us&lt;/h1&gt;
+            &lt;div class="side"&gt;
+            
+            &lt;p&gt;Welcome to Café Novo, where tradition meets innovation! Nestled in the heart of the community, we’re more than just a café—we’re a destination for those who seek a delightful escape, a great cup of coffee, and an inviting atmosphere.
+
+                At Café Novo, we take pride in crafting every cup with care, sourcing premium beans from sustainable farms around the world. Whether you’re stopping by for a morning boost, a cozy brunch, or an evening treat, our menu is thoughtfully curated to offer something for everyone.
+                
+                Our mission is simple: to serve exceptional coffee, artisanal bites, and unforgettable moments. Each sip, each dish, and each interaction at Café Novo is designed to make you feel right at home.
+                
+                Step in, savor the aroma, and experience the warm hospitality that has made Café Novo a local favorite. We look forward to sharing our love for coffee, community, and creativity with you.
+                
+                Here’s to new flavors, new connections, and a new kind of café experience.&lt;/p&gt;
+            &lt;img src="data:image/jpeg;base64,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" alt="cafe image" /&gt;
+
+            &lt;/div&gt;
+            
+        &lt;/div&gt;
+        
+        
+        
+        
+        &lt;!--Menu div--&gt;
+        &lt;div id="menu"&gt;
+            
+            &lt;h1&gt;Our top 5 picks&lt;/h1&gt;
+            &lt;ol&gt;
+                &lt;li&gt;Espresso - $2.50
+                    &lt;ul&gt;
+                        &lt;li&gt;Small&lt;/li&gt;
+                        &lt;li&gt;Medium&lt;/li&gt;
+                        &lt;li&gt;Large&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/li&gt;
+            &lt;li&gt;Avocado Toast - $5.50
+                &lt;ul&gt;
+                    &lt;li&gt;With egg&lt;/li&gt;
+                    &lt;li&gt;Without egg&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/li&gt;
+            &lt;li&gt;Caesar Salad - $7.00
+                &lt;ul&gt;
+                    &lt;li&gt;Regular&lt;/li&gt;
+                    &lt;li&gt;Grilled Chicken&lt;/li&gt;
+                    &lt;li&gt;Vegan&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/li&gt;
+            &lt;li&gt;Grilled Cheese Sandwich - $6.00
+                &lt;ul&gt;
+                    &lt;li&gt;Cheddar&lt;/li&gt;
+                    &lt;li&gt;Swiss&lt;/li&gt;
+                    &lt;li&gt;Gouda&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/li&gt;
+            &lt;li&gt;Chocolate Lava Cake - $5.50
+                &lt;ul&gt;
+                    &lt;li&gt;Single Serve&lt;/li&gt;
+                    &lt;li&gt;Sharing Size&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/li&gt;
+        &lt;/ol&gt;
+
+
+  
+    
+            &lt;h1&gt;Café Menu with Prices&lt;/h1&gt;
+
+    &lt;h2&gt;Beverages&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Item&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Espresso&lt;/td&gt;
+                &lt;td&gt;$2.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Americano&lt;/td&gt;
+                &lt;td&gt;$3.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Cappuccino&lt;/td&gt;
+                &lt;td&gt;$3.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Latte&lt;/td&gt;
+                &lt;td&gt;$3.75&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Mocha&lt;/td&gt;
+                &lt;td&gt;$4.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Flat White&lt;/td&gt;
+                &lt;td&gt;$3.80&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Iced Americano&lt;/td&gt;
+                &lt;td&gt;$3.25&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Iced Latte&lt;/td&gt;
+                &lt;td&gt;$3.95&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Cold Brew&lt;/td&gt;
+                &lt;td&gt;$4.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Coffee Frappe&lt;/td&gt;
+                &lt;td&gt;$4.50&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;Breakfast &amp; Snacks&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Item&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Avocado Toast&lt;/td&gt;
+                &lt;td&gt;$5.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Croissants (Plain, Chocolate, Almond)&lt;/td&gt;
+                &lt;td&gt;$3.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Bagels with Cream Cheese&lt;/td&gt;
+                &lt;td&gt;$4.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Muffins (Blueberry, Chocolate Chip, Bran)&lt;/td&gt;
+                &lt;td&gt;$2.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Granola Parfait&lt;/td&gt;
+                &lt;td&gt;$4.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Smoothie Bowls&lt;/td&gt;
+                &lt;td&gt;$6.00&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;Salads&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Item&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Caesar Salad&lt;/td&gt;
+                &lt;td&gt;$7.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Greek Salad&lt;/td&gt;
+                &lt;td&gt;$7.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Quinoa &amp; Kale Salad&lt;/td&gt;
+                &lt;td&gt;$8.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Caprese Salad&lt;/td&gt;
+                &lt;td&gt;$7.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Roasted Veggie Salad&lt;/td&gt;
+                &lt;td&gt;$6.50&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;Sandwiches &amp; Wraps&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Item&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Club Sandwich&lt;/td&gt;
+                &lt;td&gt;$8.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Grilled Cheese Sandwich&lt;/td&gt;
+                &lt;td&gt;$6.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;BLT (Bacon, Lettuce, Tomato)&lt;/td&gt;
+                &lt;td&gt;$7.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Chicken Caesar Wrap&lt;/td&gt;
+                &lt;td&gt;$8.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Veggie Hummus Wrap&lt;/td&gt;
+                &lt;td&gt;$7.00&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;Main Courses&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Item&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Pasta (Alfredo, Pesto, Marinara)&lt;/td&gt;
+                &lt;td&gt;$12.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Grilled Chicken with Vegetables&lt;/td&gt;
+                &lt;td&gt;$13.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Vegan Buddha Bowl&lt;/td&gt;
+                &lt;td&gt;$11.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Fish and Chips&lt;/td&gt;
+                &lt;td&gt;$14.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Risotto&lt;/td&gt;
+                &lt;td&gt;$12.50&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;Desserts&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Item&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Chocolate Lava Cake&lt;/td&gt;
+                &lt;td&gt;$5.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Tiramisu&lt;/td&gt;
+                &lt;td&gt;$6.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Cheesecake (New York, Blueberry)&lt;/td&gt;
+                &lt;td&gt;$6.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Macarons (Assorted Flavors)&lt;/td&gt;
+                &lt;td&gt;$3.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Ice Cream Sundaes&lt;/td&gt;
+                &lt;td&gt;$4.50&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;Seasonal Specials&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Item&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Pumpkin Spice Latte&lt;/td&gt;
+                &lt;td&gt;$4.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Summer Berry Smoothie&lt;/td&gt;
+                &lt;td&gt;$5.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Winter Hot Mulled Cider&lt;/td&gt;
+                &lt;td&gt;$3.75&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Strawberry Shortcake&lt;/td&gt;
+                &lt;td&gt;$6.00&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;Kids’ Menu&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Item&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Mini Pancakes with Syrup&lt;/td&gt;
+                &lt;td&gt;$4.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Grilled Cheese &amp; Fries&lt;/td&gt;
+                &lt;td&gt;$5.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Macaroni &amp; Cheese&lt;/td&gt;
+                &lt;td&gt;$4.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Chicken Nuggets&lt;/td&gt;
+                &lt;td&gt;$5.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Mini Milkshakes (Vanilla, Chocolate, Strawberry)&lt;/td&gt;
+                &lt;td&gt;$3.00&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;Extras &amp; Add-Ons&lt;/h2&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Item&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Extra Shot of Espresso&lt;/td&gt;
+                &lt;td&gt;$1.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Almond Milk / Oat Milk&lt;/td&gt;
+                &lt;td&gt;$0.50&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Whipped Cream&lt;/td&gt;
+                &lt;td&gt;$0.75&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Chia Seeds&lt;/td&gt;
+                &lt;td&gt;$1.00&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Side of Bacon&lt;/td&gt;
+                &lt;td&gt;$2.50&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+        &lt;/div&gt;
+        
+        
+        
+        
+        &lt;!--services div--&gt;
+        &lt;div id="services"&gt;
+            &lt;h1&gt;Our services&lt;/h1&gt;
+            &lt;div id="ss"&gt;
+            &lt;div class="service"&gt;
+                &lt;img src="data:image/jpeg;base64,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" alt="fresh coffee"&gt;
+                &lt;h3&gt;Fresh Coffee&lt;/h3&gt;
+                &lt;p&gt;Experience the finest freshly brewed coffee, made with premium beans, served just the way you like it.&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class="service"&gt;
+                &lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTexLQVDf1lWdrHAyi0FfgpeA688BpyxhMhKg&amp;s" alt="Snacks"&gt;
+                &lt;h3&gt;Pastries &amp; Snacks&lt;/h3&gt;
+                &lt;p&gt;Enjoy a selection of freshly baked pastries and snacks, perfect for pairing with your favorite coffee.&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="service"&gt;
+                &lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3pg7kAjhfN_OvnO607E1_kF1v4nXSmi6jJQ&amp;s" alt="atmosphere"&gt;
+                &lt;h3&gt;Cozy Atmosphere&lt;/h3&gt;
+                &lt;p&gt;Relax in our cozy and welcoming environment, designed for you to unwind and enjoy your time with friends or by yourself.&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div id="contact"&gt;
+
+            &lt;section class="contact-form"&gt;
+                &lt;h2&gt;Contact Us&lt;/h2&gt;
+                &lt;p&gt;We'd love to hear from you! Please fill out the form below to get in touch with us.&lt;/p&gt;
+                
+                &lt;form&gt;
+                    &lt;div class="form-group"&gt;
+                        &lt;label for="name"&gt;Full Name&lt;/label&gt;
+                        &lt;input type="text" id="name" name="name" required placeholder="Your Name"&gt;
+                    &lt;/div&gt;
+                    &lt;div class="form-group"&gt;
+                        &lt;label for="email"&gt;Email Address&lt;/label&gt;
+                        &lt;input type="email" id="email" name="email" required placeholder="Your Email"&gt;
+                    &lt;/div&gt;
+                    &lt;div class="form-group"&gt;
+                        &lt;label for="message"&gt;Message&lt;/label&gt;
+                        &lt;textarea id="message" name="message" rows="4" required placeholder="Your Message"&gt;&lt;/textarea&gt;
+                    &lt;/div&gt;
+                    &lt;div class="form-group"&gt;
+                        &lt;button type="submit" class="submit-btn"&gt;Send Message&lt;/button&gt;
+                    &lt;/div&gt;
+
+
+    
+                &lt;/form&gt;
+        
+        &lt;/div&gt;
+        &lt;footer&gt;
+            &lt;p&gt;&amp;copy; 2025 Cafe Max. All Rights Reserved.&lt;/p&gt;
+            &lt;a href="mailto:example@example.com"&gt;Send an Email&lt;/a&gt;
+       
+        &lt;/footer&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  <div class="code-block"><div class="code-label">style.css – Cafe Novo (complete CSS file)</div><pre>body{
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+
+/*nav bar styling*/
+nav{
+    height:80px;
+
+   /* display: flex;  
+   background-color: rgb(7, 152, 84);
+   justify-content:center;
+   align-items: center; */
+/* easy way */
+   text-align: center;
+   background-color:rgb(7, 152, 84);
+   padding-top: 15px;
+
+   /* to fix the nav bar on top */
+   position:fixed;
+   width: 98%;
+   left: 0;/*  For margin: auto to center an element with absolute/fixed positioning, all sides must be defined. */
+   right: 0; /*strick to the right*/
+   top:0;/*stick to the top */
+   margin: auto;  
+}
+nav a{
+   text-decoration: none;
+   margin: 0px 10px 0px 10px; /*margin: top right bottom left;*/
+   color:rgb(0, 4, 255);
+}
+#about,#menu,#services,#contact{
+  scroll-margin-top: 80px;      /* 80 is ht of nav bar, this is added to avoid overlap*/
+}
+
+
+
+/* header styling*/
+header{
+   background-color: gold;
+   text-align: center;
+   /* padding:10px 0px 10px 0px; */
+   
+}
+header img{
+    height: 500px;
+    width: 500px;
+    border: 1px solid rgb(231, 197, 10);
+    border-radius: 50px;
+    box-shadow: 10px 10px 10px yellow;
+}
+
+
+
+h1{
+   text-align: center;
+   padding-top:20px;
+}
+
+
+.side{
+   display: flex;
+   justify-content: center;
+   
+}
+
+.side p{
+   width:500px;
+   text-align: justify;
+   margin-right: 20px;
+   
+}
+
+#about{
+   background-color: lavender;
+   /* padding:10px 0px 10px 0px;
+   margin:10px 0px 10px 0px; */
+}
+
+#menu{
+    background-color: burlywood;
+    /* padding:10px 0px 10px 0px;
+   margin:10px 0px 10px 0px; */
+}
+
+table,th,td{
+   border: 1px solid black;
+   border-collapse: collapse;
+   margin:auto;
+}
+
+thead{
+    background-color: brown;
+    color: white;
+}
+
+tbody{
+    background-color: bisque;
+}
+
+h2{
+   text-align: center;
+}
+
+#menu ol{
+ 
+  width: max-content;
+   margin: auto;
+  
+}
+
+#menu ol li::marker{
+           color: brown; /*change marker color */
+           font-size: 25px;    /*change the marker size */
+       }
+     
+
+
+
+#menu ul li{
+   list-style-type: none;
+   background-image: url('https://png.pngtree.com/png-vector/20240512/ourmid/pngtree-this-photo-portrays-a-single-coffee-bean-isolated-against-blank-backdrop-png-image_12439812.png'); /* Replace with your image URL */
+   background-size: 15px 15px; /* Resize the image */
+   background-repeat: no-repeat; /* Prevent repetition */
+   padding-left: 25px; /* Add space for the image */
+   line-height: 20px; /* Adjust alignment */
+}
+   
+
+
+
+#ss{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.service img{
+    height: 50%;
+    width:90%;
+    border-radius:100px
+}
+
+.service{
+    border: 1px solid black;
+    margin:10px;
+    width:30%;
+    height: 400px;
+    padding: 10px;
+    background-color: antiquewhite;
+    text-align: center;
+}
+
+#services{
+    background-color: rgb(231, 218, 150);
+   
+    padding:10px 0px 10px 0px;
+   margin:10px 0px 10px 0px;
+}
+
+
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input, .form-group textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    background-color: rgb(7, 152, 84);;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #7dc681;
+}
+
+footer {
+    background-color: gold;
+    color: #fff;
+    padding: 30px 0;
+    text-align: center;
+    margin-top:10px;
+}
+
+
+footer p {
+    font-size: 1rem;
+    color: black;
+}
+
+</pre></div>
+
+  <div class="info-box yellow"><span class="box-icon">💡</span><div><h4>3 Ways to Write CSS</h4>
+  <table class="nice-table" style="margin:8px 0">
+    <tr><th>Type</th><th>Where Written</th><th>Best For</th></tr>
+    <tr><td>Inline</td><td>Inside the HTML tag</td><td>Quick one-off changes</td></tr>
+    <tr><td>Internal</td><td>&lt;style&gt; in &lt;head&gt;</td><td>Single-page styles</td></tr>
+    <tr><td><strong>External ✅</strong></td><td>Separate .css file</td><td>Multiple pages — used here!</td></tr>
+  </table></div></div>
+
+  <div class="info-box green"><span class="box-icon">🎯</span><div><h4>What You Learned</h4><ul>
+    <li>Linking external CSS with <code>&lt;link rel="stylesheet" href="style.css"&gt;</code></li>
+    <li>Tables: <code>&lt;table&gt;</code>, <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code></li>
+    <li>Nested lists (ol inside li inside ol)</li>
+    <li>Custom image bullets with <code>background-image</code> on <code>li</code></li>
+    <li>Styled <code>::marker</code> for ordered lists</li>
+    <li>Flexbox service cards with <code>display: flex</code></li>
+    <li>Contact form with <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;button&gt;</code></li>
+  </ul></div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ 3 ═══ -->
+<section class="section" id="p3">
+  <div class="section-header">
+    <div class="section-num">3</div><span class="emoji">✈️</span>
+    <h2>Travel Diaries</h2>
+  </div>
+  <span class="project-tag">Project</span>
+  <span class="concept-tag">Multi-Page Site</span>
+  <span class="concept-tag">iFrame / YouTube</span>
+  <span class="concept-tag">Video Tag</span>
+  <span class="concept-tag">Audio Tag</span>
+  <span class="concept-tag">Flexbox Gallery</span>
+  <span class="concept-tag">mailto Form</span>
+
+  <div class="preview-section">
+      <button class="preview-btn" onclick="openPreview('travel')">👁️ View Live Output: ✈️ Travel Diaries</button>
+    </div>
+    <div class="modal-overlay" id="modal-travel" onclick="closePreviewIfOverlay(event,'travel')">
+      <div class="modal-box">
+        <div class="modal-header"><span>✈️ Travel Diaries – Live Output</span><button class="modal-close" onclick="closePreview('travel')">✕ Close</button></div>
+        <iframe srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot;>
+<head>
+    <meta charset=&quot;UTF-8&quot;>
+    <title>Travel Diaries</title>
+    <style>nav{ height:40px; text-align: center; background-color:rgb(223, 214, 49); padding-top: 15px; position:sticky; top:0; width:100%; z-index:99; }
+nav a{ text-decoration: none; margin: 0px 10px; color:rgb(0, 4, 255); cursor:pointer; }
+nav a.active{ color:#000; border-bottom:2px solid #000; font-weight:bold; }
+footer{ background-color: black; text-align: center; height: 50px; padding-top:10px; padding-bottom:20px; margin-top: 20px; }
+footer p{ color:white; text-decoration: none; padding-left:10px; padding-right: 10px; font-size: 20px; }
+header{ padding-top: 50px; height: 150px; background-color: greenyellow; width: 100%; text-align: center; }
+h1,h2,h3{ text-align: center; }
+img{ display: block; margin:auto; }
+.container{ display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }
+.item{ width: 20%; min-width: 250px; text-align: center; border: 1px solid black; height:400px; margin: 10px; padding: 10px; background-color: antiquewhite; overflow:hidden; }
+.container img{ height:200px; width:250px; max-width: 100%; object-fit:cover; }
+.item iframe{ height:200px; width:250px; max-width: 100%; }
+video{ display: block; margin: auto; }
+audio{ display: block; margin: auto; }
+.profile-img{ height:300px; width: auto; }
+form{ border: 1px solid black; height:max-content; width:max-content; margin: auto; padding: 40px; border-radius: 20px; background-color: bisque; box-shadow: 10px 10px 10px grey; }
+.box{ margin: 10px; }
+.box input, .box textarea{ display:block; margin-top:4px; padding:6px; width:250px; border:1px solid #ccc; border-radius:4px; }
+button{ display: block; margin: 0 auto; padding:8px 20px; }
+.contact_details{ text-align: center; }
+.info{ padding:10px; }
+.page{ display:none; } .page.show{ display:block; }</style>
+</head>
+<body>
+<nav>
+    <a onclick=&quot;go('page-home',this)&quot; class=&quot;active&quot;>Home</a>
+    <a onclick=&quot;go('page-videos',this)&quot;>Videos</a>
+    <a onclick=&quot;go('page-audio',this)&quot;>Audio</a>
+    <a onclick=&quot;go('page-about',this)&quot;>About</a>
+    <a onclick=&quot;go('page-contact',this)&quot;>Contact</a>
+</nav>
+
+<!-- HOME -->
+<div id=&quot;page-home&quot; class=&quot;page show&quot;>
+<header><h1>Home</h1><p>Welcome to my travel diary, where I share my adventures from around the world!</p></header>
+<div class=&quot;info&quot;>
+    <h1>Explore My Gallery-My Life, My World</h1>
+    <h2>My Pictogram</h2>
+    <div class=&quot;container&quot;>
+        <div class=&quot;item&quot;><h2>Santorini, Greece</h2><img src=&quot;data:image/jpeg;base64,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&quot; alt=&quot;Santorini, Greece&quot;><p>Santorini is famous for its white-washed buildings, blue-domed churches, and breathtaking sunsets over the Aegean Sea.</p></div>
+        <div class=&quot;item&quot;><h2>Kyoto, Japan</h2><img src=&quot;data:image/jpeg;base64,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&quot; alt=&quot;Kyoto, Japan&quot;><p>Kyoto is the heart of traditional Japanese culture, known for its historic temples, bamboo forests, and cherry blossoms.</p></div>
+        <div class=&quot;item&quot;><h2>The Great Barrier Reef</h2><img src=&quot;data:image/jpeg;base64,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&quot; alt=&quot;The Great Barrier Reef&quot;><p>The Great Barrier Reef is the largest coral reef system in the world, home to vibrant marine life and crystal-clear waters.</p></div>
+    </div>
+</div>
+<footer><p>&amp;copy; 2025 My Travel Diary | Designed by Me</p></footer>
+</div>
+
+<!-- VIDEOS -->
+<div id=&quot;page-videos&quot; class=&quot;page&quot;>
+<header><h1>Videos</h1><p>Watch my travel journey through exciting videos capturing unforgettable moments.</p></header>
+<div class=&quot;info&quot;>
+    <h2>Explore the World Through Videos</h2>
+    <div class=&quot;container&quot;>
+        <div class=&quot;item&quot;><h3>📍 Santorini, Greece</h3><iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/VIDEO_ID_1&quot; title=&quot;Santorini Travel Guide&quot; frameborder=&quot;0&quot; allowfullscreen></iframe></div>
+        <div class=&quot;item&quot;><h3>🏛 Machu Picchu, Peru</h3><iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/VIDEO_ID_2&quot; title=&quot;Machu Picchu Tour&quot; frameborder=&quot;0&quot; allowfullscreen></iframe></div>
+        <div class=&quot;item&quot;><h3>🎎 Kyoto, Japan</h3><iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/VIDEO_ID_3&quot; title=&quot;Kyoto Cherry Blossoms&quot; frameborder=&quot;0&quot; allowfullscreen></iframe></div>
+        <div class=&quot;item&quot;><h3>🐠 The Great Barrier Reef</h3><iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/VIDEO_ID_4&quot; title=&quot;Great Barrier Reef Diving&quot; frameborder=&quot;0&quot; allowfullscreen></iframe></div>
+    </div>
+    <h3>📌 Personal Travel Videos</h3>
+    <div style=&quot;background:#222;height:160px;width:300px;display:flex;align-items:center;justify-content:center;color:#aaa;border-radius:8px;margin:10px auto;font-size:0.85rem&quot;>🎬 your-video.mp4</div>
+</div>
+<footer><p>&amp;copy; 2025 My Travel Diary | Designed by Me</p></footer>
+</div>
+
+<!-- AUDIO -->
+<div id=&quot;page-audio&quot; class=&quot;page&quot;>
+<header><h1>Audios</h1><p>Listen to immersive travel sounds, stories, and experiences from my trips.</p></header>
+<div class=&quot;info&quot;>
+    <h2>Listen to the Sounds of Travel</h2>
+    <h3>🌊 Beach Waves (Maldives)</h3>
+    <audio controls><source src=&quot;beach-waves.mp3&quot; type=&quot;audio/mpeg&quot;>Your browser does not support the audio element.</audio>
+    <h3>🌿 Amazon Rainforest Sounds</h3>
+    <audio controls><source src=&quot;rainforest-sounds.mp3&quot; type=&quot;audio/mpeg&quot;>Your browser does not support the audio element.</audio>
+    <h3>🎧 Travel Podcast: Exploring Kyoto</h3>
+    <audio controls><source src=&quot;kyoto-podcast.mp3&quot; type=&quot;audio/mpeg&quot;>Your browser does not support the audio element.</audio>
+    <h3>🎤 Personal Travel Story: My First Time in Paris</h3>
+    <audio controls><source src=&quot;paris-story.mp3&quot; type=&quot;audio/mpeg&quot;>Your browser does not support the audio element.</audio>
+</div>
+<footer><p>&amp;copy; 2025 My Travel Diary | Designed by Me</p></footer>
+</div>
+
+<!-- ABOUT -->
+<div id=&quot;page-about&quot; class=&quot;page&quot;>
+<header><h1>About</h1><p>Learn more about me, my love for travel, and the stories behind my adventures</p></header>
+<div class=&quot;info&quot;>
+    <h2>Welcome to My Travel Diary! 🌍✈️</h2>
+    <div style=&quot;background:#ddd;height:200px;width:250px;display:flex;align-items:center;justify-content:center;border-radius:10px;margin:auto;color:#555;font-size:0.9rem&quot;>📸 luxury-travel-photo-books.jpg</div>
+    <p style=&quot;max-width:600px;margin:15px auto&quot;>Hello! I'm Roshni, a passionate traveler who loves exploring new destinations, experiencing different cultures, and capturing my journey through photos, videos, and stories. This website is my way of sharing those amazing moments with you.</p>
+    <h3>🌎 Why I Started This Travel Diary</h3>
+    <p style=&quot;max-width:600px;margin:10px auto&quot;>I've always believed that travel is more than just visiting places; it's about the people you meet, the lessons you learn, and the memories you create.</p>
+    <h3>🌟 My Favorite Travel Quote</h3>
+    <blockquote style=&quot;background:#f9f9f9;border-left:4px solid #DAA520;padding:15px;max-width:500px;margin:15px auto;font-style:italic&quot;>&quot;Travel isn't always pretty. It isn't always comfortable. Sometimes it hurts, it even breaks your heart. But that's okay. The journey changes you; it should change you.&quot; – Anthony Bourdain</blockquote>
+    <h3>📌 Where to Next?</h3>
+    <p style=&quot;text-align:center&quot;>My bucket list is never-ending! Feel free to reach out on the <a href=&quot;#&quot; onclick=&quot;go('page-contact',document.querySelectorAll('nav a')[4])&quot;>Contact Page</a>!</p>
+</div>
+<footer><p>&amp;copy; 2025 My Travel Diary | Designed by Me</p></footer>
+</div>
+
+<!-- CONTACT -->
+<div id=&quot;page-contact&quot; class=&quot;page&quot;>
+<header><h1>Contact</h1><p>Get in touch with me for travel tips, collaborations, or just to say hello!</p></header>
+<div class=&quot;info&quot;>
+    <form>
+        <div class=&quot;box&quot;><label>Your Name:</label><input type=&quot;text&quot; name=&quot;name&quot;></div>
+        <div class=&quot;box&quot;><label>Your Email:</label><input type=&quot;email&quot; name=&quot;email&quot;></div>
+        <div class=&quot;box&quot;><label>Your Message:</label><textarea name=&quot;message&quot; rows=&quot;5&quot;></textarea></div>
+        <button type=&quot;button&quot;>Send Message</button>
+    </form>
+    <h2>Connect with Me 📱</h2>
+    <p class=&quot;contact_details&quot;><strong>Email:</strong> your.email@example.com</p>
+    <p class=&quot;contact_details&quot;><strong>Follow Me on Social Media:</strong></p>
+    <p class=&quot;contact_details&quot;>📷 Instagram | 🎥 YouTube | 🐦 Twitter</p>
+</div>
+<footer><p>&amp;copy; 2025 My Travel Diary | Designed by Me</p></footer>
+</div>
+
+<script>
+function go(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
+  document.getElementById(name).classList.add('show');
+  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+  if(el)el.classList.add('active');
+}
+document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+</script>
+</body></html>" class="preview-iframe"></iframe>
+      </div>
+    </div>
+
+  <div class="real-life"><h4>🌍 Real-Life Connection</h4>
+  <p>Think of a travel magazine with different pages all linked by a contents page. A multi-page website works the same way — each page is a separate .html file. An <code>&lt;iframe&gt;</code> is like a <strong>window inside your page</strong> where you can watch YouTube without leaving your site!</p></div>
+
+  <div class="info-box yellow"><span class="box-icon">💡</span><div><h4>Anchor link vs Page link</h4>
+  <p><code>href="#section"</code> → jumps to a section on the <strong>same page</strong><br>
+  <code>href="videos.html"</code> → opens a <strong>different HTML file</strong></p></div></div>
+
+  <h3>💻 Full Project Code – All 5 Pages</h3>
+  <div class="code-block"><div class="code-label">index.html – Home Page</div><pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Travel Diaries&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;a href="index.html"&gt;Home&lt;/a&gt;
+        &lt;a href="videos.html"&gt;Videos&lt;/a&gt;
+        &lt;a href="audio.html"&gt;Audio&lt;/a&gt;
+        &lt;a href="about.html"&gt;About&lt;/a&gt;
+        &lt;a href="contact.html"&gt;Contact&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Home&lt;/h1&gt;
+        &lt;p&gt;Welcome to my travel diary, where I share my adventures from around the world!&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="info"&gt;
+        &lt;h1&gt;Explore My Gallery-My Life, My World&lt;/h1&gt;
+        &lt;img src="travel.gif"&gt;
+
+        &lt;h2&gt;My Pictogram&lt;/h2&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="item"&gt;
+                &lt;h2&gt;Santorini, Greece&lt;/h2&gt;
+                &lt;img src="Santorini, Greece.jpg" alt="Santorini, Greece"&gt;
+                &lt;p&gt;Santorini is famous for its white-washed buildings, blue-domed churches, and breathtaking sunsets over the Aegean Sea. The island has volcanic beaches, delicious Greek cuisine, and stunning views from the cliffside villages of Oia and Fira.&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="item"&gt;
+                &lt;h2&gt;Kyoto, Japan&lt;/h2&gt;
+                &lt;img src="Kyoto, Japan.jpg" alt="Kyoto, Japan"&gt;
+                &lt;p&gt;Kyoto is the heart of traditional Japanese culture, known for its historic temples, bamboo forests, and cherry blossoms. It’s a must-visit for anyone interested in ancient Japan, tea ceremonies, and Zen gardens.&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="item"&gt;
+                &lt;h2&gt;Machu Picchu, Peru &lt;/h2&gt;
+                &lt;img src="Machu Picchu, Peru.jpg" alt="Machu Picchu, Peru"&gt;
+                &lt;p&gt;Machu Picchu is an ancient Incan city located in the Peruvian Andes. It is one of the most famous archaeological sites in the world and a UNESCO World Heritage Site. The stone-built ruins, surrounded by misty mountains, create a magical experience.&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="item"&gt;
+                &lt;h2&gt;The Great Barrier Reef&lt;/h2&gt;
+                &lt;img src="he Great Barrier Reef, Australia.jpg" alt="The Great Barrier Reef, Australia"&gt;
+                &lt;p&gt;The Great Barrier Reef is the largest coral reef system in the world, home to vibrant marine life, colorful corals, and crystal-clear waters. It's a paradise for scuba divers, snorkelers, and nature lovers.&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+
+
+    &lt;/div&gt;
+
+    &lt;footer&gt;
+        &lt;p&gt;&amp;copy; 2025 My Travel Diary | Designed by Me&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  <div class="code-block"><div class="code-label">videos.html – Videos Page</div><pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Travel Diaries&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;a href="index.html"&gt;Home&lt;/a&gt;
+        &lt;a href="videos.html"&gt;Videos&lt;/a&gt;
+        &lt;a href="audio.html"&gt;Audio&lt;/a&gt;
+        &lt;a href="about.html"&gt;About&lt;/a&gt;
+        &lt;a href="contact.html"&gt;Contact&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Videos&lt;/h1&gt;
+        &lt;p&gt;Watch my travel journey through exciting videos capturing unforgettable moments.&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="info"&gt;
+        &lt;h2&gt;Explore the World Through Videos&lt;/h2&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="item"&gt;
+            &lt;h3&gt;📍 Santorini, Greece&lt;/h3&gt;
+            &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_1" 
+                title="Santorini Travel Guide" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+            &lt;/div&gt;
+            &lt;div class="item"&gt;
+            &lt;h3&gt;🏛 Machu Picchu, Peru&lt;/h3&gt;
+            &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_2" 
+                title="Machu Picchu Tour" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+            &lt;/div&gt;
+            &lt;div class="item"&gt;
+            &lt;h3&gt;🎎 Kyoto, Japan&lt;/h3&gt;
+            &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_3" 
+                title="Kyoto Cherry Blossoms" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+            &lt;/div&gt;
+            &lt;div class="item"&gt;
+            &lt;h3&gt;🐠 The Great Barrier Reef&lt;/h3&gt;
+            &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_4" 
+                title="Great Barrier Reef Diving" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;h3&gt;📌 Personal Travel Videos&lt;/h3&gt;
+        &lt;video width="560" height="315" controls&gt;
+            &lt;source src="your-video.mp4" type="video/mp4"&gt;
+            Your browser does not support the video tag.
+        &lt;/video&gt;
+
+   
+
+
+    &lt;/div&gt;
+
+    &lt;footer&gt;
+        &lt;p&gt;&amp;copy; 2025 My Travel Diary | Designed by Me&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  <div class="code-block"><div class="code-label">audio.html – Audio Page</div><pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Travel Diaries&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;a href="index.html"&gt;Home&lt;/a&gt;
+        &lt;a href="videos.html"&gt;Videos&lt;/a&gt;
+        &lt;a href="audio.html"&gt;Audio&lt;/a&gt;
+        &lt;a href="about.html"&gt;About&lt;/a&gt;
+        &lt;a href="contact.html"&gt;Contact&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Audios&lt;/h1&gt;
+        &lt;p&gt;Listen to immersive travel sounds, stories, and experiences from my trips.&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="info"&gt;
+        &lt;h2&gt;Listen to the Sounds of Travel&lt;/h2&gt;
+
+        &lt;h3&gt;🌊 Beach Waves (Maldives)&lt;/h3&gt;
+        &lt;audio controls&gt;
+            &lt;source src="beach-waves.mp3" type="audio/mpeg"&gt;
+            Your browser does not support the audio element.
+        &lt;/audio&gt;
+
+        &lt;h3&gt;🌿 Amazon Rainforest Sounds&lt;/h3&gt;
+        &lt;audio controls&gt;
+            &lt;source src="rainforest-sounds.mp3" type="audio/mpeg"&gt;
+            Your browser does not support the audio element.
+        &lt;/audio&gt;
+
+        &lt;h3&gt;🎧 Travel Podcast: Exploring Kyoto&lt;/h3&gt;
+        &lt;audio controls&gt;
+            &lt;source src="kyoto-podcast.mp3" type="audio/mpeg"&gt;
+            Your browser does not support the audio element.
+        &lt;/audio&gt;
+
+        &lt;h3&gt;🎤 Personal Travel Story: My First Time in Paris&lt;/h3&gt;
+        &lt;audio controls&gt;
+            &lt;source src="paris-story.mp3" type="audio/mpeg"&gt;
+            Your browser does not support the audio element.
+        &lt;/audio&gt;
+
+
+
+    &lt;/div&gt;
+
+    &lt;footer&gt;
+        &lt;p&gt;&amp;copy; 2025 My Travel Diary | Designed by Me&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  <div class="code-block"><div class="code-label">about.html – About Page</div><pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Travel Diaries&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;a href="index.html"&gt;Home&lt;/a&gt;
+        &lt;a href="videos.html"&gt;Videos&lt;/a&gt;
+        &lt;a href="audio.html"&gt;Audio&lt;/a&gt;
+        &lt;a href="about.html"&gt;About&lt;/a&gt;
+        &lt;a href="contact.html"&gt;Contact&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;header&gt;
+        &lt;h1&gt;About&lt;/h1&gt;
+        &lt;p&gt;Learn more about me, my love for travel, and the stories behind my adventures&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="info"&gt;
+        
+        &lt;h2&gt;Welcome to My Travel Diary! 🌍✈️&lt;/h2&gt;
+        &lt;img src="luxury-travel-photo-books.jpg" alt="Your Travel Photo" class="profile-img"&gt;
+        
+        &lt;p&gt;Hello! I'm Roshni, a passionate traveler who loves exploring new destinations, experiencing different cultures, and capturing my journey through photos, videos, and stories. This website is my way of sharing those amazing moments with you.&lt;/p&gt;
+
+        &lt;h3&gt;🌎 Why I Started This Travel Diary&lt;/h3&gt;
+        &lt;p&gt;I've always believed that travel is more than just visiting places; it's about the people you meet, the lessons you learn, and the memories you create. Through this website, I aim to inspire fellow travelers and provide useful insights about the places I’ve been to.&lt;/p&gt;
+
+        &lt;h3&gt;📍 My Travel Journey&lt;/h3&gt;
+        &lt;p&gt;From the bustling streets of Tokyo to the serene beaches of Bali, every place has left a special mark on my heart. Whether it’s hiking in the Swiss Alps or tasting street food in Bangkok, each experience has been an adventure.&lt;/p&gt;
+
+        &lt;h3&gt;🌟 My Favorite Travel Quote&lt;/h3&gt;
+        &lt;blockquote&gt;"Travel isn’t always pretty. It isn’t always comfortable. Sometimes it hurts, it even breaks your heart. But that’s okay. The journey changes you; it should change you." – Anthony Bourdain&lt;/blockquote&gt;
+
+        &lt;h3&gt;📌 Where to Next?&lt;/h3&gt;
+        &lt;p&gt;My bucket list is never-ending! Follow along as I continue to explore new destinations and share my experiences with you. Feel free to reach out on the &lt;a href="contact.html"&gt;Contact Page&lt;/a&gt;!&lt;/p&gt;
+
+
+
+
+
+
+    &lt;/div&gt;
+    
+    &lt;footer&gt;
+        &lt;p&gt;&amp;copy; 2025 My Travel Diary | Designed by Me&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  <div class="code-block"><div class="code-label">contact.html – Contact Page</div><pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Travel Diaries&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;a href="index.html"&gt;Home&lt;/a&gt;
+        &lt;a href="videos.html"&gt;Videos&lt;/a&gt;
+        &lt;a href="audio.html"&gt;Audio&lt;/a&gt;
+        &lt;a href="about.html"&gt;About&lt;/a&gt;
+        &lt;a href="contact.html"&gt;Contact&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;header&gt;
+        &lt;h1&gt;Contact&lt;/h1&gt;
+        &lt;p&gt;Get in touch with me for travel tips, collaborations, or just to say hello!&lt;/p&gt;
+    &lt;/header&gt;
+
+    &lt;div class="info"&gt;
+        &lt;br&gt;
+        &lt;br&gt;
+
+        &lt;form action="mailto:your.email@example.com" method="post" enctype="text/plain"&gt;
+            &lt;div class="box"&gt;
+            &lt;label for="name"&gt;Your Name:&lt;/label&gt;
+            &lt;input type="text" id="name" name="name" required&gt;
+            &lt;/div&gt;
+            &lt;div class="box"&gt;
+            &lt;label for="email"&gt;Your Email:&lt;/label&gt;
+            &lt;input type="email" id="email" name="email" required&gt;
+            &lt;/div class="box"&gt;
+            &lt;div class="box"&gt;
+            &lt;label for="message"&gt;Your Message:&lt;/label&gt;
+            &lt;textarea id="message" name="message" rows="5" required&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+            &lt;button type="submit"&gt;Send Message&lt;/button&gt;
+        &lt;/form&gt;
+    
+        &lt;h2&gt;Connect with Me 📱&lt;/h2&gt;
+        &lt;p class="contact_details"&gt;&lt;strong&gt;Email:&lt;/strong&gt; &lt;a href="mailto:your.email@example.com"&gt;your.email@example.com&lt;/a&gt;&lt;/p&gt;
+        &lt;p class="contact_details"&gt;&lt;strong&gt;Follow Me on Social Media:&lt;/strong&gt;&lt;/p&gt;
+        &lt;p class="contact_details"&gt;
+            &lt;a href="https://instagram.com/yourprofile" target="_blank"&gt;📷 Instagram&lt;/a&gt; | 
+            &lt;a href="https://youtube.com/yourchannel" target="_blank"&gt;🎥 YouTube&lt;/a&gt; | 
+            &lt;a href="https://twitter.com/yourprofile" target="_blank"&gt;🐦 Twitter&lt;/a&gt;
+        &lt;/p&gt;
+    
+
+
+
+
+    &lt;/div&gt;
+    
+    &lt;footer&gt;
+        &lt;p&gt;&amp;copy; 2025 My Travel Diary | Designed by Me&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  <div class="code-block"><div class="code-label">style.css – Shared Stylesheet (used by all pages)</div><pre>/*nav bar styling*/
+nav{
+    height:40px;
+
+   /* display: flex;  
+   background-color: rgb(7, 152, 84);
+   justify-content:center;
+   align-items: center; */
+/* easy way */
+   text-align: center;
+   background-color:rgb(223, 214, 49);
+   padding-top: 15px;
+
+   /* to fix the nav bar on top */
+   position:fixed;
+   width: 98%;
+   left: 0;/*  For margin: auto to center an element with absolute/fixed positioning, all sides must be defined. */
+   right: 0; /*strick to the right*/
+   top:0;/*stick to the top */
+   margin: auto;  
+}
+nav a{
+   text-decoration: none;
+   margin: 0px 10px 0px 10px; /*margin: top right bottom left;*/
+   color:rgb(0, 4, 255);
+}
+
+
+
+footer{
+    background-color: black;
+    text-align: center;
+    height: 50px;
+    padding-top:10px;
+    padding-bottom:20px;
+    margin-top: 20px;
+}
+footer p{
+    color:white;
+    text-decoration: none;
+    padding-left:10px;
+    padding-right: 10px;
+    font-size: 20px;
+}
+
+header{
+    padding-top: 50px;
+    height: 150px;
+    background-color: greenyellow;
+    width: 100%;
+    text-align: center;
+}
+h1,h2,h3{
+    text-align: center;
+}
+img{
+    display: block;
+    margin:auto;
+}
+
+
+.container {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap when needed */
+    justify-content: center;
+    align-items: center;
+
+}
+
+.item {
+    width: 20%; /* Ensures each div takes equal space */
+    min-width: 250px; /*  Prevents the divs from shrinking too much. */
+    text-align: center;
+    border: 1px solid black;
+    height:400px;
+    margin: 10px;
+    padding: 10px;
+    background-color: antiquewhite;
+
+}
+
+.container img{
+    height:200px;
+    width:250px;
+    max-width: 100%;  /*Ensures images don’t overflow their container.*/
+}
+.item iframe{
+    height:200px;
+    width:250px;
+    max-width: 100%;  /*Ensures images don’t overflow their container.*/
+
+}
+video{
+    display: block;
+    margin: auto;
+}
+audio{
+    display: block;
+    margin: auto;
+}
+
+.profile-img{
+    height:300px;
+    width: auto;
+}
+
+form{
+            
+            
+    border: 1px solid black;
+   
+    height:max-content;
+    width:max-content ;
+    margin: auto;
+    padding: 40px;
+    border-radius: 20px;
+    background-color: bisque;
+    box-shadow: 10px 10px 10px grey;
+    
+    
+}
+.box{
+    margin: 10px;
+}
+button{
+    display: block;
+    margin: 0 auto;
+    
+}
+
+.contact_details{
+    text-align: center;
+}
+</pre></div>
+
+  <div class="info-box teal"><span class="box-icon">🎬</span><div><h4>Media Tags</h4>
+  <table class="nice-table" style="margin:8px 0">
+    <tr><th>Tag</th><th>What it does</th><th>Key attribute</th></tr>
+    <tr><td><code>&lt;video&gt;</code></td><td>Plays a local video file</td><td><code>controls</code></td></tr>
+    <tr><td><code>&lt;audio&gt;</code></td><td>Plays a local audio file</td><td><code>controls</code></td></tr>
+    <tr><td><code>&lt;iframe&gt;</code></td><td>Embeds another website (like YouTube)</td><td><code>src</code>, <code>allowfullscreen</code></td></tr>
+  </table></div></div>
+
+  <div class="info-box green"><span class="box-icon">🎯</span><div><h4>What You Learned</h4><ul>
+    <li>Building a multi-page website by linking .html files</li>
+    <li>Embedding YouTube videos with <code>&lt;iframe&gt;</code></li>
+    <li>Adding <code>&lt;video controls&gt;</code> and <code>&lt;audio controls&gt;</code> players</li>
+    <li>Using <code>flex-wrap: wrap</code> for a responsive photo gallery</li>
+    <li>Using a <code>mailto:</code> form action to email the form contents</li>
+  </ul></div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ 4 ═══ -->
+<section class="section" id="p4">
+  <div class="section-header">
+    <div class="section-num">4</div><span class="emoji">⭐</span>
+    <h2>Favicons &amp; Site Builders</h2>
+  </div>
+  <span class="project-tag">Project</span>
+  <span class="concept-tag">Favicon</span>
+  <span class="concept-tag">favicon.io</span>
+  <span class="concept-tag">Site123</span>
+  <span class="concept-tag">Free-CSS</span>
+
+  <div class="preview-section">
+      <button class="preview-btn" onclick="openPreview('favicon')">👁️ View Live Output: ⭐ Favicons & Site Builders</button>
+    </div>
+    <div class="modal-overlay" id="modal-favicon" onclick="closePreviewIfOverlay(event,'favicon')">
+      <div class="modal-box">
+        <div class="modal-header"><span>⭐ Favicons & Site Builders – Live Output</span><button class="modal-close" onclick="closePreview('favicon')">✕ Close</button></div>
+        <iframe srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot;>
+<head>
+    <meta charset=&quot;UTF-8&quot;>
+    <title>HTML Favicon</title>
+</head>
+<body style=&quot;font-family:Arial,sans-serif;padding:20px&quot;>
+    <h1>HTML Favicon</h1>
+    <p>A favicon is a small image displayed next to the page title in the browser tab.</p>
+    <p>Go to the following link to create your favicon:</p>
+    <a href=&quot;https://favicon.io/&quot; target=&quot;_blank&quot;>Create Favicon</a>
+    <p>Now you can create your favicon using any one of the following:</p>
+    <ul>
+        <li>From Image</li>
+        <li>From text</li>
+        <li>From Emoji</li>
+    </ul>
+    <p>Once done, click on download and then it will download a zip file.</p>
+    <p>Click on it from your downloads and then copy the <strong>favicon.ico</strong> file from there to your project folder.</p>
+    <p>Then add link tag in head:</p>
+    <code style=&quot;background:#1e1b4b;color:#86efac;padding:8px 14px;border-radius:6px;display:inline-block&quot;>&amp;lt;link rel=&quot;shortcut icon&quot; href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&amp;gt;</code>
+    <hr style=&quot;margin:20px 0&quot;>
+    <h1>Site123</h1>
+    <p>Site123 is a website builder that allows users to create websites quickly without coding. It provides templates, a drag-and-drop editor, and built-in features like e-commerce, blogging, and SEO tools. It's designed for beginners and small businesses looking for an easy way to launch a website.</p>
+    <p>A drag-and-drop <b>website builder</b> with pre-made templates.</p>
+    <p>No coding required.</p>
+    <p>Includes hosting, domain options, and built-in tools (SEO, e-commerce, etc.).</p>
+    <p>Suitable for beginners and small businesses looking for an all-in-one solution.</p>
+    <a href=&quot;https://app.site123.com/&quot; target=&quot;_blank&quot;>Site123</a>
+    <hr>
+    <h1>Free CSS</h1>
+    <p>A resource for web templates</p>
+    <p>Offers free HTML/CSS templates that developers can download.</p>
+    <p>Requires manual coding and customization.</p>
+    <p>No hosting or built-in tools—just raw website templates.</p>
+    <p>Ideal for developers comfortable with HTML/CSS who want design resources.</p>
+    <a href=&quot;https://www.free-css.com/template-categories/portfolio&quot; target=&quot;_blank&quot;>Free CSS</a>
+</body>
+</html>" class="preview-iframe"></iframe>
+      </div>
+    </div>
+
+  <div class="real-life"><h4>🌍 Real-Life Connection</h4>
+  <p>Look at your browser tabs! Gmail has an envelope, YouTube has a red play button. These tiny icons are <strong>favicons</strong>. It's like the <strong>school crest on your uniform</strong> — small, but instantly recognizable!</p></div>
+
+  <h3>💻 Full Project Code</h3>
+  <div class="code-block"><div class="code-label">index.html – Favicon page</div><pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;HTML Favicon&lt;/title&gt;
+    &lt;link rel="shortcut icon" href="favicon.ico" type="image/x-icon"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;h1&gt;HTML Favicon&lt;/h1&gt;
+    &lt;p&gt;A favicon is a small image displayed next to the page title in the browser tab.&lt;/p&gt;
+    &lt;p&gt;Go to the following link to create your favicon&lt;/p&gt;
+    &lt;a href="https://favicon.io/"&gt;Create Favicon&lt;/a&gt;
+    &lt;p&gt;Now you can create your favicon using any one of the following&lt;/p&gt;
+    &lt;ul&gt;
+        &lt;li&gt;From Image&lt;/li&gt;
+        &lt;li&gt;From text&lt;/li&gt;
+        &lt;li&gt;From Emoji&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;Once done, click on download and then it will download a zip file&lt;/p&gt;
+    &lt;p&gt;Click on it from your downloads and then copy the favicon.ico file from there to your project folder&lt;/p&gt;
+    &lt;p&gt;Then add link tab in head.&lt;/p&gt;
+
+    
+
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+  <div class="code-block"><div class="code-label">site123.html – Site Builders comparison</div><pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Website&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Site123&lt;/h1&gt;
+    &lt;p&gt;
+        Site123 is a website builder that allows users to create websites quickly without coding. &lt;br&gt;It provides templates, a drag-and-drop editor, and built-in features like e-commerce, blogging, and SEO tools. &lt;br&gt;It's designed for beginners and small businesses looking for an easy way to launch a website.
+    &lt;/p&gt;
+    &lt;p&gt;A drag-and-drop &lt;b&gt;website builder&lt;/b&gt; with pre-made templates.&lt;/p&gt;
+&lt;p&gt;No coding required.&lt;/p&gt;
+&lt;p&gt;Includes hosting, domain options, and built-in tools (SEO, e-commerce, etc.).&lt;p&gt;
+&lt;p&gt;Suitable for beginners and small businesses looking for an all-in-one solution.&lt;/p&gt;
+    &lt;a href="https://app.site123.com/"&gt;Site123&lt;/a&gt;
+&lt;hr&gt;
+    &lt;h1&gt;Free CSS&lt;/h1&gt;
+    &lt;p&gt; A resource for web templates&lt;/p&gt;
+
+        &lt;p&gt;Offers free HTML/CSS templates that developers can download.&lt;/p&gt;
+    &lt;p&gt;Requires manual coding and customization.&lt;/p&gt;
+&lt;p&gt;No hosting or built-in tools—just raw website templates.&lt;/p&gt;
+&lt;p&gt; Ideal for developers comfortable with HTML/CSS who want design resources.&lt;/p&gt;
+&lt;a href="https://www.free-css.com/template-categories/portfolio"&gt;Free CSS&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+
+  <div class="info-box green"><span class="box-icon">🎯</span><div><h4>What You Learned</h4><ul>
+    <li>What a favicon is — the small icon in the browser tab</li>
+    <li>How to create one using <a href="https://favicon.io" target="_blank">favicon.io</a> (from image, text, or emoji)</li>
+    <li>Adding it with <code>&lt;link rel="shortcut icon" href="favicon.ico"&gt;</code> in <code>&lt;head&gt;</code></li>
+    <li>Difference between Site123 (drag-and-drop, no code) and Free-CSS (templates, needs code)</li>
+  </ul></div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ 5 ═══ -->
+<section class="section" id="p5">
+  <div class="section-header">
+    <div class="section-num">5</div><span class="emoji">🎨</span>
+    <h2>Using HTML Templates</h2>
+  </div>
+  <span class="project-tag">Project</span>
+  <span class="concept-tag">HTML5UP</span>
+  <span class="concept-tag">Folder Structure</span>
+  <span class="concept-tag">Editing Templates</span>
+
+  <div class="preview-section">
+      <button class="preview-btn" onclick="openPreview('templates')">👁️ View Live Output: 🎨 HTML Templates</button>
+    </div>
+    <div class="modal-overlay" id="modal-templates" onclick="closePreviewIfOverlay(event,'templates')">
+      <div class="modal-box">
+        <div class="modal-header"><span>🎨 HTML Templates – Live Output</span><button class="modal-close" onclick="closePreview('templates')">✕ Close</button></div>
+        <iframe srcdoc="<!DOCTYPE html>
+<html>
+<head><title>HTML Templates</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#1a1a2e;color:#eee}
+nav{background:#0f3460;padding:15px 30px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+nav .logo{color:#e94560;font-weight:bold;font-size:1.2rem}
+nav a{color:#eee;text-decoration:none;margin:0 10px;font-size:0.9rem}
+.hero{background:linear-gradient(135deg,#16213e,#0f3460);padding:60px 40px;text-align:center}
+.hero h1{font-size:2rem;color:#e94560;margin-bottom:10px}
+.hero p{color:#aaa}
+.cta{background:#e94560;color:white;padding:10px 24px;border-radius:20px;border:none;cursor:pointer;font-size:1rem;margin-top:16px}
+.features{display:flex;justify-content:center;gap:20px;padding:40px;flex-wrap:wrap;background:#16213e}
+.card{background:#0f3460;padding:22px;border-radius:14px;width:160px;text-align:center}
+.card h3{color:#e94560;margin-bottom:8px}
+.card p{font-size:0.8rem;color:#aaa}
+footer{background:#0f3460;text-align:center;padding:14px;color:#aaa;font-size:0.85rem}
+</style></head>
+<body>
+<nav><div class=&quot;logo&quot;>★ Spectral</div><div><a href=&quot;#&quot;>Home</a><a href=&quot;#&quot;>Generic</a><a href=&quot;#&quot;>Elements</a></div></nav>
+<div class=&quot;hero&quot;><h1>Welcome to Spectral</h1><p>A free, professional HTML5UP website template. Edit the text, images and colors to make it yours!</p><button class=&quot;cta&quot;>Get Started</button></div>
+<div class=&quot;features&quot;>
+<div class=&quot;card&quot;><div style=&quot;font-size:2rem&quot;>⚡</div><h3>Fast</h3><p>Optimized for speed on all devices</p></div>
+<div class=&quot;card&quot;><div style=&quot;font-size:2rem&quot;>📱</div><h3>Responsive</h3><p>Works on phones, tablets &amp; computers</p></div>
+<div class=&quot;card&quot;><div style=&quot;font-size:2rem&quot;>🎨</div><h3>Stylish</h3><p>Professional design, ready to customize</p></div>
+<div class=&quot;card&quot;><div style=&quot;font-size:2rem&quot;>🆓</div><h3>Free</h3><p>Download &amp;amp; use with credit</p></div>
+</div>
+<footer>Template by HTML5UP | Free under Creative Commons license</footer>
+</body></html>" class="preview-iframe"></iframe>
+      </div>
+    </div>
+
+  <div class="real-life"><h4>🌍 Real-Life Connection</h4>
+  <p>Using an HTML template is like getting a <strong>ready-decorated cake</strong> from a bakery and putting your own name on it. The baker did the hard work — you just personalise it with your text and images!</p></div>
+
+  <h3>📁 Template Folder Structure</h3>
+  <div class="code-block"><div class="code-label">html5up-spectral / folder layout</div>
+  <pre>📁 html5up-spectral/
+  📄 index.html        ← Open this first in browser
+  📄 generic.html      ← Reusable inner page
+  📄 elements.html     ← Shows all available UI elements
+  📁 assets/
+      📁 css/          ← All stylesheets (don't change these!)
+      📁 js/           ← JavaScript files
+      📁 webfonts/     ← Font files
+  📁 images/           ← Replace with your own images</pre></div>
+
+  <h3>✏️ How to Edit a Template</h3>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><p>Download from <strong>html5up.net</strong> or <strong>free-css.com</strong></p></div>
+    <div class="step"><div class="step-num">2</div><p>Open the folder in VS Code</p></div>
+    <div class="step"><div class="step-num">3</div><p>Open <code>index.html</code> and change the text in <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;p&gt;</code> tags</p></div>
+    <div class="step"><div class="step-num">4</div><p>Put your own photos into the <code>images/</code> folder and update <code>src</code> attributes</p></div>
+    <div class="step"><div class="step-num">5</div><p>Change colors in the CSS file</p></div>
+    <div class="step"><div class="step-num">6</div><p>Keep the footer credit — it's required by the license!</p></div>
+  </div>
+
+  <div class="info-box green"><span class="box-icon">🎯</span><div><h4>What You Learned</h4><ul>
+    <li>What an HTML template is and where to find them (html5up.net, free-css.com)</li>
+    <li>How to read a template's folder structure</li>
+    <li>How to change text and images without breaking the layout</li>
+    <li>Why you must keep the creator credit in the footer (Creative Commons license)</li>
+  </ul></div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ 6 ═══ -->
+<section class="section" id="p6">
+  <div class="section-header">
+    <div class="section-num">6</div><span class="emoji">🤖</span>
+    <h2>Creating Websites Using AI</h2>
+  </div>
+  <span class="project-tag">Project</span>
+  <span class="concept-tag">AI Tools</span>
+  <span class="concept-tag">Prompt Writing</span>
+  <span class="concept-tag">Claude</span>
+  <span class="concept-tag">ChatGPT</span>
+
+  <div class="preview-section">
+      <button class="preview-btn" onclick="openPreview('ai')">👁️ View Live Output: 🤖 AI Websites</button>
+    </div>
+    <div class="modal-overlay" id="modal-ai" onclick="closePreviewIfOverlay(event,'ai')">
+      <div class="modal-box">
+        <div class="modal-header"><span>🤖 AI Websites – Live Output</span><button class="modal-close" onclick="closePreview('ai')">✕ Close</button></div>
+        <iframe srcdoc="<!DOCTYPE html>
+<html>
+<head><title>Creating Websites with AI</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f8f9fa}
+header{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:40px;text-align:center}
+.content{padding:30px;max-width:700px;margin:auto}
+.tool{background:white;border-radius:12px;padding:18px;margin:14px 0;box-shadow:0 2px 10px rgba(0,0,0,0.08);display:flex;align-items:center;gap:16px}
+.ticon{font-size:2.2rem;flex-shrink:0}
+.tool h3{margin:0 0 4px;color:#333}
+.tool p{margin:0;color:#666;font-size:0.85rem}
+.bad{background:#2e1e1e;color:#f38ba8;padding:16px;border-radius:10px;font-family:monospace;font-size:0.82rem;margin:10px 0;white-space:pre-wrap}
+.good{background:#1e2e1e;color:#a6e3a1;padding:16px;border-radius:10px;font-family:monospace;font-size:0.82rem;margin:10px 0;white-space:pre-wrap}
+.tip{background:#fff3cd;padding:12px 16px;border-radius:8px;border-left:4px solid #ffc107;margin:16px 0}
+h2{color:#333;margin-top:24px}
+</style></head>
+<body>
+<header><h1>🤖 Creating Websites with AI</h1><p>Describe what you want — the AI builds it for you!</p></header>
+<div class=&quot;content&quot;>
+<h2>Popular AI Tools</h2>
+<div class=&quot;tool&quot;><span class=&quot;ticon&quot;>✨</span><div><h3>Claude (Anthropic)</h3><p>Generates full HTML/CSS/JS websites from text descriptions. Great at following detailed instructions.</p></div></div>
+<div class=&quot;tool&quot;><span class=&quot;ticon&quot;>💬</span><div><h3>ChatGPT (OpenAI)</h3><p>Can write HTML, CSS and JavaScript code for almost any webpage you describe.</p></div></div>
+<div class=&quot;tool&quot;><span class=&quot;ticon&quot;>🚀</span><div><h3>Framer AI</h3><p>Builds and publishes complete websites from a single prompt. Great for quick prototypes.</p></div></div>
+<div class=&quot;tool&quot;><span class=&quot;ticon&quot;>🏗️</span><div><h3>Wix ADI</h3><p>Asks you questions and automatically builds a website based on your answers.</p></div></div>
+<h2>❌ Bad Prompt</h2>
+<div class=&quot;bad&quot;>&quot;Make me a website&quot;</div>
+<h2>✅ Good Prompt</h2>
+<div class=&quot;good&quot;>&quot;Create a single-page HTML website for a bakery called 'Sweet Crumbs'.
+Include:
+- A fixed navigation bar (Home, Menu, Contact)
+- Yellow background with brown text
+- A menu table showing 5 items and prices
+- A contact form with Name, Email, Message fields
+Use internal CSS inside a &amp;lt;style&amp;gt; tag.&quot;</div>
+<div class=&quot;tip&quot;>💡 <strong>Remember:</strong> You still need to understand HTML &amp;amp; CSS to check for AI mistakes and write better prompts!</div>
+</div></body></html>" class="preview-iframe"></iframe>
+      </div>
+    </div>
+
+  <div class="real-life"><h4>🌍 Real-Life Connection</h4>
+  <p>Telling an AI "make me a website" is like telling a chef "cook me food." You need to specify <em>what</em> food, <em>how</em> it's cooked, <em>what ingredients</em> to use. The more specific your <strong>prompt</strong>, the better the result!</p></div>
+
+  <h3>📝 Prompt Writing Tips</h3>
+  <div class="info-box pink"><span class="box-icon">🚫</span><div><h4>Bad Prompt</h4><p>"Make me a website"</p></div></div>
+  <div class="info-box green"><span class="box-icon">✅</span><div><h4>Good Prompt</h4><p>"Create a single-page HTML website for a bakery called 'Sweet Crumbs'. Include: a fixed navigation bar (Home, Menu, Contact), yellow background, a menu table with 5 items and prices, a contact form with Name, Email, Message. Use internal CSS in a &lt;style&gt; tag."</p></div></div>
+
+  <div class="info-box orange"><span class="box-icon">🧠</span><div><h4>AI is a Tool, Not a Shortcut!</h4><p>You still need to understand HTML &amp; CSS to:<ul><li>Know if the AI made a mistake</li><li>Fix errors in the generated code</li><li>Write better, more specific prompts</li></ul></p></div></div>
+
+  <div class="info-box green"><span class="box-icon">🎯</span><div><h4>What You Learned</h4><ul>
+    <li>What AI website builders are and how they work</li>
+    <li>Popular tools: Claude, ChatGPT, Framer AI, Wix ADI</li>
+    <li>How to write detailed, specific prompts</li>
+    <li>Why understanding code still matters even with AI</li>
+  </ul></div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ 7 ═══ -->
+<section class="section" id="p7">
+  <div class="section-header">
+    <div class="section-num">7</div><span class="emoji">🐙</span>
+    <h2>Uploading to GitHub</h2>
+  </div>
+  <span class="project-tag">Project</span>
+  <span class="concept-tag">GitHub</span>
+  <span class="concept-tag">Repository</span>
+  <span class="concept-tag">Commit</span>
+  <span class="concept-tag">GitHub Pages</span>
+
+  <div class="preview-section">
+      <button class="preview-btn" onclick="openPreview('github')">👁️ View Live Output: 🐙 GitHub Upload</button>
+    </div>
+    <div class="modal-overlay" id="modal-github" onclick="closePreviewIfOverlay(event,'github')">
+      <div class="modal-box">
+        <div class="modal-header"><span>🐙 GitHub Upload – Live Output</span><button class="modal-close" onclick="closePreview('github')">✕ Close</button></div>
+        <iframe srcdoc="<!DOCTYPE html>
+<html>
+<head><title>GitHub Upload</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#0d1117;color:#c9d1d9}
+header{background:#161b22;padding:28px;text-align:center;border-bottom:1px solid #30363d}
+header h1{color:#58a6ff;margin-bottom:6px}
+header p{color:#8b949e;margin:0}
+.content{padding:28px;max-width:640px;margin:auto}
+.step{display:flex;gap:14px;margin:16px 0;align-items:flex-start}
+.snum{background:#238636;color:white;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;margin-top:2px}
+.step p{color:#c9d1d9;line-height:1.6;font-size:0.9rem;margin:0}
+.code{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 16px;font-family:monospace;color:#79c0ff;font-size:0.85rem;margin:12px 0}
+.tip{background:#1f2d3d;border-left:4px solid #58a6ff;padding:14px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:0.88rem}
+.term-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.88rem}
+.term-table th{background:#21262d;color:#8b949e;padding:8px 12px;text-align:left;border:1px solid #30363d}
+.term-table td{padding:8px 12px;border:1px solid #30363d}
+h2{color:#58a6ff;margin:22px 0 10px}
+</style></head>
+<body>
+<header><h1>🐙 GitHub – Publish Your Website Free!</h1><p>Save your code online and share it with the world</p></header>
+<div class=&quot;content&quot;>
+<h2>Key Terms</h2>
+<table class=&quot;term-table&quot;>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Repository</td><td>A project folder stored on GitHub</td></tr>
+<tr><td>Commit</td><td>Saving a snapshot of your code changes</td></tr>
+<tr><td>Push</td><td>Uploading changes from your computer to GitHub</td></tr>
+<tr><td>GitHub Pages</td><td>Free website hosting directly from your repository</td></tr>
+</table>
+<h2>Steps to Publish Your Website</h2>
+<div class=&quot;step&quot;><div class=&quot;snum&quot;>1</div><p>Create a free account at <strong style=&quot;color:#58a6ff&quot;>github.com</strong></p></div>
+<div class=&quot;step&quot;><div class=&quot;snum&quot;>2</div><p>Click <strong>New Repository</strong> and name it e.g. <code style=&quot;color:#79c0ff&quot;>my-portfolio</code></p></div>
+<div class=&quot;step&quot;><div class=&quot;snum&quot;>3</div><p>Upload all your project files (drag &amp;amp; drop them into GitHub)</p></div>
+<div class=&quot;step&quot;><div class=&quot;snum&quot;>4</div><p>Write a commit message like &quot;My first upload&quot; and click <strong>Commit changes</strong></p></div>
+<div class=&quot;step&quot;><div class=&quot;snum&quot;>5</div><p>Go to <strong>Settings → Pages</strong> → select <code style=&quot;color:#79c0ff&quot;>main</code> branch → click <strong>Save</strong></p></div>
+<div class=&quot;step&quot;><div class=&quot;snum&quot;>6</div><p>🎉 Your site is live! Visit it at:</p></div>
+<div class=&quot;code&quot;>https://yourusername.github.io/my-portfolio</div>
+<div class=&quot;tip&quot;>⚠️ Your main HTML file MUST be named <strong>index.html</strong> for GitHub Pages to work!</div>
+</div></body></html>" class="preview-iframe"></iframe>
+      </div>
+    </div>
+
+  <div class="real-life"><h4>🌍 Real-Life Connection</h4>
+  <p>GitHub is like <strong>Google Drive for code</strong>. Just like you save school work to Drive, developers save their code to GitHub. GitHub Pages then turns your code folder into a <strong>real live website</strong> with its own URL that anyone can visit!</p></div>
+
+  <h3>🔑 Key Vocabulary</h3>
+  <table class="nice-table">
+    <tr><th>Term</th><th>Meaning</th><th>Real-life analogy</th></tr>
+    <tr><td><strong>Repository</strong></td><td>A project folder stored on GitHub</td><td>A school binder</td></tr>
+    <tr><td><strong>Commit</strong></td><td>Save a snapshot of your changes</td><td>Pressing "Save"</td></tr>
+    <tr><td><strong>Push</strong></td><td>Upload changes from your computer</td><td>Handing in homework</td></tr>
+    <tr><td><strong>GitHub Pages</strong></td><td>Free website hosting from GitHub</td><td>Publishing on a school noticeboard</td></tr>
+  </table>
+
+  <h3>📋 Steps to Go Live</h3>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><p>Create a free account at <strong>github.com</strong></p></div>
+    <div class="step"><div class="step-num">2</div><p>Click <strong>New Repository</strong> → name it <code>my-portfolio</code></p></div>
+    <div class="step"><div class="step-num">3</div><p>Upload all project files by dragging and dropping them</p></div>
+    <div class="step"><div class="step-num">4</div><p>Write a commit message (e.g. "My first upload") → click <strong>Commit changes</strong></p></div>
+    <div class="step"><div class="step-num">5</div><p>Go to <strong>Settings → Pages</strong> → select <code>main</code> branch → click <strong>Save</strong></p></div>
+    <div class="step"><div class="step-num">6</div><p>🎉 Your website is live at <code>https://yourusername.github.io/my-portfolio</code></p></div>
+  </div>
+
+  <div class="info-box yellow"><span class="box-icon">⚠️</span><div><h4>Important Tips</h4><ul>
+    <li>Your main file <strong>must</strong> be named <code>index.html</code></li>
+    <li>All image and CSS file paths must be correct (relative paths)</li>
+    <li>Wait 1–2 minutes after saving for the site to go live</li>
+  </ul></div></div>
+
+  <div class="info-box green"><span class="box-icon">🎯</span><div><h4>What You Learned</h4><ul>
+    <li>What GitHub is and why all developers use it</li>
+    <li>Creating a repository and uploading files</li>
+    <li>Publishing a free website using GitHub Pages</li>
+  </ul></div></div>
+</section>
+
+<!-- SUMMARY -->
+<section style="background:linear-gradient(135deg,var(--dark) 0%,#312E81 100%);padding:50px;color:#fff">
+  <h2 style="font-family:'Fredoka One',cursive;font-size:2rem;color:var(--yellow);margin-bottom:20px;text-align:center">🎉 Course Summary – All Projects!</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;max-width:900px;margin:0 auto">
+    <div style="background:rgba(255,255,255,0.08);border-radius:14px;padding:18px;text-align:center"><div style="font-size:2rem">🍯</div><h4 style="color:var(--yellow);margin:8px 0 4px">1a. Honeycomb Bakery</h4><p style="font-size:0.8rem;color:rgba(255,255,255,0.75)">Inline CSS, Box Model, Border Radius</p></div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:14px;padding:18px;text-align:center"><div style="font-size:2rem">🧑‍💻</div><h4 style="color:var(--yellow);margin:8px 0 4px">1b. My Portfolio</h4><p style="font-size:0.8rem;color:rgba(255,255,255,0.75)">Fixed Navbar, Anchor Links, scroll-margin-top</p></div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:14px;padding:18px;text-align:center"><div style="font-size:2rem">☕</div><h4 style="color:var(--yellow);margin:8px 0 4px">2. Cafe Novo</h4><p style="font-size:0.8rem;color:rgba(255,255,255,0.75)">External CSS, Tables, Lists, Flexbox</p></div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:14px;padding:18px;text-align:center"><div style="font-size:2rem">✈️</div><h4 style="color:var(--yellow);margin:8px 0 4px">3. Travel Diaries</h4><p style="font-size:0.8rem;color:rgba(255,255,255,0.75)">5 Pages, iFrame, Video, Audio, Gallery</p></div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:14px;padding:18px;text-align:center"><div style="font-size:2rem">⭐</div><h4 style="color:var(--yellow);margin:8px 0 4px">4. Favicons</h4><p style="font-size:0.8rem;color:rgba(255,255,255,0.75)">Favicon, Site123, Free-CSS</p></div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:14px;padding:18px;text-align:center"><div style="font-size:2rem">🎨</div><h4 style="color:var(--yellow);margin:8px 0 4px">5. Templates</h4><p style="font-size:0.8rem;color:rgba(255,255,255,0.75)">HTML5UP, Folder Structure, Editing</p></div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:14px;padding:18px;text-align:center"><div style="font-size:2rem">🤖</div><h4 style="color:var(--yellow);margin:8px 0 4px">6. AI Websites</h4><p style="font-size:0.8rem;color:rgba(255,255,255,0.75)">Prompt Writing, Claude, ChatGPT</p></div>
+    <div style="background:rgba(255,255,255,0.08);border-radius:14px;padding:18px;text-align:center"><div style="font-size:2rem">🐙</div><h4 style="color:var(--yellow);margin:8px 0 4px">7. GitHub</h4><p style="font-size:0.8rem;color:rgba(255,255,255,0.75)">Upload, Commit, GitHub Pages</p></div>
+  </div>
+  <p style="text-align:center;margin-top:30px;color:rgba(255,255,255,0.7);font-size:0.95rem">🌟 You're now a web designer! Keep building and experimenting!</p>
+</section>
+
+</main>
+
+<script>
+function openPreview(id){document.getElementById('modal-'+id).classList.add('active');document.body.style.overflow='hidden'}
+function closePreview(id){document.getElementById('modal-'+id).classList.remove('active');document.body.style.overflow=''}
+function closePreviewIfOverlay(e,id){if(e.target===e.currentTarget)closePreview(id)}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('.modal-overlay.active').forEach(m=>{m.classList.remove('active');document.body.style.overflow=''})}});
+const sections=document.querySelectorAll('[id]');
+const navLinks=document.querySelectorAll('.nav-link');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{if(scrollY>=s.offsetTop-80)cur=s.id});
+  navLinks.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+cur)l.classList.add('active')});
+});
+</script>
+</body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>My Profile</title>
+
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            margin:0;
+            background-color: beige;
+        }
+
+        /*nav bar styling*/
+nav{
+    height:50px;
+
+   /* display: flex;  
+   background-color: rgb(7, 152, 84);
+   justify-content:center;
+   align-items: center; */
+/* easy way */
+   text-align: center;
+   background-color:rgb(129, 69, 127);
+   padding-top: 15px;
+
+   /* to fix the nav bar on top */
+   position:fixed;
+   width: 98%;
+   left: 0;/*  For margin: auto to center an element with absolute/fixed positioning, all sides must be defined. */
+   right: 0; /*strick to the right*/
+   top:0;/*stick to the top */
+   margin: auto;  
+}
+nav a{
+   text-decoration: none;
+   margin: 0px 10px 0px 10px; /*margin: top right bottom left;*/
+   color:rgb(0, 204, 255);
+}
+nav a:hover{
+            color:rgb(174, 226, 43);
+}
+#about,#home,#hobbies,#achievements,#contact{
+  scroll-margin-top: 50px;      /* 50 is ht of nav bar, this is added to avoid overlap*/
+}
+
+
+
+
+
+       
+
+        .part{
+            background-color: lightblue;
+            padding:20px;
+             margin:70px auto;   /* centers the box  - top/bottom left/right*/ 
+            border-radius:10px;
+            box-shadow:5px 5px 10px lightblue;
+            width:70%; 
+        }
+
+        h1{
+            text-align:center;
+            color:purple;
+            text-shadow:2px 2px 8px purple;
+        }
+
+        ul{
+            line-height:1.8;
+        }
+
+        .contact-box{
+            text-align:center;
+            font-size:18px;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#about">About Me</a>
+    <a href="#hobbies">My Hobbies</a> 
+    <a href="#achievements">My Achievements</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<br><br><br>
+
+<div id="home" class="part">
+    <h1>Home</h1>
+    <p>Hello! Welcome to my personal profile page.</p>
+    <p>
+        My name is <b>[Your Name]</b>. I am passionate about learning new technologies,
+        especially coding and digital creativity. This website gives a brief overview
+        of who I am, my interests, achievements, and how you can connect with me.
+    </p>
+    <p>
+        I believe technology is not just about computers — it is about solving
+        problems, thinking logically, and creating innovative solutions that
+        can help people in everyday life.
+    </p>
+</div>
+
+<div id="about" class="part">
+    <h1>About Me</h1>
+    <p>
+        I am a student and a technology enthusiast who enjoys learning programming,
+        exploring AI tools, and building creative digital projects.
+    </p>
+
+    <p>
+        My goals include improving my coding skills, developing problem-solving
+        abilities, and creating useful applications that can make learning fun
+        and interactive.
+    </p>
+
+    <p>
+        I enjoy teamwork, continuous learning, and sharing knowledge with others.
+        I believe curiosity and consistency are the keys to success.
+    </p>
+</div>
+
+<div id="hobbies" class="part">
+    <h1>Hobbies</h1>
+    <ul>
+        <li>💻 Coding and creating small projects</li>
+        <li>📚 Reading technology and science articles</li>
+        <li>🎮 Playing strategy and logic games</li>
+        <li>🎨 Designing creative digital content</li>
+        <li>🎵 Listening to music</li>
+        <li>🏃 Playing outdoor sports</li>
+    </ul>
+</div>
+
+<div id="achievements" class="part">
+    <h1>Achievements</h1>
+    <ul>
+        <li>Completed beginner and intermediate coding courses</li>
+        <li>Created personal projects using HTML and CSS</li>
+        <li>Participated in school technology competitions</li>
+        <li>Presented a project on future technology/AI</li>
+        <li>Received appreciation for creativity and teamwork</li>
+    </ul>
+</div>
+
+<div id="contact" class="part">
+    <h1>Contact</h1>
+    <div class="contact-box">
+        <p>📧 Email: yourname@email.com</p>
+        <p>📱 Phone: +91 XXXXX XXXXX</p>
+        <p>🌐 Website: www.myprofile.com</p>
+        <p>📍 Location: Pune, India</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Cafe Novo</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#menu">Menu</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <br>
+        <br>
+        <br>
+        <header>
+            <h1>Cafe Novo</h1>
+            <p>Tastes like never before</p>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3-6WhdCjld4q3J1EDGbj3pyu5LKjhDAtRJA&s" alt="intro">
+            
+        </header>
+        
+        <!--About us div-->
+        <div id="about">
+            <h1>About Us</h1>
+            <div class="side">
+            
+            <p>Welcome to Café Novo, where tradition meets innovation! Nestled in the heart of the community, we’re more than just a café—we’re a destination for those who seek a delightful escape, a great cup of coffee, and an inviting atmosphere.
+
+                At Café Novo, we take pride in crafting every cup with care, sourcing premium beans from sustainable farms around the world. Whether you’re stopping by for a morning boost, a cozy brunch, or an evening treat, our menu is thoughtfully curated to offer something for everyone.
+                
+                Our mission is simple: to serve exceptional coffee, artisanal bites, and unforgettable moments. Each sip, each dish, and each interaction at Café Novo is designed to make you feel right at home.
+                
+                Step in, savor the aroma, and experience the warm hospitality that has made Café Novo a local favorite. We look forward to sharing our love for coffee, community, and creativity with you.
+                
+                Here’s to new flavors, new connections, and a new kind of café experience.</p>
+            <img src="data:image/jpeg;base64,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" alt="cafe image" />
+
+            </div>
+            
+        </div>
+        
+        
+        
+        
+        <!--Menu div-->
+        <div id="menu">
+            
+            <h1>Our top 5 picks</h1>
+            <ol>
+                <li>Espresso - $2.50
+                    <ul>
+                        <li>Small</li>
+                        <li>Medium</li>
+                        <li>Large</li>
+                    </ul>
+                </li>
+            <li>Avocado Toast - $5.50
+                <ul>
+                    <li>With egg</li>
+                    <li>Without egg</li>
+                </ul>
+            </li>
+            <li>Caesar Salad - $7.00
+                <ul>
+                    <li>Regular</li>
+                    <li>Grilled Chicken</li>
+                    <li>Vegan</li>
+                </ul>
+            </li>
+            <li>Grilled Cheese Sandwich - $6.00
+                <ul>
+                    <li>Cheddar</li>
+                    <li>Swiss</li>
+                    <li>Gouda</li>
+                </ul>
+            </li>
+            <li>Chocolate Lava Cake - $5.50
+                <ul>
+                    <li>Single Serve</li>
+                    <li>Sharing Size</li>
+                </ul>
+            </li>
+        </ol>
+
+
+  
+    
+            <h1>Café Menu with Prices</h1>
+
+    <h2>Beverages</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Espresso</td>
+                <td>$2.50</td>
+            </tr>
+            <tr>
+                <td>Americano</td>
+                <td>$3.00</td>
+            </tr>
+            <tr>
+                <td>Cappuccino</td>
+                <td>$3.50</td>
+            </tr>
+            <tr>
+                <td>Latte</td>
+                <td>$3.75</td>
+            </tr>
+            <tr>
+                <td>Mocha</td>
+                <td>$4.00</td>
+            </tr>
+            <tr>
+                <td>Flat White</td>
+                <td>$3.80</td>
+            </tr>
+            <tr>
+                <td>Iced Americano</td>
+                <td>$3.25</td>
+            </tr>
+            <tr>
+                <td>Iced Latte</td>
+                <td>$3.95</td>
+            </tr>
+            <tr>
+                <td>Cold Brew</td>
+                <td>$4.00</td>
+            </tr>
+            <tr>
+                <td>Coffee Frappe</td>
+                <td>$4.50</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Breakfast & Snacks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Avocado Toast</td>
+                <td>$5.50</td>
+            </tr>
+            <tr>
+                <td>Croissants (Plain, Chocolate, Almond)</td>
+                <td>$3.00</td>
+            </tr>
+            <tr>
+                <td>Bagels with Cream Cheese</td>
+                <td>$4.00</td>
+            </tr>
+            <tr>
+                <td>Muffins (Blueberry, Chocolate Chip, Bran)</td>
+                <td>$2.50</td>
+            </tr>
+            <tr>
+                <td>Granola Parfait</td>
+                <td>$4.50</td>
+            </tr>
+            <tr>
+                <td>Smoothie Bowls</td>
+                <td>$6.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Salads</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Caesar Salad</td>
+                <td>$7.00</td>
+            </tr>
+            <tr>
+                <td>Greek Salad</td>
+                <td>$7.50</td>
+            </tr>
+            <tr>
+                <td>Quinoa & Kale Salad</td>
+                <td>$8.00</td>
+            </tr>
+            <tr>
+                <td>Caprese Salad</td>
+                <td>$7.50</td>
+            </tr>
+            <tr>
+                <td>Roasted Veggie Salad</td>
+                <td>$6.50</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Sandwiches & Wraps</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Club Sandwich</td>
+                <td>$8.00</td>
+            </tr>
+            <tr>
+                <td>Grilled Cheese Sandwich</td>
+                <td>$6.00</td>
+            </tr>
+            <tr>
+                <td>BLT (Bacon, Lettuce, Tomato)</td>
+                <td>$7.50</td>
+            </tr>
+            <tr>
+                <td>Chicken Caesar Wrap</td>
+                <td>$8.50</td>
+            </tr>
+            <tr>
+                <td>Veggie Hummus Wrap</td>
+                <td>$7.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Main Courses</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Pasta (Alfredo, Pesto, Marinara)</td>
+                <td>$12.00</td>
+            </tr>
+            <tr>
+                <td>Grilled Chicken with Vegetables</td>
+                <td>$13.00</td>
+            </tr>
+            <tr>
+                <td>Vegan Buddha Bowl</td>
+                <td>$11.50</td>
+            </tr>
+            <tr>
+                <td>Fish and Chips</td>
+                <td>$14.00</td>
+            </tr>
+            <tr>
+                <td>Risotto</td>
+                <td>$12.50</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Desserts</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Chocolate Lava Cake</td>
+                <td>$5.50</td>
+            </tr>
+            <tr>
+                <td>Tiramisu</td>
+                <td>$6.00</td>
+            </tr>
+            <tr>
+                <td>Cheesecake (New York, Blueberry)</td>
+                <td>$6.50</td>
+            </tr>
+            <tr>
+                <td>Macarons (Assorted Flavors)</td>
+                <td>$3.00</td>
+            </tr>
+            <tr>
+                <td>Ice Cream Sundaes</td>
+                <td>$4.50</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Seasonal Specials</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Pumpkin Spice Latte</td>
+                <td>$4.50</td>
+            </tr>
+            <tr>
+                <td>Summer Berry Smoothie</td>
+                <td>$5.00</td>
+            </tr>
+            <tr>
+                <td>Winter Hot Mulled Cider</td>
+                <td>$3.75</td>
+            </tr>
+            <tr>
+                <td>Strawberry Shortcake</td>
+                <td>$6.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Kids’ Menu</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Mini Pancakes with Syrup</td>
+                <td>$4.00</td>
+            </tr>
+            <tr>
+                <td>Grilled Cheese & Fries</td>
+                <td>$5.00</td>
+            </tr>
+            <tr>
+                <td>Macaroni & Cheese</td>
+                <td>$4.50</td>
+            </tr>
+            <tr>
+                <td>Chicken Nuggets</td>
+                <td>$5.50</td>
+            </tr>
+            <tr>
+                <td>Mini Milkshakes (Vanilla, Chocolate, Strawberry)</td>
+                <td>$3.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Extras & Add-Ons</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Extra Shot of Espresso</td>
+                <td>$1.00</td>
+            </tr>
+            <tr>
+                <td>Almond Milk / Oat Milk</td>
+                <td>$0.50</td>
+            </tr>
+            <tr>
+                <td>Whipped Cream</td>
+                <td>$0.75</td>
+            </tr>
+            <tr>
+                <td>Chia Seeds</td>
+                <td>$1.00</td>
+            </tr>
+            <tr>
+                <td>Side of Bacon</td>
+                <td>$2.50</td>
+            </tr>
+        </tbody>
+    </table>
+        </div>
+        
+        
+        
+        
+        <!--services div-->
+        <div id="services">
+            <h1>Our services</h1>
+            <div id="ss">
+            <div class="service">
+                <img src="data:image/jpeg;base64,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" alt="fresh coffee">
+                <h3>Fresh Coffee</h3>
+                <p>Experience the finest freshly brewed coffee, made with premium beans, served just the way you like it.</p>
+            </div>
+
+            <div class="service">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTexLQVDf1lWdrHAyi0FfgpeA688BpyxhMhKg&s" alt="Snacks">
+                <h3>Pastries & Snacks</h3>
+                <p>Enjoy a selection of freshly baked pastries and snacks, perfect for pairing with your favorite coffee.</p>
+            </div>
+            <div class="service">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3pg7kAjhfN_OvnO607E1_kF1v4nXSmi6jJQ&s" alt="atmosphere">
+                <h3>Cozy Atmosphere</h3>
+                <p>Relax in our cozy and welcoming environment, designed for you to unwind and enjoy your time with friends or by yourself.</p>
+            </div>
+        </div>
+        </div>
+
+        <div id="contact">
+
+            <section class="contact-form">
+                <h2>Contact Us</h2>
+                <p>We'd love to hear from you! Please fill out the form below to get in touch with us.</p>
+                
+                <form>
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required placeholder="Your Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="4" required placeholder="Your Message"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </div>
+
+
+    
+                </form>
+        
+        </div>
+        <footer>
+            <p>&copy; 2025 Cafe Max. All Rights Reserved.</p>
+            <a href="mailto:example@example.com">Send an Email</a>
+       
+        </footer>
+    </body>
+</html>

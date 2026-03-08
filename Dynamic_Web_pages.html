@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Web Development — Class Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0b0f1a;
+    --bg2:       #111827;
+    --bg3:       #1a2235;
+    --sidebar:   #0e1520;
+    --accent1:   #f59e0b;  /* amber  */
+    --accent2:   #34d399;  /* emerald*/
+    --accent3:   #60a5fa;  /* blue   */
+    --accent4:   #a78bfa;  /* violet */
+    --accent5:   #f472b6;  /* pink   */
+    --text:      #e2e8f0;
+    --text2:     #94a3b8;
+    --border:    #1e2d45;
+    --code-bg:   #0d1526;
+    --code-str:  #a3e635;
+    --code-kw:   #f472b6;
+    --code-fn:   #60a5fa;
+    --code-num:  #fb923c;
+    --code-cmt:  #64748b;
+    --code-tag:  #f59e0b;
+    --code-attr: #34d399;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 270px;
+    min-width: 270px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .sidebar-header {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--sidebar);
+    z-index: 10;
+  }
+
+  .sidebar-header .badge {
+    display: inline-block;
+    background: var(--accent1);
+    color: #000;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: .05em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .sidebar-header h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .sidebar-header p {
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 4px;
+  }
+
+  .nav-section {
+    padding: 12px 14px 4px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--text2);
+    font-weight: 600;
+  }
+
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px 7px 20px;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 2px solid transparent;
+    transition: all .2s;
+    line-height: 1.3;
+  }
+
+  nav a:hover { color: var(--text); background: rgba(255,255,255,.03); }
+  nav a.active { color: var(--accent1); border-left-color: var(--accent1); background: rgba(245,158,11,.05); }
+  nav a .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── MAIN ── */
+  #main {
+    margin-left: 270px;
+    flex: 1;
+    padding: 0 48px 80px;
+    max-width: 1000px;
+  }
+
+  .page-hero {
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+
+  .page-hero .tag {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--accent3);
+    margin-bottom: 12px;
+  }
+
+  .page-hero h1 {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--accent1) 0%, var(--accent3) 50%, var(--accent4) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+  }
+
+  .page-hero p {
+    color: var(--text2);
+    font-size: 16px;
+    max-width: 580px;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 72px;
+    scroll-margin-top: 24px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-header .subtitle {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 2px;
+  }
+
+  /* ── CODE BLOCKS ── */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    overflow-x: auto;
+    margin: 16px 0;
+    position: relative;
+  }
+
+  pre code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .lang-label {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  .kw  { color: var(--code-kw); }
+  .str { color: var(--code-str); }
+  .fn  { color: var(--code-fn); }
+  .num { color: var(--code-num); }
+  .cmt { color: var(--code-cmt); font-style: italic; }
+  .tag { color: var(--code-tag); }
+  .attr{ color: var(--code-attr); }
+
+  /* ── CARDS ── */
+  .concept-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin: 14px 0;
+  }
+
+  .concept-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .concept-card p { color: var(--text2); font-size: 14px; }
+
+  /* ── CALLOUT BOXES ── */
+  .box {
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 16px 0;
+    font-size: 14px;
+    border-left: 3px solid;
+  }
+
+  .box-tip    { background: rgba(52,211,153,.08); border-color: var(--accent2); }
+  .box-warn   { background: rgba(251,146,60,.08); border-color: var(--code-num); }
+  .box-info   { background: rgba(96,165,250,.08); border-color: var(--accent3); }
+  .box-proj   { background: rgba(167,139,250,.08); border-color: var(--accent4); }
+  .box-hw     { background: rgba(244,114,182,.08); border-color: var(--accent5); }
+
+  .box strong { display: block; margin-bottom: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .07em; }
+  .box-tip  strong { color: var(--accent2); }
+  .box-warn strong { color: var(--code-num); }
+  .box-info strong { color: var(--accent3); }
+  .box-proj strong { color: var(--accent4); }
+  .box-hw   strong { color: var(--accent5); }
+  .box p, .box li { color: var(--text2); }
+  .box ul { padding-left: 18px; }
+  .box li { margin: 3px 0; }
+
+  /* ── TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13.5px;
+  }
+
+  th {
+    background: var(--bg3);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--text2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(30,45,69,.5);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  td code, p code, li code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--code-bg);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--accent3);
+    border: 1px solid var(--border);
+  }
+
+  /* ── GRID ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 14px 0; }
+
+  .mini-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .mini-card h5 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 8px;
+  }
+
+  .mini-card p { font-size: 13px; color: var(--text2); }
+
+  p { color: var(--text2); margin: 10px 0; line-height: 1.75; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--text); margin: 24px 0 10px; }
+  ul, ol { padding-left: 22px; }
+  li { color: var(--text2); margin: 5px 0; line-height: 1.65; }
+  li strong { color: var(--text); }
+
+  .step-list { list-style: none; padding: 0; counter-reset: step; }
+  .step-list li {
+    counter-increment: step;
+    padding: 10px 14px 10px 46px;
+    position: relative;
+    border-bottom: 1px solid rgba(30,45,69,.4);
+  }
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent3);
+    color: #000;
+    font-size: 11px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tag-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin: 2px 3px 2px 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  @media (max-width: 900px) {
+    #sidebar { transform: translateX(-100%); }
+    #main { margin-left: 0; padding: 20px; }
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="badge">G79-2</div>
+    <h2>JavaScript & Web Dev</h2>
+    <p>Final Projects Notes</p>
+  </div>
+
+  <div class="nav-section">Fundamentals</div>
+  <nav>
+    <a href="#s1"><span class="dot" style="background:#f59e0b"></span>1 — Intro to JS DOM</a>
+    <a href="#s2"><span class="dot" style="background:#34d399"></span>2 — Page Load Events</a>
+    <a href="#s3"><span class="dot" style="background:#60a5fa"></span>3 — Mouse Events</a>
+    <a href="#s4"><span class="dot" style="background:#a78bfa"></span>4 — Data Types & Operators</a>
+    <a href="#s5"><span class="dot" style="background:#f472b6"></span>5 — Conditionals</a>
+
+    <div class="nav-section">Timers & Loops</div>
+    <a href="#s6"><span class="dot" style="background:#f59e0b"></span>6 — setInterval & Timers</a>
+    <a href="#s7"><span class="dot" style="background:#34d399"></span>7 — Date Object & Clock</a>
+    <a href="#s8"><span class="dot" style="background:#60a5fa"></span>8 — for Loops</a>
+
+    <div class="nav-section">Projects</div>
+    <a href="#s9"><span class="dot" style="background:#a78bfa"></span>9 — Light Bulb Toggle</a>
+    <a href="#s10"><span class="dot" style="background:#f472b6"></span>10 — Click Counter Game</a>
+    <a href="#s11"><span class="dot" style="background:#f59e0b"></span>11 — Cookie Clicker</a>
+    <a href="#s12"><span class="dot" style="background:#34d399"></span>12 — Hover Animal Info</a>
+    <a href="#s13"><span class="dot" style="background:#60a5fa"></span>13 — Like & Subscribe Btns</a>
+    <a href="#s14"><span class="dot" style="background:#a78bfa"></span>14 — Login / Auth</a>
+    <a href="#s15"><span class="dot" style="background:#f472b6"></span>15 — Time-Based Greeting</a>
+    <a href="#s16"><span class="dot" style="background:#f59e0b"></span>16 — Calculator</a>
+    <a href="#s17"><span class="dot" style="background:#34d399"></span>17 — Multiplication Table</a>
+    <a href="#s18"><span class="dot" style="background:#60a5fa"></span>18 — Dice & Color Changer</a>
+    <a href="#s19"><span class="dot" style="background:#a78bfa"></span>19 — Guess the Color Game</a>
+
+    <div class="nav-section">Canvas</div>
+    <a href="#s20"><span class="dot" style="background:#f472b6"></span>20 — Canvas Basics</a>
+    <a href="#s21"><span class="dot" style="background:#f59e0b"></span>21 — Canvas House Drawing</a>
+    <a href="#s22"><span class="dot" style="background:#34d399"></span>22 — Canvas Animation</a>
+  </nav>
+</aside>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main id="main">
+
+  <div class="page-hero">
+    <div class="tag">JavaScript · DOM · Canvas · Events</div>
+    <h1>Web Development<br>Final Projects</h1>
+    <p>Comprehensive notes covering all G79-2 JavaScript projects — from DOM manipulation to canvas animation, explained concept by concept with code and tips.</p>
+  </div>
+
+  <!-- ════ SECTION 1 ════ -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(245,158,11,.15);color:var(--accent1)">01</div>
+      <div>
+        <h2>Intro to JavaScript & the DOM</h2>
+        <div class="subtitle">document.write · getElementById · innerHTML · alert</div>
+      </div>
+    </div>
+
+    <p>JavaScript is the programming language of the web. It runs <strong>inside the browser</strong> and lets you make web pages interactive — changing text, reacting to clicks, showing alerts, and much more.</p>
+
+    <h3>What is the DOM?</h3>
+    <p>The <strong>DOM (Document Object Model)</strong> is the browser's internal representation of your HTML page as a tree of objects. JavaScript can read and change any part of this tree — that's how a page "comes alive" after it loads.</p>
+
+    <div class="grid2">
+      <div class="mini-card">
+        <h5 style="color:var(--accent1)">HTML</h5>
+        <p>The structure — headings, paragraphs, buttons, images.</p>
+      </div>
+      <div class="mini-card">
+        <h5 style="color:var(--accent3)">JavaScript + DOM</h5>
+        <p>The brain — reads the structure and changes it on the fly.</p>
+      </div>
+    </div>
+
+    <h3>Key DOM Methods — Explained</h3>
+
+    <table>
+      <tr><th>Method / Property</th><th>What it does</th><th>Example</th></tr>
+      <tr><td><code>document.write()</code></td><td>Writes HTML text directly onto the page (during load)</td><td><code>document.write("&lt;h1&gt;Hi&lt;/h1&gt;")</code></td></tr>
+      <tr><td><code>document.getElementById(id)</code></td><td>Finds and returns the HTML element with the given <code>id</code></td><td><code>document.getElementById("hello")</code></td></tr>
+      <tr><td><code>.innerHTML</code></td><td>Gets or sets the HTML content inside an element</td><td><code>el.innerHTML = "&lt;b&gt;Bold!&lt;/b&gt;"</code></td></tr>
+      <tr><td><code>alert()</code></td><td>Shows a pop-up message box in the browser</td><td><code>alert("Welcome!")</code></td></tr>
+      <tr><td><code>.style.property</code></td><td>Changes the CSS style of an element directly</td><td><code>el.style.color = "red"</code></td></tr>
+    </table>
+
+    <h3>The First Project — Hello Webpage</h3>
+    <pre><span class="lang-label">HTML + JS</span><code><span class="tag">&lt;h1</span> <span class="attr">id</span>=<span class="str">"hello"</span><span class="tag">&gt;</span>Hello<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;script&gt;</span>
+  <span class="cmt">// 1. Writes new HTML onto the page</span>
+  document.<span class="fn">write</span>(<span class="str">"&lt;h1&gt;Welcome To My Webpage&lt;/h1&gt;"</span>);
+
+  <span class="cmt">// 2. Finds the &lt;h1 id="hello"&gt; element and changes its text</span>
+  document.<span class="fn">getElementById</span>(<span class="str">"hello"</span>).innerHTML = <span class="str">"Hello. Whatsup!"</span>;
+
+  <span class="cmt">// 3. Shows a popup box</span>
+  <span class="fn">alert</span>(<span class="str">"Welcome"</span>);
+<span class="tag">&lt;/script&gt;</span></code></pre>
+
+    <div class="box box-warn">
+      <strong>⚠️ Caution</strong>
+      <p><code>document.write()</code> works fine during page load but if called <em>after</em> the page has loaded, it will <em>erase</em> the entire page content. Always prefer <code>innerHTML</code> for changing content after load.</p>
+    </div>
+
+    <div class="box box-hw">
+      <strong>📝 Homework</strong>
+      <p>Write a program that displays a message inside a specific <code>&lt;p&gt;</code> tag using the <code>innerHTML</code> property.</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 2 ════ -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(52,211,153,.15);color:var(--accent2)">02</div>
+      <div>
+        <h2>Page Load Events — onload</h2>
+        <div class="subtitle">body onload · hiding loading spinners</div>
+      </div>
+    </div>
+
+    <p>Sometimes you want JavaScript to run only <em>after</em> the whole page has finished loading — all images, videos, and elements. The <code>onload</code> event is perfect for this.</p>
+
+    <div class="grid2">
+      <div class="concept-card">
+        <h4 style="color:var(--accent2)">✅ Why use onload?</h4>
+        <p>If your JS runs before the HTML elements exist, it can't find them — causing errors. <code>onload</code> guarantees everything is ready first.</p>
+      </div>
+      <div class="concept-card">
+        <h4 style="color:var(--accent1)">💡 Real-world use</h4>
+        <p>Show a "Loading…" spinner, then hide it once all images and videos on the page have fully downloaded.</p>
+      </div>
+    </div>
+
+    <pre><span class="lang-label">HTML + JS</span><code><span class="cmt">&lt;!-- The body calls display() once everything has loaded --&gt;</span>
+<span class="tag">&lt;body</span> <span class="attr">onload</span>=<span class="str">"display()"</span><span class="tag">&gt;</span>
+
+  <span class="tag">&lt;h1</span> <span class="attr">id</span>=<span class="str">"loading"</span><span class="tag">&gt;</span>Loading...<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"image.jpeg"</span> <span class="attr">height</span>=<span class="str">"200"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;video</span> <span class="attr">src</span>=<span class="str">"video.mp4"</span> <span class="attr">controls</span><span class="tag">&gt;&lt;/video&gt;</span>
+
+  <span class="tag">&lt;script&gt;</span>
+    <span class="kw">function</span> <span class="fn">display</span>() {
+      <span class="cmt">// Hide the loading message once everything is ready</span>
+      document.<span class="fn">getElementById</span>(<span class="str">"loading"</span>).style.display = <span class="str">"none"</span>;
+    }
+  <span class="tag">&lt;/script&gt;</span>
+
+<span class="tag">&lt;/body&gt;</span></code></pre>
+
+    <div class="box box-info">
+      <strong>🔎 How it works step-by-step</strong>
+      <ul>
+        <li>Browser starts reading the HTML top to bottom</li>
+        <li>The "Loading…" heading is shown immediately</li>
+        <li>Browser downloads the image and all videos</li>
+        <li>Once <em>everything</em> is ready, it fires the <code>onload</code> event</li>
+        <li><code>display()</code> runs and hides the loading heading</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 3 ════ -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(96,165,250,.15);color:var(--accent3)">03</div>
+      <div>
+        <h2>Mouse Events — Hover & Click</h2>
+        <div class="subtitle">onmouseover · onmouseout · onclick · event-driven programming</div>
+      </div>
+    </div>
+
+    <p>JavaScript reacts to user actions through <strong>events</strong>. An event is something that happens — a click, a hover, a keypress — and JavaScript can "listen" for it and respond.</p>
+
+    <table>
+      <tr><th>Event</th><th>When it triggers</th><th>HTML attribute</th></tr>
+      <tr><td>Mouse Over</td><td>Mouse cursor enters an element</td><td><code>onmouseover="fn()"</code></td></tr>
+      <tr><td>Mouse Out</td><td>Mouse cursor leaves an element</td><td><code>onmouseout="fn()"</code></td></tr>
+      <tr><td>Click</td><td>User clicks an element</td><td><code>onclick="fn()"</code></td></tr>
+    </table>
+
+    <h3>Project — Hover to Zoom Image</h3>
+    <pre><span class="lang-label">HTML + JS</span><code><span class="tag">&lt;img</span> <span class="attr">id</span>=<span class="str">"myimg"</span> <span class="attr">src</span>=<span class="str">"honey.png"</span> <span class="attr">width</span>=<span class="str">"20%"</span>
+  <span class="attr">onmouseover</span>=<span class="str">"bigImg()"</span>
+  <span class="attr">onmouseout</span>=<span class="str">"smallImg()"</span><span class="tag">&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">function</span> <span class="fn">bigImg</span>() {
+    <span class="cmt">// When mouse hovers, make it bigger</span>
+    document.<span class="fn">getElementById</span>(<span class="str">"myimg"</span>).style.width = <span class="str">"30%"</span>;
+  }
+
+  <span class="kw">function</span> <span class="fn">smallImg</span>() {
+    <span class="cmt">// When mouse leaves, shrink back</span>
+    document.<span class="fn">getElementById</span>(<span class="str">"myimg"</span>).style.width = <span class="str">"20%"</span>;
+  }
+<span class="tag">&lt;/script&gt;</span></code></pre>
+
+    <h3>Project — Tell Me a Joke Button (onclick)</h3>
+    <pre><span class="lang-label">HTML + JS</span><code><span class="tag">&lt;p</span> <span class="attr">id</span>=<span class="str">"para1"</span><span class="tag">&gt;</span>Hello, Welcome.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="str">"changePara()"</span><span class="tag">&gt;</span>Tell me a joke<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">id</span>=<span class="str">"laugh"</span> <span class="attr">src</span>=<span class="str">"laugh.gif"</span> <span class="attr">height</span>=<span class="str">"0"</span><span class="tag">&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">function</span> <span class="fn">changePara</span>() {
+    <span class="kw">var</span> p = document.<span class="fn">getElementById</span>(<span class="str">"para1"</span>);
+    
+    <span class="cmt">// Change the text</span>
+    p.innerHTML = <span class="str">"Why was six afraid of seven? &lt;br&gt; Because seven eight nine."</span>;
+    
+    <span class="cmt">// Change the style</span>
+    p.style.color = <span class="str">"orange"</span>;
+    p.style.fontSize = <span class="str">"5vw"</span>;
+    p.style.backgroundColor = <span class="str">"yellow"</span>;
+
+    <span class="cmt">// Hide the button</span>
+    document.<span class="fn">getElementById</span>(<span class="str">"button"</span>).style.display = <span class="str">"none"</span>;
+
+    <span class="cmt">// Show the laugh GIF</span>
+    document.<span class="fn">getElementById</span>(<span class="str">"laugh"</span>).style.height = <span class="str">"400px"</span>;
+  }
+<span class="tag">&lt;/script&gt;</span></code></pre>
+
+    <div class="box box-tip">
+      <strong>💡 Key Concept — Changing Multiple Things at Once</strong>
+      <p>One function can change text content, styles, visibility, and images all at the same time. Every time you write <code>document.getElementById(...).style.something = "value"</code>, you're targeting the exact same kind of property as CSS but controlling it with JS.</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 4 ════ -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(167,139,250,.15);color:var(--accent4)">04</div>
+      <div>
+        <h2>Data Types & Operators</h2>
+        <div class="subtitle">Number · String · Boolean · Undefined · typeof · arithmetic · comparison · logical</div>
+      </div>
+    </div>
+
+    <p>Every value in JavaScript has a <strong>type</strong>. Understanding types is critical because operators behave differently depending on what type they're working with.</p>
+
+    <h3>JavaScript Data Types</h3>
+    <table>
+      <tr><th>Type</th><th>Example</th><th>typeof result</th><th>Notes</th></tr>
+      <tr><td>Number</td><td><code>var age = 25;</code></td><td><code>"number"</code></td><td>Both integers and decimals</td></tr>
+      <tr><td>String</td><td><code>var name = "Alice";</code></td><td><code>"string"</code></td><td>Wrapped in " " or ' '</td></tr>
+      <tr><td>Boolean</td><td><code>var ok = true;</code></td><td><code>"boolean"</code></td><td>Only <code>true</code> or <code>false</code></td></tr>
+      <tr><td>Undefined</td><td><code>var score;</code></td><td><code>"undefined"</code></td><td>Declared but not given a value</td></tr>
+      <tr><td>Array</td><td><code>var c = ["red","green"];</code></td><td><code>"object"</code></td><td>Use <code>Array.isArray()</code> to check</td></tr>
+      <tr><td>Function</td><td><code>function greet(){}</code></td><td><code>"function"</code></td><td>Functions are objects too!</td></tr>
+    </table>
+
+    <pre><span class="lang-label">JS</span><code><span class="cmt">// Check the type of any value with typeof</span>
+<span class="kw">var</span> age = <span class="num">25</span>;
+console.<span class="fn">log</span>(<span class="kw">typeof</span> age);        <span class="cmt">// "number"</span>
+
+<span class="kw">var</span> name = <span class="str">"Alice"</span>;
+console.<span class="fn">log</span>(<span class="kw">typeof</span> name);       <span class="cmt">// "string"</span>
+
+<span class="kw">var</span> isStudent = <span class="kw">true</span>;
+console.<span class="fn">log</span>(<span class="kw">typeof</span> isStudent);  <span class="cmt">// "boolean"</span>
+
+<span class="kw">var</span> score;
+console.<span class="fn">log</span>(<span class="kw">typeof</span> score);      <span class="cmt">// "undefined"</span>
+
+<span class="kw">var</span> colors = [<span class="str">"red"</span>, <span class="str">"green"</span>, <span class="str">"blue"</span>];
+console.<span class="fn">log</span>(Array.<span class="fn">isArray</span>(colors)); <span class="cmt">// true (use this not typeof)</span></code></pre>
+
+    <h3>Arithmetic Operators</h3>
+    <table>
+      <tr><th>Operator</th><th>Name</th><th>Example (a=10, b=5)</th><th>Result</th></tr>
+      <tr><td><code>+</code></td><td>Addition</td><td><code>a + b</code></td><td>15</td></tr>
+      <tr><td><code>-</code></td><td>Subtraction</td><td><code>a - b</code></td><td>5</td></tr>
+      <tr><td><code>*</code></td><td>Multiplication</td><td><code>a * b</code></td><td>50</td></tr>
+      <tr><td><code>/</code></td><td>Division</td><td><code>a / b</code></td><td>2</td></tr>
+      <tr><td><code>%</code></td><td>Modulus (Remainder)</td><td><code>a % b</code></td><td>0</td></tr>
+      <tr><td><code>**</code></td><td>Exponentiation</td><td><code>a ** 2</code></td><td>100</td></tr>
+      <tr><td><code>++</code></td><td>Increment</td><td><code>a++</code></td><td>11</td></tr>
+      <tr><td><code>--</code></td><td>Decrement</td><td><code>b--</code></td><td>4</td></tr>
+    </table>
+
+    <h3>Comparison Operators</h3>
+    <table>
+      <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+      <tr><td><code>==</code></td><td>Equal to (value only)</td><td><code>5 == "5"</code></td><td><code>true</code></td></tr>
+      <tr><td><code>===</code></td><td>Strict equal (value AND type)</td><td><code>5 === "5"</code></td><td><code>false</code></td></tr>
+      <tr><td><code>!=</code></td><td>Not equal</td><td><code>5 != 3</code></td><td><code>true</code></td></tr>
+      <tr><td><code>&gt;</code></td><td>Greater than</td><td><code>10 &gt; 5</code></td><td><code>true</code></td></tr>
+      <tr><td><code>&lt;</code></td><td>Less than</td><td><code>3 &lt; 1</code></td><td><code>false</code></td></tr>
+      <tr><td><code>&gt;=</code></td><td>Greater than or equal</td><td><code>5 &gt;= 5</code></td><td><code>true</code></td></tr>
+    </table>
+
+    <h3>Logical Operators</h3>
+    <table>
+      <tr><th>Operator</th><th>Name</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td><code>&&</code></td><td>AND</td><td>Both must be true</td><td><code>age &gt; 18 && hasID</code></td></tr>
+      <tr><td><code>||</code></td><td>OR</td><td>At least one must be true</td><td><code>isAdmin || isMod</code></td></tr>
+      <tr><td><code>!</code></td><td>NOT</td><td>Flips true/false</td><td><code>!isLoggedIn</code></td></tr>
+    </table>
+
+    <div class="box box-warn">
+      <strong>⚠️ String + Number Gotcha</strong>
+      <p>When you use <code>+</code> with a string and a number, JavaScript <em>concatenates</em> (joins) them instead of adding! Always convert with <code>Number()</code> or <code>parseInt()</code> first.</p>
+    </div>
+
+    <pre><span class="lang-label">JS — Type Conversion Gotcha</span><code><span class="cmt">// Input from prompt() is always a STRING</span>
+<span class="kw">var</span> num1 = <span class="fn">prompt</span>(<span class="str">"Enter number:"</span>);  <span class="cmt">// "5" (string!)</span>
+<span class="kw">var</span> num2 = <span class="fn">prompt</span>(<span class="str">"Enter number:"</span>);  <span class="cmt">// "3" (string!)</span>
+
+console.<span class="fn">log</span>(num1 + num2);          <span class="cmt">// "53" ← WRONG! String concatenation</span>
+
+<span class="cmt">// Fix: convert to Number first</span>
+num1 = <span class="fn">Number</span>(num1);  <span class="cmt">// 5 (now a real number)</span>
+num2 = <span class="fn">Number</span>(num2);  <span class="cmt">// 3</span>
+console.<span class="fn">log</span>(num1 + num2);  <span class="cmt">// 8 ✅</span></code></pre>
+  </div>
+
+  <!-- ════ SECTION 5 ════ -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(244,114,182,.15);color:var(--accent5)">05</div>
+      <div>
+        <h2>Conditionals — if / else if / else</h2>
+        <div class="subtitle">Decision-making in JavaScript</div>
+      </div>
+    </div>
+
+    <p>Conditionals let your program make decisions. Based on whether a condition is <code>true</code> or <code>false</code>, different blocks of code run.</p>
+
+    <pre><span class="lang-label">JS — if / else if / else</span><code><span class="kw">if</span> (condition1) {
+  <span class="cmt">// runs when condition1 is true</span>
+} <span class="kw">else if</span> (condition2) {
+  <span class="cmt">// runs when condition1 is false, condition2 is true</span>
+} <span class="kw">else</span> {
+  <span class="cmt">// runs when ALL conditions above are false</span>
+}</code></pre>
+
+    <h3>Real Example — Even or Odd Checker</h3>
+    <pre><span class="lang-label">HTML + JS</span><code><span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"number"</span> <span class="attr">id</span>=<span class="str">"num"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="str">"checkEvenOdd()"</span><span class="tag">&gt;</span>Check<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;p</span> <span class="attr">id</span>=<span class="str">"result"</span><span class="tag">&gt;&lt;/p&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">function</span> <span class="fn">checkEvenOdd</span>() {
+    <span class="kw">var</span> num = <span class="fn">parseInt</span>(document.<span class="fn">getElementById</span>(<span class="str">"num"</span>).value);
+    
+    <span class="kw">if</span> (num % <span class="num">2</span> === <span class="num">0</span>) {
+      document.<span class="fn">getElementById</span>(<span class="str">"result"</span>).innerHTML = num + <span class="str">" is Even"</span>;
+    } <span class="kw">else</span> {
+      document.<span class="fn">getElementById</span>(<span class="str">"result"</span>).innerHTML = num + <span class="str">" is Odd"</span>;
+    }
+  }
+<span class="tag">&lt;/script&gt;</span></code></pre>
+
+    <div class="box box-tip">
+      <strong>💡 The Modulus Trick</strong>
+      <p><code>num % 2</code> gives the remainder when dividing by 2. If the remainder is 0, the number is even. If it's 1, the number is odd. This works for any divisibility check!</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 6 ════ -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(245,158,11,.15);color:var(--accent1)">06</div>
+      <div>
+        <h2>setInterval & Timers</h2>
+        <div class="subtitle">Running code repeatedly every N milliseconds</div>
+      </div>
+    </div>
+
+    <p><code>setInterval()</code> is a built-in function that calls another function <em>repeatedly</em>, with a fixed time delay between each call. It's how we build clocks, timers, countdowns, and animations.</p>
+
+    <table>
+      <tr><th>Function</th><th>What it does</th><th>Syntax</th></tr>
+      <tr><td><code>setInterval()</code></td><td>Runs a function every X milliseconds forever (until stopped)</td><td><code>setInterval(fn, 1000)</code></td></tr>
+      <tr><td><code>clearInterval()</code></td><td>Stops a running setInterval</td><td><code>clearInterval(timerID)</code></td></tr>
+    </table>
+
+    <div class="box box-info">
+      <strong>⏱️ Milliseconds</strong>
+      <p><strong>1000 milliseconds = 1 second.</strong> So <code>setInterval(fn, 1000)</code> calls <code>fn</code> once every second. <code>setInterval(fn, 500)</code> calls it twice per second.</p>
+    </div>
+
+    <pre><span class="lang-label">JS — Basic Timer Pattern</span><code><span class="kw">var</span> time = <span class="num">0</span>;
+
+<span class="kw">function</span> <span class="fn">updateTimer</span>() {
+  time++;                                           <span class="cmt">// add 1 each second</span>
+  document.<span class="fn">getElementById</span>(<span class="str">"timer"</span>).innerHTML = time;
+
+  <span class="kw">if</span> (time === <span class="num">10</span>) {
+    document.<span class="fn">getElementById</span>(<span class="str">"clickBtn"</span>).style.display = <span class="str">"none"</span>;
+    <span class="fn">clearInterval</span>(timerid);    <span class="cmt">// ← STOP the timer</span>
+  }
+}
+
+<span class="kw">var</span> timerid = <span class="fn">setInterval</span>(updateTimer, <span class="num">1000</span>); <span class="cmt">// start: every 1 second</span></code></pre>
+
+    <div class="box box-warn">
+      <strong>⚠️ Always store the timer ID!</strong>
+      <p>Save the return value of <code>setInterval()</code> into a variable — that's how you can stop it later with <code>clearInterval(id)</code>. Without the ID, the timer runs forever.</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 7 ════ -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(52,211,153,.15);color:var(--accent2)">07</div>
+      <div>
+        <h2>The Date Object & Live Clock</h2>
+        <div class="subtitle">new Date() · getHours · getMinutes · getSeconds</div>
+      </div>
+    </div>
+
+    <p>JavaScript has a built-in <strong>Date class</strong>. When you write <code>new Date()</code>, you create an object representing the current date and time. You then call methods on it to extract specific parts.</p>
+
+    <table>
+      <tr><th>Method</th><th>Returns</th><th>Range</th></tr>
+      <tr><td><code>.getHours()</code></td><td>Current hour</td><td>0–23</td></tr>
+      <tr><td><code>.getMinutes()</code></td><td>Current minutes</td><td>0–59</td></tr>
+      <tr><td><code>.getSeconds()</code></td><td>Current seconds</td><td>0–59</td></tr>
+      <tr><td><code>.getFullYear()</code></td><td>4-digit year</td><td>e.g. 2025</td></tr>
+      <tr><td><code>.getMonth()</code></td><td>Month number</td><td>0–11 (0 = January!)</td></tr>
+      <tr><td><code>.getDate()</code></td><td>Day of month</td><td>1–31</td></tr>
+      <tr><td><code>.getDay()</code></td><td>Day of week</td><td>0–6 (0 = Sunday)</td></tr>
+    </table>
+
+    <h3>Live Digital Clock</h3>
+    <pre><span class="lang-label">JS</span><code><span class="kw">function</span> <span class="fn">clock</span>() {
+  <span class="kw">var</span> hh = <span class="kw">new</span> <span class="fn">Date</span>().<span class="fn">getHours</span>();
+  <span class="kw">var</span> mm = <span class="kw">new</span> <span class="fn">Date</span>().<span class="fn">getMinutes</span>();
+  <span class="kw">var</span> ss = <span class="kw">new</span> <span class="fn">Date</span>().<span class="fn">getSeconds</span>();
+
+  document.<span class="fn">getElementById</span>(<span class="str">"con"</span>).innerHTML = hh + <span class="str">" : "</span> + mm + <span class="str">" : "</span> + ss;
+}
+
+<span class="fn">setInterval</span>(clock, <span class="num">1000</span>);  <span class="cmt">// update every 1 second</span></code></pre>
+
+    <div class="box box-tip">
+      <strong>💡 Adding a leading zero</strong>
+      <p>If the hour is 9, you might want to show "09" not "9". Use this trick: <code>if (hh &lt; 10) { hh = '0' + hh; }</code></p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 8 ════ -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(96,165,250,.15);color:var(--accent3)">08</div>
+      <div>
+        <h2>for Loops</h2>
+        <div class="subtitle">Repeating code a set number of times</div>
+      </div>
+    </div>
+
+    <p>A <code>for</code> loop runs a block of code a specific number of times. It's perfect for generating repeated content — like a multiplication table.</p>
+
+    <pre><span class="lang-label">JS — for loop anatomy</span><code><span class="kw">for</span> (<span class="kw">var</span> i = <span class="num">1</span>; i &lt;= <span class="num">10</span>; i++) {
+  <span class="cmt">// runs 10 times: i = 1, 2, 3, ..., 10</span>
+  console.<span class="fn">log</span>(i);
+}
+<span class="cmt">//  ↑ start  ↑ condition  ↑ increment</span></code></pre>
+
+    <h3>Project — Multiplication Table Generator</h3>
+    <pre><span class="lang-label">JS</span><code><span class="kw">function</span> <span class="fn">mult</span>() {
+  <span class="kw">var</span> n = document.<span class="fn">getElementById</span>(<span class="str">"num"</span>).value;
+  <span class="kw">var</span> r = <span class="str">""</span>;   <span class="cmt">// empty string to build result</span>
+
+  <span class="kw">for</span> (<span class="kw">var</span> a = <span class="num">1</span>; a &lt;= <span class="num">10</span>; a++) {
+    <span class="kw">var</span> c = n * a;
+    r += n + <span class="str">" x "</span> + a + <span class="str">" = "</span> + c + <span class="str">"&lt;br&gt;"</span>;
+    <span class="cmt">// += means "add to the existing string"</span>
+  }
+
+  document.<span class="fn">getElementById</span>(<span class="str">"para"</span>).innerHTML = r;
+}</code></pre>
+
+    <div class="box box-info">
+      <strong>🔎 Why no parseInt needed here?</strong>
+      <p>When you multiply a string by a number (e.g., <code>"5" * 3</code>), JavaScript automatically converts the string to a number. This is called <strong>implicit type coercion</strong>. It works for <code>*</code>, <code>/</code>, <code>-</code>, but NOT for <code>+</code> (which does string joining instead).</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 9 ════ -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(167,139,250,.15);color:var(--accent4)">09</div>
+      <div>
+        <h2>Project — Light Bulb Toggle</h2>
+        <div class="subtitle">Boolean flag · toggling state · changing images</div>
+      </div>
+    </div>
+
+    <p>This project teaches a fundamental pattern: using a <strong>boolean variable as a flag</strong> to track the current state (on or off), and toggling it each time the user clicks.</p>
+
+    <pre><span class="lang-label">JS</span><code><span class="kw">var</span> isOn = <span class="kw">false</span>;   <span class="cmt">// track state: is bulb on?</span>
+
+<span class="kw">function</span> <span class="fn">toggleBulb</span>() {
+  <span class="kw">const</span> bulb = document.<span class="fn">getElementById</span>(<span class="str">"bulb"</span>);
+
+  <span class="kw">if</span> (isOn == <span class="kw">true</span>) {
+    bulb.src = <span class="str">"pic_bulboff.gif"</span>;   <span class="cmt">// currently on → turn off</span>
+  } <span class="kw">else</span> {
+    bulb.src = <span class="str">"pic_bulbon.gif"</span>;    <span class="cmt">// currently off → turn on</span>
+  }
+
+  isOn = !isOn;  <span class="cmt">// flip the flag: true→false or false→true</span>
+}</code></pre>
+
+    <div class="box box-tip">
+      <strong>💡 The Toggle Pattern</strong>
+      <p><code>isOn = !isOn</code> is the standard way to flip a boolean. The <code>!</code> operator reverses it — <code>true</code> becomes <code>false</code> and vice versa. This pattern is used everywhere: likes, subscribe buttons, dark mode toggles!</p>
+    </div>
+
+    <div class="box box-proj">
+      <strong>🚀 What you learn</strong>
+      <ul>
+        <li>Using a <strong>global boolean variable</strong> to remember state between function calls</li>
+        <li>Changing an image's <code>src</code> attribute with JavaScript</li>
+        <li>The <code>!</code> (NOT) operator to flip boolean values</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 10 ════ -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(244,114,182,.15);color:var(--accent5)">10</div>
+      <div>
+        <h2>Project — Timed Click Counter Game</h2>
+        <div class="subtitle">setInterval · click counting · auto-stop</div>
+      </div>
+    </div>
+
+    <p>Combines two concepts: counting user clicks and a ticking countdown timer. The game ends automatically when the time runs out.</p>
+
+    <pre><span class="lang-label">JS</span><code><span class="kw">let</span> count = <span class="num">0</span>;
+<span class="kw">let</span> time  = <span class="num">0</span>;
+
+<span class="kw">function</span> <span class="fn">updateTimer</span>() {
+  time++;
+  document.<span class="fn">getElementById</span>(<span class="str">"timer"</span>).innerHTML = time;
+
+  <span class="kw">if</span> (time === <span class="num">10</span>) {
+    document.<span class="fn">getElementById</span>(<span class="str">"clickBtn"</span>).style.display = <span class="str">"none"</span>; <span class="cmt">// hide button</span>
+    <span class="fn">clearInterval</span>(timerid);                                         <span class="cmt">// stop timer</span>
+  }
+}
+
+<span class="kw">var</span> timerid = <span class="fn">setInterval</span>(updateTimer, <span class="num">1000</span>);  <span class="cmt">// every 1 second</span>
+
+<span class="kw">function</span> <span class="fn">increaseCount</span>() {
+  count++;
+  document.<span class="fn">getElementById</span>(<span class="str">"count"</span>).innerHTML = count;
+}</code></pre>
+
+    <div class="box box-proj">
+      <strong>🚀 What you learn</strong>
+      <ul>
+        <li>Two separate functions working together (timer + click handler)</li>
+        <li>Using <code>clearInterval()</code> to stop a timer when a condition is met</li>
+        <li>Hiding elements with <code>style.display = "none"</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 11 ════ -->
+  <div class="section" id="s11">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(245,158,11,.15);color:var(--accent1)">11</div>
+      <div>
+        <h2>Project — Cookie Clicker Game</h2>
+        <div class="subtitle">Clicking for points · timer · game loop</div>
+      </div>
+    </div>
+
+    <p>A fun game where clicking an image earns points. A 10-second timer runs in the background — when time's up, the cookie disappears.</p>
+
+    <pre><span class="lang-label">JS</span><code><span class="kw">var</span> pts  = <span class="num">0</span>;
+<span class="kw">var</span> time = <span class="num">0</span>;
+
+<span class="kw">function</span> <span class="fn">incpts</span>() {           <span class="cmt">// called when cookie is clicked</span>
+  pts++;
+  document.<span class="fn">getElementById</span>(<span class="str">"clicks"</span>).innerHTML = pts;
+}
+
+<span class="kw">function</span> <span class="fn">updatetimer</span>() {
+  time++;
+  document.<span class="fn">getElementById</span>(<span class="str">"timer"</span>).innerHTML = time;
+
+  <span class="kw">if</span> (time === <span class="num">10</span>) {
+    document.<span class="fn">getElementById</span>(<span class="str">"cookie"</span>).style.display = <span class="str">"none"</span>;
+    <span class="fn">clearInterval</span>(timerid);
+  }
+}
+
+<span class="kw">var</span> timerid = <span class="fn">setInterval</span>(updatetimer, <span class="num">1000</span>);</code></pre>
+
+    <div class="box box-proj">
+      <strong>🚀 What you learn</strong>
+      <ul>
+        <li>An interactive game built with just vanilla JS — no libraries!</li>
+        <li>Attaching a click handler to an image: <code>&lt;img onclick="incpts()"&gt;</code></li>
+        <li>Combining a score tracker and a countdown timer</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 12 ════ -->
+  <div class="section" id="s12">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(52,211,153,.15);color:var(--accent2)">12</div>
+      <div>
+        <h2>Project — Hover Animal Info Cards</h2>
+        <div class="subtitle">onmouseover · onmouseout · conditional display</div>
+      </div>
+    </div>
+
+    <p>Hover over a pet's image to reveal information about it. When the mouse leaves, the info disappears. A great demonstration of mouse events + dynamic content.</p>
+
+    <pre><span class="lang-label">HTML + JS</span><code><span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"dog.jpg"</span>  <span class="attr">onmouseover</span>=<span class="str">"showInfo('dog')"</span>  <span class="attr">onmouseout</span>=<span class="str">"clearInfo()"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"cat.jpg"</span>  <span class="attr">onmouseover</span>=<span class="str">"showInfo('cat')"</span>  <span class="attr">onmouseout</span>=<span class="str">"clearInfo()"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;p</span> <span class="attr">id</span>=<span class="str">"info"</span><span class="tag">&gt;&lt;/p&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">function</span> <span class="fn">showInfo</span>(pet) {
+    <span class="kw">var</span> infoText;
+
+    <span class="kw">if</span> (pet === <span class="str">"dog"</span>) {
+      infoText = <span class="str">"Dogs are loyal and friendly pets. They need exercise and love!"</span>;
+    } <span class="kw">else if</span> (pet === <span class="str">"cat"</span>) {
+      infoText = <span class="str">"Cats are independent and playful. They enjoy quiet spaces."</span>;
+    }
+
+    document.<span class="fn">getElementById</span>(<span class="str">"info"</span>).innerHTML = infoText;
+  }
+
+  <span class="kw">function</span> <span class="fn">clearInfo</span>() {
+    document.<span class="fn">getElementById</span>(<span class="str">"info"</span>).innerHTML = <span class="str">""</span>;  <span class="cmt">// clear the text</span>
+  }
+<span class="tag">&lt;/script&gt;</span></code></pre>
+
+    <div class="box box-tip">
+      <strong>💡 Passing data into a function</strong>
+      <p>Both images call the same <code>showInfo()</code> function, but pass a different argument — <code>'dog'</code> or <code>'cat'</code>. The function then uses an <code>if/else</code> to decide what text to show. This is much better than writing two separate functions!</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 13 ════ -->
+  <div class="section" id="s13">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(96,165,250,.15);color:var(--accent3)">13</div>
+      <div>
+        <h2>Project — Like & Subscribe Buttons</h2>
+        <div class="subtitle">Toggle patterns · CSS animations · classList · multi-event handling</div>
+      </div>
+    </div>
+
+    <p>Two polished interactive buttons that mimic real social media interactions, combining clicks, hover effects, and CSS animations.</p>
+
+    <h3>Like Button</h3>
+    <pre><span class="lang-label">JS</span><code><span class="kw">var</span> liked = <span class="kw">false</span>;
+
+<span class="kw">function</span> <span class="fn">like</span>() {
+  <span class="kw">const</span> button = document.<span class="fn">getElementById</span>(<span class="str">"but"</span>);
+  
+  <span class="kw">if</span> (!liked) {
+    button.innerHTML = <span class="str">'&lt;img src="heart.png" height="50" width="50"&gt;'</span>;
+    button.style.backgroundColor = <span class="str">"green"</span>;
+  } <span class="kw">else</span> {
+    button.innerHTML = <span class="str">'&lt;img src="thumb.png" height="50" width="50"&gt;'</span>;
+    button.style.backgroundColor = <span class="str">""</span>;  <span class="cmt">// reset to default</span>
+  }
+  
+  liked = !liked;  <span class="cmt">// toggle state</span>
+}
+
+<span class="kw">function</span> <span class="fn">on</span>() {
+  <span class="kw">if</span> (!liked) { document.<span class="fn">getElementById</span>(<span class="str">"but"</span>).style.backgroundColor = <span class="str">"blue"</span>; }
+}
+<span class="kw">function</span> <span class="fn">out</span>() {
+  <span class="kw">if</span> (!liked) { document.<span class="fn">getElementById</span>(<span class="str">"but"</span>).style.backgroundColor = <span class="str">""</span>; }
+}</code></pre>
+
+    <h3>Subscribe Button with CSS Shake Animation</h3>
+    <pre><span class="lang-label">CSS + JS</span><code><span class="cmt">/* CSS: define the shake animation */</span>
+@<span class="kw">keyframes</span> shake {
+  <span class="num">0%</span>   { transform: <span class="fn">translateX</span>(<span class="num">0</span>); }
+  <span class="num">25%</span>  { transform: <span class="fn">translateX</span>(-<span class="num">10px</span>); }
+  <span class="num">50%</span>  { transform: <span class="fn">translateX</span>(<span class="num">10px</span>); }
+  <span class="num">75%</span>  { transform: <span class="fn">translateX</span>(-<span class="num">10px</span>); }
+  <span class="num">100%</span> { transform: <span class="fn">translateX</span>(<span class="num">0</span>); }
+}
+
+.<span class="fn">shake</span> {
+  animation: shake <span class="num">0.5s</span> ease-in-out;
+}
+
+<span class="cmt">// JS: add/remove the class to trigger the animation</span>
+<span class="kw">var</span> subscribed = <span class="kw">false</span>;
+
+<span class="kw">function</span> <span class="fn">toggleSubscribe</span>() {
+  <span class="kw">const</span> bell = document.<span class="fn">getElementById</span>(<span class="str">"bellIcon"</span>);
+
+  <span class="kw">if</span> (!subscribed) {
+    bell.classList.<span class="fn">add</span>(<span class="str">"shake"</span>);    <span class="cmt">// trigger animation</span>
+    button.style.backgroundColor = <span class="str">"red"</span>;
+    buttonText.textContent = <span class="str">"Unsubscribe"</span>;
+  } <span class="kw">else</span> {
+    bell.classList.<span class="fn">remove</span>(<span class="str">"shake"</span>); <span class="cmt">// remove animation</span>
+    button.style.backgroundColor = <span class="str">"blue"</span>;
+    buttonText.textContent = <span class="str">"Subscribe"</span>;
+  }
+
+  subscribed = !subscribed;
+}</code></pre>
+
+    <div class="box box-info">
+      <strong>🔎 classList — Adding & Removing CSS Classes</strong>
+      <p><code>element.classList.add("className")</code> adds a CSS class to an element.<br>
+      <code>element.classList.remove("className")</code> removes it.<br>
+      This is the cleanest way to trigger CSS animations or visual state changes from JavaScript.</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 14 ════ -->
+  <div class="section" id="s14">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(167,139,250,.15);color:var(--accent4)">14</div>
+      <div>
+        <h2>Project — Login / Authentication</h2>
+        <div class="subtitle">Reading input values · nested if/else · window.open()</div>
+      </div>
+    </div>
+
+    <p>A login form that checks the username and password. If correct, it opens a new page. If wrong, it shows an error message. This is a great exercise in reading form values and nested conditionals.</p>
+
+    <pre><span class="lang-label">HTML + JS</span><code><span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"text"</span>     <span class="attr">id</span>=<span class="str">"name"</span>  <span class="attr">placeholder</span>=<span class="str">"Username"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"password"</span> <span class="attr">id</span>=<span class="str">"pass"</span>  <span class="attr">placeholder</span>=<span class="str">"Password"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="str">"check()"</span><span class="tag">&gt;</span>Submit<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;p</span> <span class="attr">id</span>=<span class="str">"msg"</span><span class="tag">&gt;&lt;/p&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+  <span class="kw">function</span> <span class="fn">check</span>() {
+    <span class="kw">var</span> un = document.<span class="fn">getElementById</span>(<span class="str">"name"</span>).value;   <span class="cmt">// get typed username</span>
+    <span class="kw">var</span> pw = document.<span class="fn">getElementById</span>(<span class="str">"pass"</span>).value;   <span class="cmt">// get typed password</span>
+
+    <span class="kw">if</span> (un == <span class="str">"Roshni"</span>) {
+      <span class="kw">if</span> (pw == <span class="str">"12345"</span>) {
+        document.<span class="fn">getElementById</span>(<span class="str">"msg"</span>).innerHTML = <span class="str">"Login Successful!"</span>;
+        <span class="fn">alert</span>(<span class="str">"Login Successful"</span>);
+        window.<span class="fn">open</span>(<span class="str">"home.html"</span>);   <span class="cmt">// open another page!</span>
+      } <span class="kw">else</span> {
+        document.<span class="fn">getElementById</span>(<span class="str">"msg"</span>).innerHTML = <span class="str">"Incorrect password"</span>;
+      }
+    } <span class="kw">else</span> {
+      document.<span class="fn">getElementById</span>(<span class="str">"msg"</span>).innerHTML = <span class="str">"Username does not exist"</span>;
+    }
+  }
+<span class="tag">&lt;/script&gt;</span></code></pre>
+
+    <div class="box box-warn">
+      <strong>⚠️ Security Note</strong>
+      <p>This is a learning exercise only. In real applications, passwords are <strong>never</strong> stored in JavaScript code — they are verified on a secure server.</p>
+    </div>
+
+    <div class="box box-info">
+      <strong>🔎 .value vs .innerHTML</strong>
+      <ul>
+        <li><code>.innerHTML</code> — reads/writes the HTML content <em>inside</em> elements like <code>&lt;p&gt;</code>, <code>&lt;h1&gt;</code></li>
+        <li><code>.value</code> — reads what the user typed into an <code>&lt;input&gt;</code> or <code>&lt;textarea&gt;</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 15 ════ -->
+  <div class="section" id="s15">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(244,114,182,.15);color:var(--accent5)">15</div>
+      <div>
+        <h2>Project — Time-Based Greeting</h2>
+        <div class="subtitle">Date.getHours() · morning / afternoon / evening / night logic</div>
+      </div>
+    </div>
+
+    <p>Uses the current hour to greet the user differently depending on the time of day. A great application of the <code>Date</code> object + conditional logic.</p>
+
+    <pre><span class="lang-label">JS</span><code><span class="kw">function</span> <span class="fn">tim</span>() {
+  <span class="kw">var</span> name = <span class="fn">prompt</span>(<span class="str">"Enter your name"</span>);
+  <span class="kw">var</span> tt = <span class="kw">new</span> <span class="fn">Date</span>().<span class="fn">getHours</span>();   <span class="cmt">// current hour: 0-23</span>
+  
+  <span class="kw">var</span> greeting;
+  
+  <span class="kw">if</span> (tt &lt; <span class="num">12</span>) {
+    greeting = <span class="str">"Good morning"</span>;
+  } <span class="kw">else if</span> (tt &lt; <span class="num">16</span>) {
+    greeting = <span class="str">"Good afternoon"</span>;
+  } <span class="kw">else if</span> (tt &lt; <span class="num">20</span>) {
+    greeting = <span class="str">"Good evening"</span>;
+  } <span class="kw">else</span> {
+    greeting = <span class="str">"Good night"</span>;
+  }
+
+  <span class="fn">alert</span>(<span class="str">"Hi! "</span> + name + <span class="str">" "</span> + greeting);
+}</code></pre>
+
+    <table>
+      <tr><th>Hour Range</th><th>Greeting</th></tr>
+      <tr><td>0 – 11</td><td>Good morning 🌅</td></tr>
+      <tr><td>12 – 15</td><td>Good afternoon ☀️</td></tr>
+      <tr><td>16 – 19</td><td>Good evening 🌇</td></tr>
+      <tr><td>20 – 23</td><td>Good night 🌙</td></tr>
+    </table>
+
+    <div class="box box-hw">
+      <strong>📝 Homework</strong>
+      <p>Read the month name from the user and display the number of days in that month.</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 16 ════ -->
+  <div class="section" id="s16">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(245,158,11,.15);color:var(--accent1)">16</div>
+      <div>
+        <h2>Project — Calculator</h2>
+        <div class="subtitle">+=operator · input.value · eval() · building expressions</div>
+      </div>
+    </div>
+
+    <p>A fully working calculator where each button press appends to a display, and pressing <code>=</code> evaluates the full expression. The key trick is using <code>+=</code> to build up the expression string.</p>
+
+    <pre><span class="lang-label">JS — The core calculator logic</span><code><span class="cmt">// Each number/operator button calls disp() with its character</span>
+<span class="kw">function</span> <span class="fn">disp</span>(num) {
+  <span class="cmt">// += appends to existing value  (e.g. "12" + "+" → "12+")</span>
+  document.<span class="fn">getElementById</span>(<span class="str">"display"</span>).value += num;
+}
+
+<span class="cmt">// The "C" button:</span>
+<span class="cmt">// display.value = ""   ← clears the screen</span>
+
+<span class="cmt">// The "=" button:</span>
+<span class="cmt">// display.value = eval(display.value)  ← evaluates "12+5" → 17</span></code></pre>
+
+    <div class="box box-info">
+      <strong>🔎 What is eval()?</strong>
+      <p><code>eval()</code> takes a string like <code>"12 + 5 * 3"</code> and evaluates it as actual JavaScript math, returning the result. It's very powerful but should only be used in controlled environments like this — not with user-typed input in production apps.</p>
+    </div>
+
+    <div class="box box-tip">
+      <strong>💡 = vs +=</strong>
+      <p><code>display.value = "5"</code> — replaces everything with "5"<br>
+      <code>display.value += "5"</code> — adds "5" to whatever was already there<br>
+      The calculator uses <code>+=</code> to keep building up the expression one character at a time.</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 17 ════ -->
+  <div class="section" id="s17">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(52,211,153,.15);color:var(--accent2)">17</div>
+      <div>
+        <h2>Project — Multiplication Table</h2>
+        <div class="subtitle">for loop · string building · innerHTML</div>
+      </div>
+    </div>
+
+    <p>Enter a number, click Submit, and see the full multiplication table generated using a <code>for</code> loop.</p>
+
+    <pre><span class="lang-label">JS</span><code><span class="kw">function</span> <span class="fn">mult</span>() {
+  <span class="kw">var</span> n = document.<span class="fn">getElementById</span>(<span class="str">"num"</span>).value;
+  <span class="kw">var</span> r = <span class="str">""</span>;
+
+  <span class="kw">for</span> (<span class="kw">var</span> a = <span class="num">1</span>; a &lt;= <span class="num">10</span>; a++) {
+    <span class="kw">var</span> c = n * a;
+    r += n + <span class="str">" × "</span> + a + <span class="str">" = "</span> + c + <span class="str">"&lt;br&gt;"</span>;
+  }
+
+  document.<span class="fn">getElementById</span>(<span class="str">"para"</span>).innerHTML = r;
+}</code></pre>
+
+    <div class="box box-hw">
+      <strong>📝 Homework Challenges</strong>
+      <ul>
+        <li>Add CSS styling to make the table look great</li>
+        <li>Take an nth term from the user and display the sum of 0 + 1 + 2 + ... + n</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 18 ════ -->
+  <div class="section" id="s18">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(96,165,250,.15);color:var(--accent3)">18</div>
+      <div>
+        <h2>Projects — Dice Roller & Color Changer</h2>
+        <div class="subtitle">Math.random() · Math.floor() · generating random numbers</div>
+      </div>
+    </div>
+
+    <p><code>Math.random()</code> is JavaScript's tool for generating random numbers. Understanding how to use it is key to building games and dynamic effects.</p>
+
+    <div class="box box-info">
+      <strong>🔎 How Math.random() works</strong>
+      <p><code>Math.random()</code> returns a decimal between 0 (inclusive) and 1 (exclusive), like <code>0.7382...</code>. To get a random integer in a range, you scale and floor it.</p>
+    </div>
+
+    <pre><span class="lang-label">JS — Random number recipe</span><code><span class="cmt">// Random integer from 1 to 6 (dice roll):</span>
+Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() * <span class="num">6</span>) + <span class="num">1</span>
+<span class="cmt">//  Math.random() → 0.0 to 0.9999...</span>
+<span class="cmt">//  * 6           → 0.0 to 5.9999...</span>
+<span class="cmt">//  Math.floor()  → 0, 1, 2, 3, 4, or 5</span>
+<span class="cmt">//  + 1           → 1, 2, 3, 4, 5, or 6  ✅</span></code></pre>
+
+    <h3>Dice Roller</h3>
+    <pre><span class="lang-label">JS</span><code><span class="kw">function</span> <span class="fn">rollDice</span>() {
+  <span class="kw">const</span> num = Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() * <span class="num">6</span>) + <span class="num">1</span>;
+  document.<span class="fn">getElementById</span>(<span class="str">"dice"</span>).innerText = <span class="str">"🎲 "</span> + num;
+}</code></pre>
+
+    <h3>Background Color Changer</h3>
+    <pre><span class="lang-label">JS</span><code><span class="kw">function</span> <span class="fn">changeColor</span>() {
+  <span class="kw">const</span> colors = [<span class="str">"#ff9999"</span>, <span class="str">"#99ffcc"</span>, <span class="str">"#cc99ff"</span>, <span class="str">"#ffff99"</span>, <span class="str">"#99ccff"</span>];
+  
+  <span class="cmt">// Pick a random index from 0 to colors.length - 1</span>
+  <span class="kw">const</span> random = Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() * colors.length);
+  
+  document.body.style.backgroundColor = colors[random];
+}</code></pre>
+  </div>
+
+  <!-- ════ SECTION 19 ════ -->
+  <div class="section" id="s19">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(167,139,250,.15);color:var(--accent4)">19</div>
+      <div>
+        <h2>Project — Guess the Color Game</h2>
+        <div class="subtitle">RGB colors · dropdown select · attempts counter · reset</div>
+      </div>
+    </div>
+
+    <p>Five dropdown options are each given a random background color using <code>rgb(r, g, b)</code>. One of them is the "correct" color. The player picks options until they find the right one.</p>
+
+    <pre><span class="lang-label">JS — Core game logic</span><code><span class="kw">var</span> correctColor = <span class="str">""</span>;
+<span class="kw">var</span> chances = <span class="num">0</span>;
+
+<span class="kw">function</span> <span class="fn">setColors</span>() {
+  <span class="kw">for</span> (<span class="kw">var</span> i = <span class="num">1</span>; i &lt;= <span class="num">5</span>; i++) {
+    <span class="kw">var</span> r = Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() * <span class="num">256</span>); <span class="cmt">// 0–255</span>
+    <span class="kw">var</span> g = Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() * <span class="num">256</span>);
+    <span class="kw">var</span> b = Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() * <span class="num">256</span>);
+    <span class="kw">var</span> rgb = <span class="str">"rgb("</span> + r + <span class="str">", "</span> + g + <span class="str">", "</span> + b + <span class="str">")"</span>;
+    
+    document.<span class="fn">getElementById</span>(<span class="str">"option"</span> + i).style.backgroundColor = rgb;
+  }
+
+  <span class="cmt">// Randomly pick one option as the correct answer</span>
+  <span class="kw">var</span> randomIndex = Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() * <span class="num">5</span>) + <span class="num">1</span>;
+  correctColor = document.<span class="fn">getElementById</span>(<span class="str">"option"</span> + randomIndex).style.backgroundColor;
+}
+
+<span class="kw">function</span> <span class="fn">check</span>() {
+  <span class="kw">var</span> selectedId    = document.<span class="fn">getElementById</span>(<span class="str">"color"</span>).value;
+  <span class="kw">var</span> selectedColor = document.<span class="fn">getElementById</span>(selectedId).style.backgroundColor;
+  
+  chances++;
+
+  <span class="kw">if</span> (selectedColor == correctColor) {
+    document.<span class="fn">getElementById</span>(<span class="str">"result"</span>).innerText = <span class="str">"✅ Correct! You guessed in "</span> + chances + <span class="str">" chances!"</span>;
+    document.<span class="fn">getElementById</span>(<span class="str">"color"</span>).style.display = <span class="str">"none"</span>;
+  } <span class="kw">else</span> {
+    document.<span class="fn">getElementById</span>(<span class="str">"result"</span>).innerText = <span class="str">"❌ Incorrect! Try again."</span>;
+  }
+}
+
+<span class="fn">setColors</span>(); <span class="cmt">// start game when page loads</span></code></pre>
+
+    <div class="box box-tip">
+      <strong>💡 Why 256?</strong>
+      <p>Colors in RGB have 256 possible values per channel (0–255). Using <code>Math.floor(Math.random() * 256)</code> gives you a random integer from 0 to 255 — exactly the range needed for a valid RGB color!</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 20 ════ -->
+  <div class="section" id="s20">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(244,114,182,.15);color:var(--accent5)">20</div>
+      <div>
+        <h2>Canvas Basics</h2>
+        <div class="subtitle">HTML canvas element · 2D context · shapes · colors</div>
+      </div>
+    </div>
+
+    <p>The <strong>HTML <code>&lt;canvas&gt;</code> element</strong> is like a blank drawing board inside the browser. JavaScript draws on it using a special object called the <strong>2D rendering context</strong>.</p>
+
+    <pre><span class="lang-label">HTML + JS — Canvas Setup</span><code><span class="cmt">&lt;!-- Step 1: Create the canvas in HTML --&gt;</span>
+<span class="tag">&lt;canvas</span> <span class="attr">id</span>=<span class="str">"myCanvas"</span> <span class="attr">width</span>=<span class="str">"400"</span> <span class="attr">height</span>=<span class="str">"300"</span>
+        <span class="attr">style</span>=<span class="str">"border:1px solid black;"</span><span class="tag">&gt;&lt;/canvas&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+  <span class="cmt">// Step 2: Get reference to canvas element</span>
+  <span class="kw">const</span> canvas = document.<span class="fn">getElementById</span>(<span class="str">"myCanvas"</span>);
+
+  <span class="cmt">// Step 3: Get the 2D drawing context (the "pen")</span>
+  <span class="kw">const</span> ctx = canvas.<span class="fn">getContext</span>(<span class="str">"2d"</span>);
+
+  <span class="cmt">// Step 4: Draw a filled rectangle</span>
+  ctx.fillStyle = <span class="str">"blue"</span>;
+  ctx.<span class="fn">fillRect</span>(<span class="num">50</span>, <span class="num">50</span>, <span class="num">100</span>, <span class="num">100</span>); <span class="cmt">// x, y, width, height</span>
+
+  <span class="cmt">// Step 5: Draw a filled circle</span>
+  ctx.<span class="fn">beginPath</span>();
+  ctx.<span class="fn">arc</span>(<span class="num">200</span>, <span class="num">150</span>, <span class="num">40</span>, <span class="num">0</span>, Math.PI * <span class="num">2</span>); <span class="cmt">// x, y, radius, start, end angle</span>
+  ctx.fillStyle = <span class="str">"red"</span>;
+  ctx.<span class="fn">fill</span>();
+  ctx.<span class="fn">closePath</span>();
+<span class="tag">&lt;/script&gt;</span></code></pre>
+
+    <h3>Essential Canvas Drawing Commands</h3>
+    <table>
+      <tr><th>Command</th><th>What it draws</th><th>Parameters</th></tr>
+      <tr><td><code>fillRect(x,y,w,h)</code></td><td>Solid filled rectangle</td><td>x, y, width, height</td></tr>
+      <tr><td><code>strokeRect(x,y,w,h)</code></td><td>Rectangle outline only</td><td>x, y, width, height</td></tr>
+      <tr><td><code>arc(x,y,r,start,end)</code></td><td>Circle or arc</td><td>center x/y, radius, angles in radians</td></tr>
+      <tr><td><code>moveTo(x,y)</code></td><td>Move "pen" without drawing</td><td>x, y coordinates</td></tr>
+      <tr><td><code>lineTo(x,y)</code></td><td>Draw a line to this point</td><td>x, y coordinates</td></tr>
+      <tr><td><code>fill()</code></td><td>Fill the current path</td><td>—</td></tr>
+      <tr><td><code>stroke()</code></td><td>Draw the outline of the current path</td><td>—</td></tr>
+      <tr><td><code>beginPath()</code></td><td>Start a new drawing path</td><td>—</td></tr>
+      <tr><td><code>closePath()</code></td><td>Close the path back to the start</td><td>—</td></tr>
+      <tr><td><code>clearRect(x,y,w,h)</code></td><td>Erases a rectangle area (used in animation)</td><td>x, y, width, height</td></tr>
+    </table>
+
+    <div class="box box-info">
+      <strong>🔎 Canvas Coordinate System</strong>
+      <p>The canvas origin (0,0) is the <strong>top-left corner</strong>. X increases to the right, Y increases downward. So <code>fillRect(50, 100, 80, 60)</code> draws a rectangle starting 50px from the left and 100px from the top.</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 21 ════ -->
+  <div class="section" id="s21">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(245,158,11,.15);color:var(--accent1)">21</div>
+      <div>
+        <h2>Project — Canvas House Drawing</h2>
+        <div class="subtitle">Combining rectangles, triangles, and paths</div>
+      </div>
+    </div>
+
+    <p>Building a house on canvas by combining rectangles (walls, door, windows) and a triangle (roof) drawn using lines.</p>
+
+    <pre><span class="lang-label">JS — Drawing a House</span><code><span class="cmt">// 1. House body — chocolate brown rectangle</span>
+ctx.fillStyle = <span class="str">"#D2691E"</span>;
+ctx.<span class="fn">fillRect</span>(<span class="num">100</span>, <span class="num">120</span>, <span class="num">200</span>, <span class="num">150</span>);
+
+<span class="cmt">// 2. Roof — triangle using lineTo path</span>
+ctx.<span class="fn">beginPath</span>();
+ctx.<span class="fn">moveTo</span>(<span class="num">100</span>, <span class="num">120</span>);   <span class="cmt">// left corner of roof</span>
+ctx.<span class="fn">lineTo</span>(<span class="num">200</span>,  <span class="num">50</span>);   <span class="cmt">// top peak</span>
+ctx.<span class="fn">lineTo</span>(<span class="num">300</span>, <span class="num">120</span>);   <span class="cmt">// right corner</span>
+ctx.<span class="fn">closePath</span>();         <span class="cmt">// connects back to start → triangle</span>
+ctx.fillStyle = <span class="str">"#8B0000"</span>;
+ctx.<span class="fn">fill</span>();
+
+<span class="cmt">// 3. Door — brown rectangle</span>
+ctx.fillStyle = <span class="str">"#654321"</span>;
+ctx.<span class="fn">fillRect</span>(<span class="num">180</span>, <span class="num">200</span>, <span class="num">40</span>, <span class="num">70</span>);
+
+<span class="cmt">// 4. Windows — light blue + black border</span>
+ctx.fillStyle = <span class="str">"#ADD8E6"</span>;
+ctx.<span class="fn">fillRect</span>(<span class="num">120</span>, <span class="num">140</span>, <span class="num">40</span>, <span class="num">40</span>);  <span class="cmt">// left window</span>
+ctx.<span class="fn">fillRect</span>(<span class="num">240</span>, <span class="num">140</span>, <span class="num">40</span>, <span class="num">40</span>);  <span class="cmt">// right window</span>
+
+<span class="cmt">// Add window borders</span>
+ctx.strokeStyle = <span class="str">"#000"</span>;
+ctx.lineWidth = <span class="num">2</span>;
+ctx.<span class="fn">strokeRect</span>(<span class="num">120</span>, <span class="num">140</span>, <span class="num">40</span>, <span class="num">40</span>);
+ctx.<span class="fn">strokeRect</span>(<span class="num">240</span>, <span class="num">140</span>, <span class="num">40</span>, <span class="num">40</span>);</code></pre>
+
+    <div class="box box-tip">
+      <strong>💡 Drawing a Triangle</strong>
+      <p>Canvas has no built-in triangle shape. You draw one by using <code>moveTo()</code> to go to the first point, then <code>lineTo()</code> for the second and third points, and <code>closePath()</code> to connect back to the start — forming a closed triangle path you can fill.</p>
+    </div>
+  </div>
+
+  <!-- ════ SECTION 22 ════ -->
+  <div class="section" id="s22">
+    <div class="section-header">
+      <div class="section-num" style="background:rgba(52,211,153,.15);color:var(--accent2)">22</div>
+      <div>
+        <h2>Canvas Animation</h2>
+        <div class="subtitle">requestAnimationFrame · moving circle · bouncing box</div>
+      </div>
+    </div>
+
+    <p>Animation = <strong>draw → erase → draw at new position → repeat</strong>. We use <code>requestAnimationFrame()</code> which tells the browser to run our drawing function before the next screen refresh — producing silky-smooth ~60fps animation.</p>
+
+    <pre><span class="lang-label">JS — Animation Loop Pattern</span><code><span class="kw">function</span> <span class="fn">draw</span>() {
+  ctx.<span class="fn">clearRect</span>(<span class="num">0</span>, <span class="num">0</span>, canvas.width, canvas.height); <span class="cmt">// erase everything</span>
+  
+  <span class="cmt">// ... draw shapes at new positions ...</span>
+
+  <span class="fn">requestAnimationFrame</span>(draw); <span class="cmt">// call draw() again next frame</span>
+}
+
+<span class="fn">draw</span>(); <span class="cmt">// kick off the loop</span></code></pre>
+
+    <h3>Project 1 — Moving Circle (Bouncing Left–Right)</h3>
+    <pre><span class="lang-label">JS</span><code><span class="kw">let</span> x = <span class="num">50</span>;
+<span class="kw">let</span> speed = <span class="num">2</span>;
+
+<span class="kw">function</span> <span class="fn">draw</span>() {
+  ctx.<span class="fn">clearRect</span>(<span class="num">0</span>, <span class="num">0</span>, canvas.width, canvas.height);
+
+  ctx.<span class="fn">beginPath</span>();
+  ctx.<span class="fn">arc</span>(x, <span class="num">150</span>, <span class="num">20</span>, <span class="num">0</span>, Math.PI * <span class="num">2</span>);
+  ctx.fillStyle = <span class="str">"green"</span>;
+  ctx.<span class="fn">fill</span>();
+
+  x += speed;   <span class="cmt">// move right by 'speed' pixels each frame</span>
+
+  <span class="cmt">// Bounce: if hitting right or left edge, reverse direction</span>
+  <span class="kw">if</span> (x + <span class="num">20</span> > canvas.width || x - <span class="num">20</span> < <span class="num">0</span>) {
+    speed = -speed;  <span class="cmt">// flip direction!</span>
+  }
+
+  <span class="fn">requestAnimationFrame</span>(draw);
+}
+
+<span class="fn">draw</span>();</code></pre>
+
+    <h3>Project 2 — Bouncing Box (2D Bounce)</h3>
+    <pre><span class="lang-label">JS</span><code><span class="kw">let</span> x = <span class="num">10</span>, y = <span class="num">10</span>;   <span class="cmt">// position</span>
+<span class="kw">let</span> dx = <span class="num">3</span>, dy = <span class="num">2</span>;   <span class="cmt">// velocity (speed + direction)</span>
+
+<span class="kw">function</span> <span class="fn">draw</span>() {
+  ctx.<span class="fn">clearRect</span>(<span class="num">0</span>, <span class="num">0</span>, canvas.width, canvas.height);
+
+  ctx.fillStyle = <span class="str">"blue"</span>;
+  ctx.<span class="fn">fillRect</span>(x, y, <span class="num">50</span>, <span class="num">50</span>);
+
+  x += dx;  y += dy;  <span class="cmt">// move each frame</span>
+
+  <span class="cmt">// Bounce off left/right walls</span>
+  <span class="kw">if</span> (x + <span class="num">50</span> > canvas.width  || x < <span class="num">0</span>) dx = -dx;
+  <span class="cmt">// Bounce off top/bottom walls</span>
+  <span class="kw">if</span> (y + <span class="num">50</span> > canvas.height || y < <span class="num">0</span>) dy = -dy;
+
+  <span class="fn">requestAnimationFrame</span>(draw);
+}
+
+<span class="fn">draw</span>();</code></pre>
+
+    <div class="box box-proj">
+      <strong>🚀 The Key Animation Ideas</strong>
+      <ul>
+        <li><strong>Position variables</strong> (<code>x</code>, <code>y</code>) track where the object is</li>
+        <li><strong>Velocity variables</strong> (<code>dx</code>, <code>dy</code>) control how fast and in which direction it moves</li>
+        <li><strong>Bouncing</strong> is done by reversing velocity (<code>dx = -dx</code>) when hitting a wall</li>
+        <li><strong>clearRect()</strong> erases the old frame before drawing the new one</li>
+        <li><strong>requestAnimationFrame()</strong> keeps the loop running smoothly (~60 times per second)</li>
+      </ul>
+    </div>
+
+    <table>
+      <tr><th>Concept</th><th>setInterval</th><th>requestAnimationFrame</th></tr>
+      <tr><td>Speed</td><td>Fixed interval (e.g. every 1000ms)</td><td>Synced to screen refresh (~60fps)</td></tr>
+      <tr><td>Smoothness</td><td>Can stutter</td><td>Very smooth</td></tr>
+      <tr><td>Best for</td><td>Clocks, timers, game timers</td><td>Animations, moving objects</td></tr>
+    </table>
+
+    <div class="box box-hw">
+      <strong>📝 Homework</strong>
+      <p>Design an animated seasonal greeting card and add all your JavaScript projects as links to one of the web pages on your website.</p>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // Highlight sidebar links based on scroll position
+  const sections = document.querySelectorAll('.section');
+  const links = document.querySelectorAll('nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector('nav a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

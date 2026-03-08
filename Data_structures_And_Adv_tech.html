@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Python Data Structures – Grade 6 Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --sidebar-bg: #1e1b4b;
+    --sidebar-accent: #7c3aed;
+    --sidebar-text: #c7d2fe;
+    --sidebar-active: #a78bfa;
+    --heading-font: 'Fredoka One', cursive;
+    --body-font: 'Nunito', sans-serif;
+    --code-font: 'Fira Code', monospace;
+    --card-bg: #ffffff;
+    --border: #e0e7ff;
+    --accent1: #7c3aed;
+    --accent2: #06b6d4;
+    --accent3: #f59e0b;
+    --accent4: #10b981;
+    --accent5: #ef4444;
+    --text: #1e293b;
+    --subtext: #64748b;
+    --shadow: 0 4px 20px rgba(124,58,237,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--body-font); background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: 272px; min-width: 272px;
+    background: var(--sidebar-bg);
+    height: 100vh; position: sticky; top: 0;
+    overflow-y: auto; padding: 0 0 40px;
+    scrollbar-width: thin; scrollbar-color: var(--sidebar-accent) transparent;
+    z-index: 100;
+  }
+  #sidebar::-webkit-scrollbar { width: 5px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--sidebar-accent); border-radius: 4px; }
+  .sidebar-logo { padding: 22px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 8px; }
+  .sidebar-logo h2 { font-family: var(--heading-font); color: #fff; font-size: 1.25rem; line-height: 1.2; }
+  .sidebar-logo span { font-family: var(--body-font); color: var(--sidebar-text); font-size: 0.76rem; font-weight: 600; }
+  .nav-section-title { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(167,139,250,0.45); padding: 12px 20px 4px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; color: var(--sidebar-text); font-size: 0.84rem; font-weight: 600; cursor: pointer; border-left: 3px solid transparent; transition: all 0.2s; text-decoration: none; }
+  .nav-item:hover { background: rgba(124,58,237,0.2); color: #fff; border-left-color: var(--sidebar-accent); }
+  .nav-item.active { background: rgba(124,58,237,0.3); color: var(--sidebar-active); border-left-color: var(--sidebar-active); }
+  .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+  .nav-sub-item { display: flex; align-items: center; gap: 8px; padding: 6px 20px 6px 44px; color: rgba(199,210,254,0.65); font-size: 0.79rem; font-weight: 600; cursor: pointer; border-left: 3px solid transparent; transition: all 0.2s; text-decoration: none; }
+  .nav-sub-item:hover { color: #fff; background: rgba(124,58,237,0.12); }
+  .nav-sub-item.active { color: var(--sidebar-active); background: rgba(124,58,237,0.18); border-left-color: var(--sidebar-active); }
+
+  /* MAIN */
+  #main { flex: 1; padding: 40px 50px 100px; overflow-x: hidden; }
+  .section { margin-bottom: 72px; scroll-margin-top: 28px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; padding-bottom: 14px; border-bottom: 2px solid var(--border); }
+  .section-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; }
+  .section-header h1 { font-family: var(--heading-font); font-size: 2rem; line-height: 1.1; }
+  .section-header p { font-size: 0.88rem; color: var(--subtext); margin-top: 3px; font-weight: 600; }
+  .subsection { margin-bottom: 42px; scroll-margin-top: 28px; }
+  .subsection h2 { font-family: var(--heading-font); font-size: 1.35rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+  /* Cards */
+  .card { background: var(--card-bg); border-radius: 16px; padding: 22px 26px; margin-bottom: 18px; box-shadow: var(--shadow); border: 1.5px solid var(--border); }
+  .card h3 { font-family: var(--heading-font); font-size: 1.08rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .card p, .card li { font-size: 0.91rem; line-height: 1.75; color: var(--text); }
+  .card ul { padding-left: 20px; }
+  .card ul li { margin-bottom: 5px; }
+
+  /* Real-life box */
+  .real-life {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-left: 4px solid var(--accent3);
+    border-radius: 10px; padding: 14px 18px; margin: 14px 0; font-size: 0.9rem;
+  }
+  .real-life .rl-title { color: #92400e; display: block; margin-bottom: 6px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
+  .real-life p, .real-life li { font-size: 0.9rem; line-height: 1.7; color: #451a03; }
+  .real-life ul { padding-left: 18px; margin-top: 6px; }
+  .real-life ul li { margin-bottom: 4px; }
+
+  /* Remember / tip box */
+  .remember { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-left: 4px solid var(--accent4); border-radius: 10px; padding: 14px 18px; margin: 14px 0; font-size: 0.9rem; }
+  .remember strong { color: #065f46; display: block; margin-bottom: 4px; font-size: 0.82rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; }
+  .remember p, .remember code { font-size: 0.9rem; line-height: 1.7; color: #064e3b; }
+
+  /* Analogy box */
+  .analogy { background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-left: 4px solid var(--accent1); border-radius: 10px; padding: 14px 18px; margin: 14px 0; font-size: 0.9rem; }
+  .analogy .an-title { color: #4c1d95; display: block; margin-bottom: 6px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
+  .analogy p, .analogy li { font-size: 0.9rem; line-height: 1.7; color: #2e1065; }
+  .analogy ul { padding-left: 18px; margin-top: 6px; }
+  .analogy ul li { margin-bottom: 4px; }
+
+  /* Code blocks */
+  .code-block { background: #0f172a; border-radius: 12px; margin: 16px 0; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.18); }
+  .code-header { background: #1e293b; padding: 9px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .code-header .dots { display: flex; gap: 6px; }
+  .code-header .dots span { width: 10px; height: 10px; border-radius: 50%; }
+  .code-header .dots span:nth-child(1) { background: #ef4444; }
+  .code-header .dots span:nth-child(2) { background: #f59e0b; }
+  .code-header .dots span:nth-child(3) { background: #22c55e; }
+  .code-header .label { font-family: var(--code-font); font-size: 0.72rem; color: #64748b; font-weight: 500; }
+  .code-block pre { padding: 18px 20px; overflow-x: auto; font-family: var(--code-font); font-size: 0.83rem; line-height: 1.65; color: #e2e8f0; white-space: pre; }
+  .kw { color: #c084fc; font-weight: 500; }
+  .fn { color: #60a5fa; }
+  .st { color: #86efac; }
+  .cm { color: #475569; font-style: italic; }
+  .nm { color: #fb923c; }
+  .bi { color: #f9a8d4; }
+
+  /* Method table */
+  .method-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem; }
+  .method-table th { background: #1e1b4b; color: #c7d2fe; padding: 10px 14px; text-align: left; font-weight: 700; }
+  .method-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
+  .method-table tr:nth-child(even) td { background: #f8fafc; }
+  .method-table code { font-family: var(--code-font); font-size: 0.82rem; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
+
+  /* Project badge */
+  .project-badge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: white; padding: 5px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; margin-bottom: 14px; }
+
+  /* Divider */
+  .divider { height: 3px; background: linear-gradient(90deg, var(--accent1), var(--accent2), transparent); border-radius: 2px; margin: 32px 0; }
+
+  /* Two-col examples */
+  .example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  .eg-card { background: #fff; border-radius: 12px; padding: 16px 18px; border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+  .eg-card .eg-icon { font-size: 1.8rem; display: block; margin-bottom: 6px; }
+  .eg-card h4 { font-family: var(--heading-font); font-size: 1rem; margin-bottom: 6px; }
+  .eg-card p { font-size: 0.84rem; line-height: 1.6; color: var(--subtext); }
+  @media (max-width: 750px) { .example-grid { grid-template-columns: 1fr; } }
+
+  /* Section color accents */
+  .s1 .section-icon { background: #ede9fe; }
+  .s2 .section-icon { background: #dbeafe; }
+  .s3 .section-icon { background: #d1fae5; }
+  .s4 .section-icon { background: #fef3c7; }
+  .s5 .section-icon { background: #fee2e2; }
+  .s6 .section-icon { background: #cffafe; }
+  .s7 .section-icon { background: #fce7f3; }
+
+  @media (max-width: 900px) { #sidebar { width: 220px; min-width: 220px; } #main { padding: 24px 20px 60px; } }
+  @media (max-width: 650px) { body { flex-direction: column; } #sidebar { width: 100%; height: auto; position: relative; } #main { padding: 20px 14px 60px; } }
+</style>
+</head>
+<body>
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <h2>🐍 Python DS Notes</h2>
+    <span>Grade 6 · Data Structures</span>
+  </div>
+  <div class="nav-section-title">Topics</div>
+
+  <a class="nav-item active" href="#s1" onclick="setActive(this)"><span class="icon">📋</span> 1. Python Lists</a>
+  <a class="nav-sub-item" href="#s1-methods" onclick="setActive(this)">List Methods</a>
+  <a class="nav-sub-item" href="#s1-operations" onclick="setActive(this)">List Operations</a>
+  <a class="nav-sub-item" href="#s1-comprehension" onclick="setActive(this)">List Comprehension</a>
+
+  <a class="nav-item" href="#s2" onclick="setActive(this)"><span class="icon">📚</span> 2. Python Stack</a>
+  <a class="nav-sub-item" href="#s2-pushpop" onclick="setActive(this)">Push &amp; Pop</a>
+  <a class="nav-sub-item" href="#s2-operations" onclick="setActive(this)">Stack Operations</a>
+  <a class="nav-sub-item" href="#s2-reverse" onclick="setActive(this)">Reverse String/Number</a>
+  <a class="nav-sub-item" href="#s2-recursion" onclick="setActive(this)">Recursion</a>
+  <a class="nav-sub-item" href="#s2-tuple" onclick="setActive(this)">Stack Using Tuple</a>
+
+  <a class="nav-item" href="#s3" onclick="setActive(this)"><span class="icon">🎢</span> 3. Python Queue</a>
+  <a class="nav-sub-item" href="#s3-basic" onclick="setActive(this)">Queue Basics</a>
+  <a class="nav-sub-item" href="#s3-cafe" onclick="setActive(this)">Café Order Project</a>
+  <a class="nav-sub-item" href="#s3-palindrome" onclick="setActive(this)">Palindrome Checker</a>
+  <a class="nav-sub-item" href="#s3-cinema" onclick="setActive(this)">Cinema Queue Project</a>
+  <a class="nav-sub-item" href="#s3-circular" onclick="setActive(this)">Circular Queue</a>
+
+  <a class="nav-item" href="#s4" onclick="setActive(this)"><span class="icon">📁</span> 4. File Handling</a>
+  <a class="nav-sub-item" href="#s4-basic" onclick="setActive(this)">Read &amp; Write Files</a>
+  <a class="nav-sub-item" href="#s4-delete" onclick="setActive(this)">Deleting Files</a>
+  <a class="nav-sub-item" href="#s4-movie" onclick="setActive(this)">Movie Reviews Project</a>
+  <a class="nav-sub-item" href="#s4-image" onclick="setActive(this)">Image Files (Binary)</a>
+
+  <a class="nav-item" href="#s5" onclick="setActive(this)"><span class="icon">🛡️</span> 5. Exception Handling</a>
+  <a class="nav-sub-item" href="#s5-types" onclick="setActive(this)">Types of Errors</a>
+  <a class="nav-sub-item" href="#s5-try" onclick="setActive(this)">Try / Except</a>
+  <a class="nav-sub-item" href="#s5-multiple" onclick="setActive(this)">Multiple Exceptions</a>
+  <a class="nav-sub-item" href="#s5-raise" onclick="setActive(this)">Raising Exceptions</a>
+
+  <a class="nav-item" href="#s6" onclick="setActive(this)"><span class="icon">🔗</span> 6. Python JSON</a>
+  <a class="nav-sub-item" href="#s6-string" onclick="setActive(this)">JSON Strings</a>
+  <a class="nav-sub-item" href="#s6-file" onclick="setActive(this)">JSON Files</a>
+  <a class="nav-sub-item" href="#s6-pretty" onclick="setActive(this)">Pretty Print</a>
+
+  <a class="nav-item" href="#s7" onclick="setActive(this)"><span class="icon">📖</span> 7. Interactive Dictionary</a>
+  <a class="nav-sub-item" href="#s7-project" onclick="setActive(this)">Project Code</a>
+</nav>
+
+<!-- ══════════ MAIN CONTENT ══════════ -->
+<main id="main">
+
+<!-- ═══════════════════════════════════════
+     SECTION 1 – PYTHON LISTS
+═══════════════════════════════════════ -->
+<div class="section s1" id="s1">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <div>
+      <h1 style="color:#7c3aed;">1. Python Lists</h1>
+      <p>Store many items together in one single variable</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤔 What is a List?</h3>
+    <p>A <strong>list</strong> is a collection that holds many items inside one variable. Items are written inside <code>[ ]</code>, separated by commas. Lists are:</p>
+    <ul>
+      <li><strong>Ordered</strong> — items stay in the position you placed them</li>
+      <li><strong>Changeable</strong> — you can add, remove, or edit items at any time</li>
+      <li><strong>Allow duplicates</strong> — the same item can appear more than once</li>
+      <li><strong>Can hold mixed types</strong> — numbers, strings, even other lists!</li>
+    </ul>
+  </div>
+
+  <div class="real-life">
+    <span class="rl-title">🌍 Real-Life Examples of Lists</span>
+    <ul>
+      <li>🎒 <strong>Your school bag</strong> — it holds a book, pencil, bottle, eraser all in one place. A Python list is exactly like that — one variable holding many items.</li>
+      <li>📱 <strong>Your contact list on a phone</strong> — all phone numbers stored together, in the order you added them.</li>
+      <li>🛒 <strong>A shopping list</strong> — "milk, eggs, bread, butter" — items in a specific order you can add to or cross off.</li>
+      <li>🏆 <strong>A scoreboard</strong> — stores scores of all players: <code>[95, 82, 78, 91, 60]</code></li>
+    </ul>
+  </div>
+
+  <!-- 1.1 List Methods -->
+  <div class="subsection" id="s1-methods">
+    <h2 style="color:#7c3aed;">📌 1.1 List Methods</h2>
+
+    <div class="card">
+      <h3>🔧 What are Methods?</h3>
+      <p>Methods are built-in actions you can perform on a list. Think of them as superpowers your list already has! You use them by writing <code>listname.method()</code>.</p>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 Classroom Attendance Analogy</span>
+      <p>Imagine a class register (attendance list). Think of each list method as an action a teacher might do with it:</p>
+      <ul>
+        <li>📝 <strong>append</strong> = A new student joins and sits at the very last seat</li>
+        <li>📌 <strong>insert</strong> = A transfer student joins and is assigned a specific seat number</li>
+        <li>📋 <strong>extend</strong> = An entire new group of students joins the class at once</li>
+        <li>❌ <strong>pop(i)</strong> = A student at seat number <em>i</em> leaves the class</li>
+        <li>🗑️ <strong>remove(x)</strong> = A specific named student leaves (you say the name, not the seat)</li>
+        <li>🧹 <strong>clear</strong> = The whole class is emptied — fresh start!</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>📋 List Methods Quick Reference</h3>
+      <table class="method-table">
+        <tr><th>Method</th><th>What it does</th><th>Example</th></tr>
+        <tr><td><code>append(x)</code></td><td>Adds item <em>x</em> to the END</td><td><code>list1.append("apple")</code></td></tr>
+        <tr><td><code>insert(i, x)</code></td><td>Adds item <em>x</em> at position <em>i</em></td><td><code>list1.insert(1, "mango")</code></td></tr>
+        <tr><td><code>extend([...])</code></td><td>Adds many items at once from another list</td><td><code>list1.extend(["a","b","c"])</code></td></tr>
+        <tr><td><code>pop(i)</code></td><td>Removes &amp; returns item at index <em>i</em></td><td><code>list1.pop(0)</code></td></tr>
+        <tr><td><code>remove(x)</code></td><td>Removes the first occurrence of <em>x</em></td><td><code>list1.remove("pen")</code></td></tr>
+        <tr><td><code>clear()</code></td><td>Empties the entire list</td><td><code>list1.clear()</code></td></tr>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">1list_methods.py — Interactive List Menu</div></div>
+      <pre><span class="cm"># An interactive program to practice all list methods</span>
+list1 = []
+
+<span class="kw">while</span> <span class="bi">True</span>:
+    <span class="bi">print</span>(<span class="st">"Select the operation that you want:"</span>)
+    <span class="bi">print</span>(<span class="st">"1.append  2.insert  3.extend  4.pop  5.remove  6.Display  7.Quit"</span>)
+
+    choice = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter your choice (1-7): "</span>))
+
+    <span class="kw">if</span> choice == <span class="nm">1</span>:
+        item = <span class="bi">input</span>(<span class="st">"Enter the item to add: "</span>)
+        list1.append(item)
+    <span class="kw">elif</span> choice == <span class="nm">2</span>:
+        item  = <span class="bi">input</span>(<span class="st">"Enter the item: "</span>)
+        index = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the index: "</span>))
+        list1.insert(index, item)
+    <span class="kw">elif</span> choice == <span class="nm">3</span>:
+        string = <span class="bi">input</span>(<span class="st">"Enter items separated by commas: "</span>)
+        list1.extend(string.split(<span class="st">","</span>))
+    <span class="kw">elif</span> choice == <span class="nm">4</span>:
+        <span class="kw">if</span> <span class="bi">len</span>(list1) > <span class="nm">0</span>:
+            index = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter index to delete: "</span>))
+            <span class="bi">print</span>(<span class="st">"Deleted:"</span>, list1.pop(index))
+        <span class="kw">else</span>:
+            <span class="bi">print</span>(<span class="st">"List is empty!"</span>)
+    <span class="kw">elif</span> choice == <span class="nm">5</span>:
+        item = <span class="bi">input</span>(<span class="st">"Enter item to remove: "</span>)
+        list1.remove(item)
+    <span class="kw">elif</span> choice == <span class="nm">6</span>:
+        <span class="bi">print</span>(list1)
+    <span class="kw">elif</span> choice == <span class="nm">7</span>:
+        <span class="kw">break</span></pre>
+    </div>
+  </div>
+
+  <!-- 1.2 List Operations -->
+  <div class="subsection" id="s1-operations">
+    <h2 style="color:#7c3aed;">📌 1.2 List Operations</h2>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 Real-Life Examples of List Operations</span>
+      <ul>
+        <li>➕ <strong>Concatenation (+)</strong> — Two friend groups combine at a birthday party. You merge both guest lists into one big list.</li>
+        <li>🔁 <strong>Repetition (*)</strong> — You print the same poster 3 times for different classrooms: <code>poster * 3</code>.</li>
+        <li>🔍 <strong>Membership (in)</strong> — Checking if your name is on the field trip permission list before you board the bus.</li>
+        <li>📏 <strong>len()</strong> — Counting how many students are present in class today.</li>
+        <li>🔢 <strong>sort()</strong> — Arranging students by height for the school photo, shortest to tallest.</li>
+        <li>🏅 <strong>min() / max()</strong> — Finding the lowest and highest score in a class test.</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">2list_operations.py</div></div>
+      <pre>a   = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">0</span>]
+b   = [<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span>, <span class="nm">10</span>]
+abc = [<span class="st">"a"</span>, <span class="st">"fekwf"</span>, <span class="st">"b"</span>, <span class="st">"z"</span>]
+
+<span class="cm"># Concatenation — join two lists together</span>
+c = a + b
+<span class="bi">print</span>(<span class="st">"Joined list:"</span>, c)
+
+<span class="cm"># Repetition — repeat the list</span>
+d = a * <span class="nm">2</span>
+<span class="bi">print</span>(<span class="st">"Repeated:"</span>, d)
+
+<span class="cm"># Membership — is this item in the list?</span>
+<span class="bi">print</span>(<span class="nm">2</span> <span class="kw">in</span> a)        <span class="cm"># True</span>
+<span class="bi">print</span>(<span class="nm">2</span> <span class="kw">not in</span> a)    <span class="cm"># False</span>
+
+<span class="cm"># Iteration — visit each item one by one</span>
+<span class="kw">for</span> i <span class="kw">in</span> a:
+    <span class="bi">print</span>(i)
+
+<span class="cm"># Length, Count, Min, Max, Sum</span>
+<span class="bi">print</span>(<span class="bi">len</span>(a))           <span class="cm"># how many items</span>
+<span class="bi">print</span>(b.count(<span class="nm">10</span>))     <span class="cm"># how many times 10 appears</span>
+<span class="bi">print</span>(<span class="bi">min</span>(a), <span class="bi">max</span>(a))  <span class="cm"># smallest and largest</span>
+<span class="bi">print</span>(<span class="bi">sum</span>(a))           <span class="cm"># total sum</span>
+
+<span class="cm"># Sorting</span>
+a.sort()               <span class="cm"># ascending (low → high)</span>
+<span class="bi">print</span>(a)
+a.sort(reverse=<span class="bi">True</span>)  <span class="cm"># descending (high → low)</span>
+<span class="bi">print</span>(a)</pre>
+    </div>
+  </div>
+
+  <!-- 1.3 List Comprehension -->
+  <div class="subsection" id="s1-comprehension">
+    <h2 style="color:#7c3aed;">📌 1.3 List Comprehension</h2>
+
+    <div class="card">
+      <h3>✨ What is List Comprehension?</h3>
+      <p>List comprehension is a <strong>shortcut</strong> for creating a new list from an existing one — written in a single line instead of 4-5 lines of code. It's one of Python's most powerful and elegant features!</p>
+      <div class="remember">
+        <strong>💡 The Formula</strong>
+        <p><code>new_list = [expression  for  item  in  old_list  if  condition]</code></p>
+      </div>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 Real-Life Examples of List Comprehension</span>
+      <ul>
+        <li>🍎 <strong>Sorting a fruit basket</strong> — You have a big basket of mixed fruits. You want only the apples in a new basket. List comprehension is like a magic hand that picks ONLY apples in one swift motion!</li>
+        <li>🏫 <strong>Filtering students</strong> — Out of a class list, pick only students whose names start with the letter "N". Instead of reading every name one by one and writing it down, list comprehension does it instantly.</li>
+        <li>📊 <strong>Creating a marks report</strong> — From a list of marks, create a new list of only the students who scored above 80 — in one line of code.</li>
+        <li>🔢 <strong>Squares table</strong> — Instead of writing a whole loop to find squares of 1 to 10, list comprehension does it: <code>[x**2 for x in range(1,11)]</code></li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">3list_comprehension.py</div></div>
+      <pre><span class="cm"># ── Old way: find even numbers using a for loop</span>
+list1 = [<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">6</span>,<span class="nm">7</span>,<span class="nm">8</span>]
+list2 = []
+<span class="kw">for</span> x <span class="kw">in</span> list1:
+    <span class="kw">if</span> x % <span class="nm">2</span> == <span class="nm">0</span>:
+        list2.append(x)
+<span class="bi">print</span>(<span class="st">f"Even numbers (loop): {list2}"</span>)
+
+<span class="cm"># ── New way: list comprehension — ONE line!</span>
+list2 = [x <span class="kw">for</span> x <span class="kw">in</span> list1 <span class="kw">if</span> x % <span class="nm">2</span> == <span class="nm">0</span>]
+<span class="bi">print</span>(<span class="st">f"Even numbers (comprehension): {list2}"</span>)
+
+
+<span class="cm"># Names starting with 'n'</span>
+list1 = [<span class="st">'harry'</span>, <span class="st">'nita'</span>, <span class="st">'tina'</span>, <span class="st">'neelam'</span>, <span class="st">'ron'</span>, <span class="st">'nancy'</span>]
+list2 = [x <span class="kw">for</span> x <span class="kw">in</span> list1 <span class="kw">if</span> x.startswith(<span class="st">'n'</span>)]
+<span class="bi">print</span>(list2)   <span class="cm"># ['nita', 'neelam', 'nancy']</span>
+
+
+<span class="cm"># Squares of numbers</span>
+nums    = [<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>]
+squares = [i**<span class="nm">2</span> <span class="kw">for</span> i <span class="kw">in</span> nums]
+<span class="bi">print</span>(squares)   <span class="cm"># [1, 4, 9, 16, 25]</span>
+
+
+<span class="cm"># Multiples of a user-given number</span>
+list1 = [<span class="nm">23</span>, <span class="nm">478</span>, <span class="nm">37</span>, <span class="nm">10</span>, <span class="nm">52</span>, <span class="nm">84</span>, <span class="nm">1353</span>, <span class="nm">95</span>, <span class="nm">124</span>]
+n     = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter a number: "</span>))
+list2 = [x <span class="kw">for</span> x <span class="kw">in</span> list1 <span class="kw">if</span> x % n == <span class="nm">0</span>]
+<span class="bi">print</span>(<span class="st">f"Multiples of {n}: {list2}"</span>)</pre>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 2 – STACK
+═══════════════════════════════════════ -->
+<div class="section s2" id="s2">
+  <div class="section-header">
+    <div class="section-icon">📚</div>
+    <div>
+      <h1 style="color:#2563eb;">2. Python Stack</h1>
+      <p>Last In, First Out (LIFO) — like a stack of plates!</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤔 What is a Stack?</h3>
+    <p>A <strong>stack</strong> is a special list where you can only <strong>add</strong> or <strong>remove</strong> items from the <strong>TOP</strong>. The rule is called <strong>LIFO — Last In, First Out</strong>. Whatever you put in <em>last</em> is the first thing to come out — like a stack of plates or a pile of books.</p>
+    <ul style="margin-top:10px;">
+      <li><strong>Push</strong> = Add an item to the TOP (uses <code>append()</code>)</li>
+      <li><strong>Pop</strong> = Remove the TOP item (uses <code>pop()</code>)</li>
+      <li><strong>Peek</strong> = Just look at the top item without removing it (uses <code>stack[-1]</code>)</li>
+      <li><strong>isEmpty</strong> = Check if the stack has nothing in it</li>
+      <li><strong>isFull</strong> = Check if the stack has reached its maximum size</li>
+    </ul>
+  </div>
+
+  <div class="real-life">
+    <span class="rl-title">🌍 Where Do We See Stacks in Real Life?</span>
+    <ul>
+      <li>🍽️ <strong>Stack of plates in a cafeteria</strong> — You always pick up the plate from the TOP. The last plate placed by the kitchen staff is the first one you take. You can't grab a plate from the bottom without removing the top ones first.</li>
+      <li>↩️ <strong>Ctrl+Z (Undo) in any app</strong> — Every action you do is "pushed" onto a stack. When you press Undo, the most recent action is "popped" off and reversed. That's why Undo always reverses your very last action!</li>
+      <li>🌐 <strong>Browser Back button</strong> — Every page you visit is pushed onto a stack. Pressing Back pops the current page and returns you to the previous one.</li>
+      <li>📚 <strong>A pile of homework</strong> — You put new sheets on top. When the teacher checks them, she picks from the top — the last paper added gets checked first.</li>
+      <li>🔄 <strong>Function calls in programs</strong> — When Python runs a function inside a function, it stacks them up. When the inner function finishes, it's popped off and the outer one continues.</li>
+    </ul>
+  </div>
+
+  <div class="analogy">
+    <span class="an-title">🧠 Stack vs Normal List</span>
+    <p>A normal list lets you add or remove items from <em>anywhere</em>. A stack is a <strong>restricted list</strong> — you can ONLY touch the TOP item. Imagine a can of tennis balls — you can only take the top ball out, and you can only drop new balls in from the top!</p>
+  </div>
+
+  <!-- 2a Push Pop -->
+  <div class="subsection" id="s2-pushpop">
+    <h2 style="color:#2563eb;">📌 2a. Push &amp; Pop</h2>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">1.pushpop.py — Basic Stack</div></div>
+      <pre>stack = []
+
+<span class="cm"># PUSH — add items to the top of the stack</span>
+stack.append(<span class="st">'bat'</span>)
+stack.append(<span class="st">'ball'</span>)
+stack.append(<span class="st">'paper'</span>)
+stack.append(<span class="st">'pen'</span>)
+stack.append(<span class="st">'book'</span>)
+
+<span class="bi">print</span>(<span class="st">'Stack (bottom → top):'</span>, stack)
+
+<span class="cm"># POP — remove items from the top (LIFO order)</span>
+<span class="bi">print</span>(<span class="st">'\nPopping items one by one:'</span>)
+<span class="bi">print</span>(stack.pop())  <span class="cm"># book  ← last in, first out!</span>
+<span class="bi">print</span>(stack.pop())  <span class="cm"># pen</span>
+<span class="bi">print</span>(stack.pop())  <span class="cm"># paper</span>
+<span class="bi">print</span>(stack.pop())  <span class="cm"># ball</span>
+<span class="bi">print</span>(stack.pop())  <span class="cm"># bat</span>
+
+<span class="bi">print</span>(<span class="st">'\nStack after all pops:'</span>, stack)  <span class="cm"># []</span></pre>
+    </div>
+  </div>
+
+  <!-- 2b Stack Operations -->
+  <div class="subsection" id="s2-operations">
+    <h2 style="color:#2563eb;">📌 2b. Stack Operations with Functions</h2>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">2.stack_operations.py — Full Stack with Menu</div></div>
+      <pre><span class="kw">def</span> <span class="fn">is_empty</span>(stack):
+    <span class="kw">return</span> <span class="bi">len</span>(stack) == <span class="nm">0</span>
+
+<span class="kw">def</span> <span class="fn">is_full</span>(stack):
+    <span class="kw">return</span> <span class="bi">len</span>(stack) == <span class="nm">5</span>   <span class="cm"># max size is 5</span>
+
+<span class="kw">def</span> <span class="fn">push_item</span>(stack):
+    item = <span class="bi">input</span>(<span class="st">"Enter item to push: "</span>)
+    <span class="kw">if</span> is_full(stack):
+        <span class="bi">print</span>(<span class="st">"Stack is full!"</span>)
+    <span class="kw">else</span>:
+        stack.append(item)
+
+<span class="kw">def</span> <span class="fn">pop_item</span>(stack):
+    <span class="kw">if</span> is_empty(stack):
+        <span class="bi">print</span>(<span class="st">"Stack is empty — nothing to pop!"</span>)
+    <span class="kw">else</span>:
+        <span class="bi">print</span>(<span class="st">"Popped:"</span>, stack.pop())
+
+<span class="kw">def</span> <span class="fn">peek</span>(stack):
+    <span class="kw">if</span> is_empty(stack):
+        <span class="bi">print</span>(<span class="st">"Stack is empty!"</span>)
+    <span class="kw">else</span>:
+        <span class="bi">print</span>(<span class="st">"Top item:"</span>, stack[-<span class="nm">1</span>])
+
+x = []
+<span class="kw">while</span> <span class="bi">True</span>:
+    <span class="bi">print</span>(<span class="st">"\n1→push  2→pop  3→isEmpty  4→isFull  5→peek  6→Exit"</span>)
+    choice = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter choice: "</span>))
+    <span class="kw">if</span>   choice == <span class="nm">1</span>: push_item(x); <span class="bi">print</span>(x)
+    <span class="kw">elif</span> choice == <span class="nm">2</span>: pop_item(x);  <span class="bi">print</span>(x)
+    <span class="kw">elif</span> choice == <span class="nm">3</span>: <span class="bi">print</span>(<span class="st">"Empty"</span> <span class="kw">if</span> is_empty(x) <span class="kw">else</span> <span class="st">"Not empty"</span>)
+    <span class="kw">elif</span> choice == <span class="nm">4</span>: <span class="bi">print</span>(<span class="st">"Full"</span>  <span class="kw">if</span> is_full(x)  <span class="kw">else</span> <span class="st">"Not full"</span>)
+    <span class="kw">elif</span> choice == <span class="nm">5</span>: peek(x)
+    <span class="kw">elif</span> choice == <span class="nm">6</span>: <span class="kw">break</span></pre>
+    </div>
+  </div>
+
+  <!-- 2c Reverse -->
+  <div class="subsection" id="s2-reverse">
+    <h2 style="color:#2563eb;">📌 2c. Reverse String &amp; Number Using Stack</h2>
+
+    <div class="card">
+      <h3>🔄 How Does Reversing Work with a Stack?</h3>
+      <p>Push each character (or digit) onto the stack one by one → then pop them all off. Because of LIFO, the last character pushed comes out first — giving you the reversed string!</p>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 The Sticky Notes Trick</span>
+      <p>Imagine writing each letter of "HELLO" on separate sticky notes and sticking them on a wall one on top of the other:</p>
+      <ul>
+        <li>Push: H → E → L → L → O (O is now on top)</li>
+        <li>Pop: O → L → L → E → H</li>
+        <li>Result: "OLLEH" — reversed!</li>
+      </ul>
+      <p>This same logic is used when you press Backspace on a keyboard — it removes characters in reverse order of how you typed them!</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">3.reverse_string.py</div></div>
+      <pre><span class="kw">def</span> <span class="fn">rev</span>(st):
+    result = <span class="st">""</span>
+    stack  = []
+    <span class="kw">for</span> i <span class="kw">in</span> st:
+        stack.append(i)          <span class="cm"># push each character</span>
+    <span class="kw">while</span> <span class="bi">len</span>(stack) != <span class="nm">0</span>:
+        result = result + stack.pop()   <span class="cm"># pop from top → reversed!</span>
+    <span class="bi">print</span>(result)
+
+<span class="kw">while</span> <span class="bi">True</span>:
+    ans = <span class="bi">input</span>(<span class="st">"Reverse a string? (yes/no): "</span>).lower()
+    <span class="kw">if</span> ans == <span class="st">"yes"</span>:
+        st = <span class="bi">input</span>(<span class="st">"Enter string: "</span>)
+        rev(st)
+    <span class="kw">else</span>:
+        <span class="kw">break</span></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">4.reverse_number.py</div></div>
+      <pre><span class="kw">def</span> <span class="fn">rev</span>(num):
+    stack = []
+    <span class="kw">while</span> num != <span class="nm">0</span>:
+        last = num % <span class="nm">10</span>        <span class="cm"># get the last digit</span>
+        stack.append(last)     <span class="cm"># push it onto stack</span>
+        num  = num // <span class="nm">10</span>      <span class="cm"># remove last digit from number</span>
+    i      = <span class="nm">1</span>
+    result = <span class="nm">0</span>
+    <span class="kw">while</span> <span class="bi">len</span>(stack) != <span class="nm">0</span>:
+        result = result + (stack.pop() * i)
+        i = i * <span class="nm">10</span>
+    <span class="bi">print</span>(result)
+
+num = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter a number: "</span>))
+rev(num)   <span class="cm"># e.g. 12345 → 54321</span></pre>
+    </div>
+  </div>
+
+  <!-- 2d Recursion -->
+  <div class="subsection" id="s2-recursion">
+    <h2 style="color:#2563eb;">📌 2d. Recursion</h2>
+
+    <div class="card">
+      <h3>🌀 What is Recursion?</h3>
+      <p>Recursion is when a <strong>function calls itself</strong>! It breaks a big problem into a smaller version of the same problem, and keeps doing that until it reaches a <strong>base case</strong> — the stopping condition that prevents it from going on forever.</p>
+      <div class="remember">
+        <strong>💡 Two Must-Haves in Recursion</strong>
+        <p>1. <strong>Base case</strong> — the condition to STOP (e.g., <code>if num == 1: return 1</code>)<br/>
+           2. <strong>Recursive call</strong> — the function calling itself with a smaller value</p>
+      </div>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 Real-Life Examples of Recursion</span>
+      <ul>
+        <li>📢 <strong>Whisper chain in class</strong> — A teacher tells one student, who tells the next, who tells the next, until the message reaches the end. Each person is a "call", the last person is the "base case".</li>
+        <li>🪆 <strong>Russian nesting dolls (Matryoshka)</strong> — Each doll contains a smaller version of itself. You keep opening until you reach the tiniest doll (base case).</li>
+        <li>🪞 <strong>Mirrors facing each other</strong> — When two mirrors face each other, you see a reflection inside a reflection inside a reflection… it eventually gets too small to see (base case).</li>
+        <li>📂 <strong>Folders inside folders</strong> — When your computer searches inside a folder, it finds sub-folders and searches inside those too — this is recursive searching!</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">1.factorial.py — Factorial using Recursion</div></div>
+      <pre><span class="cm"># Factorial: 5! = 5 × 4 × 3 × 2 × 1 = 120
+# Think of it as: fact(5) = 5 × fact(4)
+#                           4 × fact(3)
+#                               3 × fact(2)
+#                                   2 × fact(1)  ← base case!</span>
+
+<span class="kw">def</span> <span class="fn">fact</span>(num):
+    <span class="kw">if</span> num == <span class="nm">1</span>:                    <span class="cm"># BASE CASE — stop here</span>
+        <span class="kw">return</span> <span class="nm">1</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> num * fact(num - <span class="nm">1</span>)  <span class="cm"># RECURSIVE CALL</span>
+
+num = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter a number: "</span>))
+<span class="kw">if</span> num < <span class="nm">0</span>:
+    <span class="bi">print</span>(<span class="st">"Factorial of negative numbers doesn't exist."</span>)
+<span class="kw">elif</span> num == <span class="nm">0</span>:
+    <span class="bi">print</span>(<span class="st">"Factorial of 0 is 1"</span>)
+<span class="kw">else</span>:
+    <span class="bi">print</span>(fact(num))</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">3.fibonacci_series.py — Fibonacci using Recursion + Stack</div></div>
+      <pre><span class="cm"># Fibonacci series: 0, 1, 1, 2, 3, 5, 8, 13, 21 ...
+# Rule: each number = sum of the TWO numbers before it
+# Named after Italian mathematician Leonardo Fibonacci!</span>
+
+<span class="kw">def</span> <span class="fn">recursive_fibonacci</span>(n):
+    <span class="kw">if</span> n <= <span class="nm">1</span>:
+        <span class="kw">return</span> n
+    <span class="kw">else</span>:
+        <span class="kw">return</span> recursive_fibonacci(n-<span class="nm">1</span>) + recursive_fibonacci(n-<span class="nm">2</span>)
+
+n_terms = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"How many Fibonacci terms? "</span>))
+st = []
+
+<span class="kw">if</span> n_terms <= <span class="nm">0</span>:
+    <span class="bi">print</span>(<span class="st">"Please enter a positive number!"</span>)
+<span class="kw">else</span>:
+    <span class="bi">print</span>(<span class="st">"Fibonacci series:"</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(n_terms):
+        st.append(recursive_fibonacci(i))
+    <span class="bi">print</span>(st)</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">2.toh.py — Tower of Hanoi</div></div>
+      <pre><span class="cm"># Tower of Hanoi: Move ALL disks from Source → Destination
+# Rules: (1) Move only ONE disk at a time
+#        (2) A bigger disk can NEVER go on top of a smaller one
+# 🔗 Play it: https://www.mathsisfun.com/games/towerofhanoi.html</span>
+
+<span class="kw">def</span> <span class="fn">hanoi</span>(n, s, h, d):
+    <span class="kw">if</span> n == <span class="nm">0</span>:
+        <span class="kw">return</span>
+    <span class="kw">else</span>:
+        <span class="kw">global</span> m
+        m = m + <span class="nm">1</span>
+        hanoi(n-<span class="nm">1</span>, s, d, h)    <span class="cm"># move n-1 rings to helper</span>
+        <span class="kw">if</span> s:
+            d.append(s.pop())  <span class="cm"># move top ring to destination</span>
+            <span class="bi">print</span>(source, helper, destination)
+        hanoi(n-<span class="nm">1</span>, h, s, d)    <span class="cm"># move n-1 rings from helper</span>
+
+number      = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the number of rings: "</span>))
+source      = <span class="bi">list</span>(<span class="bi">range</span>(number, <span class="nm">0</span>, -<span class="nm">1</span>))
+helper      = []
+destination = []
+m           = <span class="nm">0</span>
+hanoi(number, source, helper, destination)
+<span class="bi">print</span>(<span class="st">"Total moves:"</span>, m)</pre>
+    </div>
+  </div>
+
+  <!-- 2e Tuple Stack -->
+  <div class="subsection" id="s2-tuple">
+    <h2 style="color:#2563eb;">📌 2e. Stack Using Tuple — Bracket Checker</h2>
+
+    <div class="card">
+      <h3>🔍 What is a Tuple?</h3>
+      <p>A <strong>tuple</strong> is like a list but <strong>immutable</strong> — once created, it cannot be changed. We use tuples when we want to store data that should never be accidentally modified during the program. Here we store the bracket types in tuples because those values should never change.</p>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 The Bracket Matching Story</span>
+      <p>In maths you write expressions like: <code>(a + b) × [c - (d / e)]</code>. Every opening bracket <strong>must</strong> have a matching closing bracket of the same type. A stack is the perfect tool to check this!</p>
+      <ul>
+        <li>Every time you see <code>(</code>, <code>[</code>, or <code>{</code> → PUSH it onto the stack (remember it!)</li>
+        <li>Every time you see <code>)</code>, <code>]</code>, or <code>}</code> → CHECK if the top of the stack is the matching opener. If yes → POP it. If no → expression is unbalanced!</li>
+        <li>At the end, if the stack is empty → all brackets matched ✅. If not → something's wrong ❌</li>
+      </ul>
+      <p>This is exactly how code editors like VS Code highlight bracket errors in red!</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">c.Python-stack using tuple.py — Bracket Checker</div></div>
+      <pre>openP  = (<span class="st">'{'</span>, <span class="st">'['</span>, <span class="st">'('</span>)   <span class="cm"># tuple — can't be changed accidentally</span>
+closeP = (<span class="st">'}'</span>, <span class="st">']'</span>, <span class="st">')'</span>)
+stack  = []
+
+<span class="kw">def</span> <span class="fn">check</span>(expr):
+    <span class="kw">for</span> c <span class="kw">in</span> expr:
+        <span class="kw">if</span> c <span class="kw">in</span> openP:
+            stack.append(c)           <span class="cm"># push opening bracket</span>
+            <span class="bi">print</span>(stack)
+        <span class="kw">elif</span> c <span class="kw">in</span> closeP:
+            index = closeP.index(c)
+            <span class="kw">if</span> openP[index] == stack[-<span class="nm">1</span>]:
+                stack.pop()           <span class="cm"># matched! pop it</span>
+                <span class="bi">print</span>(stack)
+    <span class="kw">if</span> <span class="bi">len</span>(stack) == <span class="nm">0</span>:
+        <span class="bi">print</span>(<span class="st">"✅ Balanced!"</span>)
+    <span class="kw">else</span>:
+        <span class="bi">print</span>(<span class="st">"❌ Not balanced!"</span>)
+
+string = <span class="bi">input</span>(<span class="st">"Enter the expression: "</span>)
+check(string)
+<span class="cm"># Try: {a+b-(c*d)/[a+(d^c)]}  → Balanced ✅
+# Try: (a+b]                   → Not balanced ❌</span></pre>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 3 – QUEUE
+═══════════════════════════════════════ -->
+<div class="section s3" id="s3">
+  <div class="section-header">
+    <div class="section-icon">🎢</div>
+    <div>
+      <h1 style="color:#059669;">3. Python Queue</h1>
+      <p>First In, First Out (FIFO) — like a line at a ticket counter!</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤔 What is a Queue?</h3>
+    <p>A <strong>queue</strong> is a list where items are added at the <strong>BACK</strong> and removed from the <strong>FRONT</strong>. This is called <strong>FIFO — First In, First Out</strong>. The first person to join the queue is the first to be served — fair and orderly!</p>
+    <ul style="margin-top:10px;">
+      <li><strong>Enqueue</strong> = Join the back of the queue (<code>append()</code>)</li>
+      <li><strong>Dequeue</strong> = Serve the person at the front (<code>pop(0)</code>)</li>
+      <li><strong>Peek</strong> = See who is next at the front (<code>queue[0]</code>)</li>
+      <li><strong>isEmpty / isFull</strong> = Check the queue's status</li>
+    </ul>
+  </div>
+
+  <div class="real-life">
+    <span class="rl-title">🌍 Where Do We See Queues in Real Life?</span>
+    <ul>
+      <li>🎟️ <strong>Movie ticket counter</strong> — People stand in a line. Whoever came first gets the ticket first. No cutting in line!</li>
+      <li>🍔 <strong>Fast food restaurant</strong> — Orders are taken and fulfilled in the order they were placed. The first order placed is the first to be made.</li>
+      <li>🖨️ <strong>Printer queue</strong> — When multiple students send documents to print, the printer prints them in the exact order they were sent. If your document was sent first, it prints first.</li>
+      <li>🏥 <strong>Hospital emergency waiting room</strong> — Patients are added to a queue. The one who arrived earliest gets attended first (assuming similar urgency).</li>
+      <li>📞 <strong>Customer care call center</strong> — "You are caller number 4 in the queue." The person who called first gets connected first!</li>
+      <li>🚗 <strong>Car wash</strong> — Cars line up, and the first car in gets washed first. New cars join at the back.</li>
+    </ul>
+  </div>
+
+  <div class="analogy">
+    <span class="an-title">🧠 Stack vs Queue — The Key Difference</span>
+    <p><strong>Stack</strong> = A can of Pringles chips. You add and remove from the same end (top). Last chip in = first chip out.</p>
+    <p style="margin-top:8px;"><strong>Queue</strong> = A tube of toothpaste. You squeeze from one end (front) and add paste from the other end (back). First paste in = first paste out.</p>
+  </div>
+
+  <!-- 3.1 Basic Queue -->
+  <div class="subsection" id="s3-basic">
+    <h2 style="color:#059669;">📌 3.1 Queue Basics &amp; Operations</h2>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">1.operations.py — Simple Queue</div></div>
+      <pre>queue = []
+
+<span class="cm"># Enqueue — add to the BACK of the queue</span>
+queue.append(<span class="st">'bat'</span>)
+queue.append(<span class="st">'ball'</span>)
+queue.append(<span class="st">'paper'</span>)
+queue.append(<span class="st">'pen'</span>)
+queue.append(<span class="st">'book'</span>)
+
+<span class="bi">print</span>(<span class="st">'Queue (front → back):'</span>, queue)
+
+<span class="cm"># Dequeue — remove from the FRONT (index 0)</span>
+<span class="bi">print</span>(<span class="st">'\nServing items (FIFO):'</span>)
+<span class="bi">print</span>(queue.pop(<span class="nm">0</span>))   <span class="cm"># bat  ← first in, first out!</span>
+<span class="bi">print</span>(<span class="st">'Queue:'</span>, queue)
+<span class="bi">print</span>(queue.pop(<span class="nm">0</span>))   <span class="cm"># ball</span>
+<span class="bi">print</span>(<span class="st">'Queue:'</span>, queue)</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">2a.operations2.py — Full Queue with Functions</div></div>
+      <pre><span class="kw">def</span> <span class="fn">createq</span>(): <span class="kw">return</span> []
+<span class="kw">def</span> <span class="fn">isFull</span>(q):  <span class="kw">return</span> <span class="bi">len</span>(q) == <span class="nm">5</span>
+<span class="kw">def</span> <span class="fn">isEmpty</span>(q): <span class="kw">return</span> <span class="bi">len</span>(q) == <span class="nm">0</span>
+
+<span class="kw">def</span> <span class="fn">enqueue</span>(q, item):
+    <span class="kw">if</span> isFull(q):
+        <span class="bi">print</span>(<span class="st">"Queue is full!"</span>)
+    <span class="kw">else</span>:
+        q.append(item)
+
+<span class="kw">def</span> <span class="fn">dequeue</span>(q):
+    <span class="kw">if</span> isEmpty(q):
+        <span class="bi">print</span>(<span class="st">"Queue is empty!"</span>)
+    <span class="kw">else</span>:
+        <span class="bi">print</span>(<span class="st">"Served:"</span>, q.pop(<span class="nm">0</span>))
+
+<span class="kw">def</span> <span class="fn">peek</span>(q): <span class="kw">return</span> q[-<span class="nm">1</span>]
+
+q = createq()
+<span class="kw">while</span> <span class="bi">True</span>:
+    ans = <span class="bi">input</span>(<span class="st">"Perform operation? (yes/no): "</span>)
+    <span class="kw">if</span> ans == <span class="st">"yes"</span>:
+        <span class="bi">print</span>(<span class="st">"1→Enqueue  2→Dequeue  3→isEmpty  4→isFull  5→peek"</span>)
+        choice = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Choice: "</span>))
+        <span class="kw">if</span>   choice == <span class="nm">1</span>: n=<span class="bi">input</span>(<span class="st">"Item: "</span>); enqueue(q,n); <span class="bi">print</span>(q)
+        <span class="kw">elif</span> choice == <span class="nm">2</span>: dequeue(q); <span class="bi">print</span>(q)
+    <span class="kw">elif</span> ans == <span class="st">"no"</span>: <span class="kw">break</span></pre>
+    </div>
+  </div>
+
+  <!-- 3.2 Cafe Order -->
+  <div class="subsection" id="s3-cafe">
+    <h2 style="color:#059669;">🧋 3.2 Project: Café Order System</h2>
+    <div class="project-badge">🚀 PROJECT</div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 How a Real Café Uses a Queue</span>
+      <p>Imagine walking into a bubble tea café. Here's what happens:</p>
+      <ul>
+        <li>Customer 1 orders a mango smoothie → joins the queue (enqueue)</li>
+        <li>Customer 2 orders a matcha latte → joins behind customer 1 (enqueue)</li>
+        <li>Customer 3 orders a cold brew → joins at the back (enqueue)</li>
+        <li>Barista finishes customer 1's drink → customer 1 leaves (dequeue)</li>
+        <li>Now customer 2 is at the front — their order is made next</li>
+        <li>The display board shows whose order is currently being made (peek)</li>
+        <li>If 5 orders are already in queue → "Sorry, we're at capacity!" (isFull)</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">2b. Cafe order system.py</div></div>
+      <pre>order_queue = []
+
+<span class="kw">def</span> <span class="fn">is_full</span>(q):  <span class="kw">return</span> <span class="bi">len</span>(q) == <span class="nm">5</span>
+<span class="kw">def</span> <span class="fn">is_empty</span>(q): <span class="kw">return</span> <span class="bi">len</span>(q) == <span class="nm">0</span>
+
+<span class="kw">def</span> <span class="fn">enqueue</span>(order, q):
+    <span class="kw">if</span> is_full(q):
+        <span class="bi">print</span>(<span class="st">"🧋🧋🧋 We cannot take any orders at the moment!"</span>)
+    <span class="kw">else</span>:
+        q.append(order)
+        <span class="bi">print</span>(<span class="st">f"✅ {order} order placed!"</span>)
+
+<span class="kw">def</span> <span class="fn">dequeue</span>(q):
+    <span class="kw">if</span> is_empty(q):
+        <span class="bi">print</span>(<span class="st">"🧋 No orders to serve."</span>)
+    <span class="kw">else</span>:
+        <span class="bi">print</span>(<span class="st">f"☕ Order served: {q.pop(0)}"</span>)
+
+<span class="kw">def</span> <span class="fn">peek</span>(q):
+    <span class="kw">if</span> is_empty(q):
+        <span class="bi">print</span>(<span class="st">"🧋 No pending orders."</span>)
+    <span class="kw">else</span>:
+        <span class="bi">print</span>(<span class="st">f"🔍 Current order: {q[0]}"</span>)
+
+<span class="kw">while</span> <span class="bi">True</span>:
+    <span class="bi">print</span>(<span class="st">"\n☕☕☕ Café Order System ☕☕☕"</span>)
+    <span class="bi">print</span>(<span class="st">"1. Place Order  2. Serve Order  3. View Current  4. Exit"</span>)
+    choice = <span class="bi">input</span>(<span class="st">"Choose: "</span>)
+    <span class="kw">if</span>   choice == <span class="st">'1'</span>: order=<span class="bi">input</span>(<span class="st">"Enter 'name:item': "</span>); enqueue(order, order_queue)
+    <span class="kw">elif</span> choice == <span class="st">'2'</span>: dequeue(order_queue)
+    <span class="kw">elif</span> choice == <span class="st">'3'</span>: peek(order_queue)
+    <span class="kw">elif</span> choice == <span class="st">'4'</span>: <span class="bi">print</span>(<span class="st">"Goodbye! ☕"</span>); <span class="kw">break</span></pre>
+    </div>
+  </div>
+
+  <!-- 3.3 Palindrome -->
+  <div class="subsection" id="s3-palindrome">
+    <h2 style="color:#059669;">📌 3.3 Palindrome Checker</h2>
+
+    <div class="card">
+      <h3>🔁 What is a Palindrome?</h3>
+      <p>A <strong>palindrome</strong> is a word (or number) that reads the same forwards and backwards!</p>
+      <ul>
+        <li>✅ <strong>madam</strong> → m-a-d-a-m backwards is still m-a-d-a-m</li>
+        <li>✅ <strong>racecar, level, noon, refer, civic</strong></li>
+        <li>❌ <strong>python, hello, code</strong> — not palindromes</li>
+      </ul>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 How We Use a Queue to Check Palindromes</span>
+      <p>Put each letter of the word into a queue. Then dequeue from the front one by one, but instead of adding each dequeued letter to the end of a new string, add it to the <em>front</em>. This reverses the word. If the reversed word equals the original → it's a palindrome!</p>
+      <p style="margin-top:8px;">This is useful in real applications like checking if a DNA strand reads the same in both directions, or validating symmetric patterns in data!</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">3.palindrome_checker.py</div></div>
+      <pre>queue = []
+word  = <span class="bi">input</span>(<span class="st">"Enter a word: "</span>)
+
+<span class="cm"># Add each character to the queue</span>
+<span class="kw">for</span> i <span class="kw">in</span> word:
+    queue.append(i)
+
+<span class="cm"># Dequeue from front, add to FRONT of new string → reverses it</span>
+rev = <span class="st">""</span>
+<span class="kw">while</span> <span class="bi">len</span>(queue) > <span class="nm">0</span>:
+    item = queue.pop(<span class="nm">0</span>)
+    rev  = item + rev
+
+<span class="kw">if</span> rev == word:
+    <span class="bi">print</span>(<span class="st">"✅ It IS a palindrome!"</span>)
+<span class="kw">else</span>:
+    <span class="bi">print</span>(<span class="st">"❌ Not a palindrome."</span>)</pre>
+    </div>
+  </div>
+
+  <!-- 3.4 Cinema Queue -->
+  <div class="subsection" id="s3-cinema">
+    <h2 style="color:#059669;">🎬 3.4 Project: Cinema Ticket Queue</h2>
+    <div class="project-badge">🚀 PROJECT</div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 The Cinema Hall Scenario</span>
+      <p>It's a Friday evening and a new superhero film just released! 🎬</p>
+      <ul>
+        <li>The hall has only <strong>100 seats</strong> total.</li>
+        <li>Customers arrive and join the queue with the number of tickets they want.</li>
+        <li>The ticket counter serves the customer at the front of the queue.</li>
+        <li>If a customer wants more tickets than remaining seats — denied!</li>
+        <li>If the hall is full — everyone still in the queue is turned away.</li>
+      </ul>
+      <p>This type of queue management system is used at movie theatres, amusement parks, and sports stadiums!</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">4.cnmaqu.py — Cinema Ticket Queue</div></div>
+      <pre><span class="kw">import</span> time
+<span class="kw">import</span> random
+
+queue         = []
+hall_capacity = <span class="nm">100</span>
+
+<span class="kw">def</span> <span class="fn">join_queue</span>(customer, tickets):
+    total = <span class="bi">sum</span>(t <span class="kw">for</span> _, t <span class="kw">in</span> queue)
+    <span class="kw">if</span> total + tickets <= hall_capacity:
+        <span class="bi">print</span>(<span class="st">f"🎟️ {customer} joined for {tickets} ticket(s)"</span>)
+        queue.append((customer, tickets))
+    <span class="kw">else</span>:
+        <span class="bi">print</span>(<span class="st">f"❌ Sorry {customer}! Not enough seats."</span>)
+
+<span class="kw">def</span> <span class="fn">serve_customer</span>():
+    <span class="kw">if</span> queue:
+        customer, tickets = queue.pop(<span class="nm">0</span>)
+        <span class="bi">print</span>(<span class="st">f"💳 {customer} is buying {tickets} ticket(s)..."</span>)
+        time.sleep(random.randint(<span class="nm">1</span>, <span class="nm">3</span>))
+        <span class="bi">print</span>(<span class="st">f"✅ {customer} got their tickets!"</span>)
+    <span class="kw">else</span>:
+        <span class="bi">print</span>(<span class="st">"Queue is empty."</span>)
+
+customers = [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Charlie"</span>, <span class="st">"David"</span>, <span class="st">"Eve"</span>]
+<span class="kw">for</span> customer <span class="kw">in</span> customers:
+    tickets = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">f"How many tickets for {customer}? "</span>))
+    join_queue(customer, tickets)
+
+<span class="bi">print</span>(<span class="st">"\n🎬 Serving customers...\n"</span>)
+<span class="kw">while</span> queue:
+    serve_customer()
+<span class="bi">print</span>(<span class="st">"All customers served!"</span>)</pre>
+    </div>
+  </div>
+
+  <!-- 3.5 Circular Queue -->
+  <div class="subsection" id="s3-circular">
+    <h2 style="color:#059669;">🔄 3.5 Circular Queue — Hot Potato &amp; Traffic Signal</h2>
+
+    <div class="card">
+      <h3>♻️ What is a Circular Queue?</h3>
+      <p>In a <strong>circular queue</strong>, items cycle in a loop — the back connects to the front endlessly. Unlike a normal queue where items leave permanently, in a circular queue items keep going around and around until something eliminates them.</p>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 Real-Life Examples of Circular Queues</span>
+      <ul>
+        <li>🎠 <strong>Merry-go-round</strong> — Kids go round and round. The same seats keep cycling. No beginning or end!</li>
+        <li>🥔 <strong>Hot Potato game</strong> — Children stand in a circle. A "potato" (ball) is passed around. When the music stops, whoever holds the potato is out. The circle keeps shrinking until one winner remains.</li>
+        <li>🚦 <strong>Traffic signal</strong> — Red → Yellow → Green → Red → Yellow → Green… it cycles forever, serving vehicles in a round-robin pattern.</li>
+        <li>💻 <strong>CPU scheduling</strong> — Modern computers use circular queues to give every program a small "turn" of CPU time in rotation — so no single program hogs the processor.</li>
+        <li>🎵 <strong>Music playlist on repeat</strong> — When a playlist ends and loops back to the first song, that's circular queue logic!</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">1.1.hotpotato.py — Hot Potato Game</div></div>
+      <pre><span class="kw">import</span> random
+
+<span class="kw">def</span> <span class="fn">playgame</span>():
+    <span class="kw">while</span> <span class="bi">len</span>(q) > <span class="nm">1</span>:
+        num = random.randint(<span class="nm">1</span>, <span class="nm">10</span>)  <span class="cm"># random number of passes</span>
+        <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(num):
+            q.append(q.pop(<span class="nm">0</span>))       <span class="cm"># move front player to back (rotate!)</span>
+        out = q.pop(<span class="nm">0</span>)               <span class="cm"># eliminate the front player</span>
+        <span class="bi">print</span>(out, <span class="st">"is out! 🥔"</span>)
+    <span class="bi">print</span>(q[<span class="nm">0</span>], <span class="st">"🏆 is the WINNER!"</span>)
+
+q = []
+<span class="kw">while</span> <span class="bi">True</span>:
+    ans = <span class="bi">input</span>(<span class="st">"Add a player? (yes/no): "</span>).lower()
+    <span class="kw">if</span> ans == <span class="st">"yes"</span>:
+        name = <span class="bi">input</span>(<span class="st">"Enter name: "</span>)
+        q.append(name)
+    <span class="kw">else</span>:
+        <span class="kw">break</span>
+<span class="bi">print</span>(<span class="st">"Players:"</span>, q)
+playgame()</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">2.trafficSignal.py — Traffic Light Simulation</div></div>
+      <pre><span class="kw">import</span> random
+
+signals = [<span class="st">"🔴 red"</span>, <span class="st">"🟡 yellow"</span>, <span class="st">"🟢 green"</span>]
+a = random.randint(<span class="nm">10</span>, <span class="nm">20</span>)
+
+<span class="bi">print</span>(<span class="st">f"Simulating {a} signal changes:"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(a):
+    <span class="bi">print</span>(signals[<span class="nm">0</span>])
+    signals.append(signals.pop(<span class="nm">0</span>))  <span class="cm"># move front signal to back → rotate!</span>
+
+<span class="cm"># Output: red, yellow, green, red, yellow, green, red ...
+# The circular queue keeps cycling — exactly like a real traffic light!</span></pre>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 4 – FILE HANDLING
+═══════════════════════════════════════ -->
+<div class="section s4" id="s4">
+  <div class="section-header">
+    <div class="section-icon">📁</div>
+    <div>
+      <h1 style="color:#d97706;">4. File Handling</h1>
+      <p>Save data permanently — even after the program closes!</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📝 Why Do We Need File Handling?</h3>
+    <p>When a Python program closes, all data stored in variables is <strong>lost forever</strong> — because computer RAM (memory) is temporary, like a whiteboard that gets erased when you leave the room. To <strong>save data permanently</strong>, we write it to files stored on the hard drive. Files are like notebooks that stay on your desk even after you leave school.</p>
+    <div class="remember">
+      <strong>💡 3 Steps of File Handling — Always in This Order!</strong>
+      <p>1. <strong>Open</strong> the file → 2. <strong>Read or Write</strong> data → 3. <strong>Close</strong> the file</p>
+    </div>
+  </div>
+
+  <div class="real-life">
+    <span class="rl-title">🌍 Real-Life Examples of File Handling</span>
+    <ul>
+      <li>🎮 <strong>Video game save files</strong> — You press "Save Game" and your character's level, items, and progress are written to a file. Next time you open the game, Python reads that file and restores exactly where you left off. Without file handling, every time you close a game you'd start from scratch!</li>
+      <li>📒 <strong>School attendance register</strong> — The teacher writes each student's attendance in a register (file). Next week they open the same register to check last week's data.</li>
+      <li>📧 <strong>Email drafts</strong> — When you start writing an email and close the app, your draft is saved as a file. When you reopen it, it reads the file and shows your draft.</li>
+      <li>📸 <strong>Photo gallery</strong> — Every photo you take is saved as an image file on your phone's storage. Without file handling, photos would disappear the moment you close the camera app!</li>
+      <li>🏦 <strong>Bank transaction records</strong> — Every time you deposit or withdraw money, the bank's system writes a record to a file. This is how your bank statement is generated later.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📂 File Opening Modes</h3>
+    <table class="method-table">
+      <tr><th>Mode</th><th>What it means</th><th>Creates file?</th><th>Real-life analogy</th></tr>
+      <tr><td><code>"r"</code></td><td>Read only</td><td>No — error if not found</td><td>Opening a book to read (can't write in it)</td></tr>
+      <tr><td><code>"w"</code></td><td>Write (overwrites everything)</td><td>Yes</td><td>Using a whiteboard eraser, then writing fresh</td></tr>
+      <tr><td><code>"a"</code></td><td>Append (adds to existing content)</td><td>Yes</td><td>Adding a new entry to your diary without erasing old ones</td></tr>
+      <tr><td><code>"x"</code></td><td>Create (fails if file exists)</td><td>Yes</td><td>Creating a brand new notebook that doesn't exist yet</td></tr>
+      <tr><td><code>"rb"</code></td><td>Read binary (images, audio)</td><td>No</td><td>Reading a secret code book (0s and 1s)</td></tr>
+      <tr><td><code>"ab"</code></td><td>Append binary</td><td>Yes</td><td>Adding more secret codes to the end</td></tr>
+    </table>
+  </div>
+
+  <!-- 4.1 Basic File Handling -->
+  <div class="subsection" id="s4-basic">
+    <h2 style="color:#d97706;">📌 4.1 Reading &amp; Writing Files</h2>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">1.filehandling.py — Read, Write, Append</div></div>
+      <pre><span class="cm"># ── WRITING to a text file (creates if doesn't exist, overwrites if it does)</span>
+f = <span class="bi">open</span>(<span class="st">"myself.txt"</span>, <span class="st">"w"</span>)
+f.write(<span class="st">"Hello, I am a Python student.\n"</span>)
+f.writelines([<span class="st">"I love coding.\n"</span>, <span class="st">"Python is fun!\n"</span>])
+f.close()
+
+<span class="cm"># ── READING the entire file at once</span>
+f    = <span class="bi">open</span>(<span class="st">"myself.txt"</span>, <span class="st">"r"</span>)
+data = f.read()
+<span class="bi">print</span>(data)
+f.close()
+
+<span class="cm"># ── READING line by line</span>
+f    = <span class="bi">open</span>(<span class="st">"myself.txt"</span>, <span class="st">"r"</span>)
+line = f.readline()      <span class="cm"># reads only the first line</span>
+<span class="bi">print</span>(line)
+rest = f.readlines()     <span class="cm"># reads all remaining lines as a list</span>
+<span class="bi">print</span>(rest)
+f.close()
+
+<span class="cm"># ── APPENDING — adds data without deleting what's already there</span>
+f = <span class="bi">open</span>(<span class="st">"myself.txt"</span>, <span class="st">"a"</span>)
+f.write(<span class="st">"This line was added later!\n"</span>)
+f.close()
+
+<span class="cm"># ── tell() and seek() — file pointer position</span>
+f = <span class="bi">open</span>(<span class="st">"myself.txt"</span>, <span class="st">"r"</span>)
+<span class="bi">print</span>(<span class="st">"Pointer at:"</span>, f.tell())   <span class="cm"># 0 = start of file</span>
+f.seek(<span class="nm">0</span>)                         <span class="cm"># jump back to the beginning</span>
+f.close()</pre>
+    </div>
+  </div>
+
+  <!-- 4.2 Deleting -->
+  <div class="subsection" id="s4-delete">
+    <h2 style="color:#d97706;">📌 4.2 Deleting Files &amp; Folders</h2>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 Why Check Before Deleting?</span>
+      <p>Imagine asking your friend to delete a homework file for you, but they try to delete a file that doesn't exist — that would cause an error (and confusion!). Always check if the file exists first using <code>os.path.exists()</code> before trying to delete. This is good programming habit — defensive coding!</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">2a.deleting_file.py</div></div>
+      <pre><span class="kw">import</span> os
+
+<span class="cm"># Always check if the file exists before deleting</span>
+<span class="kw">if</span> os.path.exists(<span class="st">"file.txt"</span>):
+    os.remove(<span class="st">"file.txt"</span>)
+    <span class="bi">print</span>(<span class="st">"✅ File deleted!"</span>)
+<span class="kw">else</span>:
+    <span class="bi">print</span>(<span class="st">"❌ File does not exist."</span>)
+
+<span class="cm"># Delete a folder (must be empty first)</span>
+folder_path = <span class="st">"myfolder"</span>
+<span class="kw">if</span> os.path.exists(folder_path) <span class="kw">and</span> os.path.isdir(folder_path):
+    os.rmdir(folder_path)
+    <span class="bi">print</span>(<span class="st">"✅ Folder deleted!"</span>)
+<span class="kw">else</span>:
+    <span class="bi">print</span>(<span class="st">"❌ Folder does not exist."</span>)</pre>
+    </div>
+  </div>
+
+  <!-- 4.3 Movie Reviews -->
+  <div class="subsection" id="s4-movie">
+    <h2 style="color:#d97706;">🎬 4.3 Project: Movie Reviews</h2>
+    <div class="project-badge">🚀 PROJECT</div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 The Movie Diary Idea</span>
+      <p>Imagine keeping a personal movie diary:</p>
+      <ul>
+        <li>First, you open a fresh page (<code>"w"</code> mode) and write all your favourite movie names.</li>
+        <li>Later, you open the same diary again (<code>"a"</code> mode) and add your review for each movie without removing the movie names.</li>
+        <li>This is exactly what this project does — first write, then append reviews!</li>
+      </ul>
+      <p>Real platforms like Letterboxd, IMDb, and Rotten Tomatoes use this same idea at a massive scale — writing and appending millions of user reviews to database files.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">2b. movieReviews.py</div></div>
+      <pre>favorite_movies = [
+    <span class="st">"Inception"</span>, <span class="st">"The Shawshank Redemption"</span>,
+    <span class="st">"Interstellar"</span>, <span class="st">"The Dark Knight"</span>, <span class="st">"Forrest Gump"</span>
+]
+movie_reviews = [
+    <span class="st">"A mind-bending thriller that keeps you guessing."</span>,
+    <span class="st">"An inspiring story of hope and friendship."</span>,
+    <span class="st">"A visually stunning space adventure."</span>,
+    <span class="st">"One of the best superhero movies ever made."</span>,
+    <span class="st">"A heartwarming tale with life lessons."</span>
+]
+file_name = <span class="st">"favorite_movies.txt"</span>
+
+<span class="cm"># Step 1: Write movie list to file</span>
+<span class="kw">with</span> <span class="bi">open</span>(file_name, <span class="st">"w"</span>) <span class="kw">as</span> file:
+    file.write(<span class="st">"My Favorite Movies:\n"</span>)
+    <span class="kw">for</span> movie <span class="kw">in</span> favorite_movies:
+        file.write(<span class="st">f"- {movie}\n"</span>)
+
+<span class="cm"># Step 2: Append reviews WITHOUT erasing the movie list</span>
+<span class="kw">with</span> <span class="bi">open</span>(file_name, <span class="st">"a"</span>) <span class="kw">as</span> file:
+    file.write(<span class="st">"\nMy Reviews:\n"</span>)
+    <span class="kw">for</span> movie, review <span class="kw">in</span> <span class="bi">zip</span>(favorite_movies, movie_reviews):
+        file.write(<span class="st">f"{movie}: {review}\n"</span>)
+
+<span class="bi">print</span>(<span class="st">f"✅ Saved to '{file_name}'!"</span>)</pre>
+    </div>
+  </div>
+
+  <!-- 4.4 Image Files -->
+  <div class="subsection" id="s4-image">
+    <h2 style="color:#d97706;">📌 4.4 Image Files — Binary Mode</h2>
+
+    <div class="card">
+      <h3>🖼️ How Are Images Stored in Computers?</h3>
+      <p>Computers only understand <strong>0s and 1s</strong> (binary). Text files store characters as text, but images, audio, and video files store data as raw <strong>binary</strong>. We need special modes (<code>"rb"</code>, <code>"ab"</code>) to handle these files correctly.</p>
+      <div class="remember">
+        <strong>💡 Bits and Bytes</strong>
+        <p>8 bits = 1 byte. One byte stores one character of text. A small image can have millions of bytes! A <strong>bytearray</strong> is a collection of bytes — like a list of 0-255 numbers.</p>
+      </div>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 Secret Messages in Images (Steganography!)</span>
+      <p>This is a real technique called <strong>steganography</strong> — hiding secret messages inside image files! By appending text in binary mode to a PNG image, you can embed a hidden message that ordinary people won't see when they open the image in a photo viewer. Only someone who knows to read the binary data with Python can discover the message. Spies and hackers use this in movies and in real cybersecurity!</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">3.handling_image_file.py</div></div>
+      <pre><span class="cm"># Append a hidden text message inside an image file (binary mode)</span>
+f = <span class="bi">open</span>(<span class="st">"jerry.png"</span>, <span class="st">"ab"</span>)
+f.write(<span class="bi">bytearray</span>(<span class="st">"Hello I am a Python coder!"</span>.encode(<span class="st">"ascii"</span>)))
+f.close()
+
+<span class="cm"># Read the image as raw binary data</span>
+f    = <span class="bi">open</span>(<span class="st">"jerry.png"</span>, <span class="st">"rb"</span>)
+data = f.read()
+<span class="bi">print</span>(data)    <span class="cm"># shows loads of binary-looking characters</span>
+f.close()
+
+<span class="cm"># Group of 8 bits = 1 byte
+# bytearray = a sequence of bytes (like a list of numbers 0-255)</span></pre>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 5 – EXCEPTION HANDLING
+═══════════════════════════════════════ -->
+<div class="section s5" id="s5">
+  <div class="section-header">
+    <div class="section-icon">🛡️</div>
+    <div>
+      <h1 style="color:#dc2626;">5. Exception Handling</h1>
+      <p>Handle errors gracefully so your program never crashes unexpectedly!</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💥 What is an Exception?</h3>
+    <p>Even when a program is written with correct syntax, things can go wrong when it's actually <em>running</em> — because users do unexpected things! An <strong>exception</strong> is an error that happens <em>during</em> execution. Without exception handling, your program simply <strong>crashes and stops</strong>.</p>
+    <ul style="margin-top:10px;">
+      <li><strong>Syntax Errors</strong> — Wrong grammar in code. Python catches these <em>before</em> running.</li>
+      <li><strong>Runtime Errors / Exceptions</strong> — Things go wrong <em>while</em> the program is running.</li>
+    </ul>
+  </div>
+
+  <div class="real-life">
+    <span class="rl-title">🌍 Real-Life Examples of Exceptions</span>
+    <ul>
+      <li>🧮 <strong>Calculator dividing by zero</strong> — If you ask a calculator to divide 10 by 0, it shows an error instead of crashing. That's exception handling!</li>
+      <li>🏧 <strong>ATM machine</strong> — If you type letters instead of a PIN number, the ATM doesn't crash — it says "Invalid input, please enter numbers only." The ATM handles the ValueError gracefully.</li>
+      <li>🔑 <strong>Wrong password</strong> — If you type the wrong password too many times, the app doesn't crash — it says "Too many attempts, account locked." That's a raised exception.</li>
+      <li>📁 <strong>Opening a deleted file</strong> — If a program tries to open a file that the user already deleted, instead of crashing it says "File not found." That's handling an IOError.</li>
+      <li>🌐 <strong>Website error pages</strong> — When a website can't find a page, instead of a scary crash it shows "404 – Page Not Found." That's exception handling in web apps!</li>
+    </ul>
+  </div>
+
+  <!-- 5.1 Types -->
+  <div class="subsection" id="s5-types">
+    <h2 style="color:#dc2626;">📌 5.1 Types of Errors</h2>
+
+    <div class="analogy">
+      <span class="an-title">🧠 Syntax Error vs Runtime Error</span>
+      <p><strong>Syntax Error</strong> = Like writing a sentence with missing punctuation that your English teacher catches before you hand it in — "I wants to eat" → grammar is wrong before it's even submitted.</p>
+      <p style="margin-top:8px;"><strong>Runtime Error</strong> = Like giving a perfectly written recipe to the chef, but they try to add an ingredient that's not in the kitchen. The recipe was fine — the problem happened while executing it.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">1syntaxerror.py — Syntax Error (detected before running)</div></div>
+      <pre><span class="cm"># ❌ BAD CODE — syntax error (missing colon after if)
+# if num > 0           ← Python sees this and REFUSES to run at all
+#     print("positive")</span>
+
+<span class="cm"># ✅ FIXED CODE</span>
+num = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter a number: "</span>))
+<span class="kw">if</span> num > <span class="nm">0</span>:
+    <span class="bi">print</span>(<span class="st">"Positive number!"</span>)
+<span class="bi">print</span>(<span class="st">"Program ended."</span>)</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">2logicalerror.py — Runtime Error (happens while running)</div></div>
+      <pre>num = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter a number: "</span>))
+<span class="kw">if</span>   num > <span class="nm">0</span>: <span class="bi">print</span>(<span class="st">"Positive"</span>)
+<span class="kw">elif</span> num < <span class="nm">0</span>: <span class="bi">print</span>(<span class="st">"Negative"</span>)
+<span class="kw">else</span>:        <span class="bi">print</span>(<span class="st">"Zero"</span>)
+
+<span class="cm"># ⚠️ If you type "hello" instead of a number:
+# → ValueError: invalid literal for int() with base 10
+# The code is syntactically correct but CRASHES at runtime!
+# Solution: use try-except to handle this gracefully.</span></pre>
+    </div>
+  </div>
+
+  <!-- 5.2 Try/Except -->
+  <div class="subsection" id="s5-try">
+    <h2 style="color:#dc2626;">📌 5.2 Try / Except Block</h2>
+
+    <div class="card">
+      <h3>🛡️ The try-except Structure</h3>
+      <div class="remember">
+        <strong>💡 The Structure</strong>
+        <p><code>try:</code> — write code that MIGHT cause an error here<br/>
+           <code>except:</code> — what to do IF that error happens<br/>
+           <code>else:</code> — runs only if NO error happened in try<br/>
+           <code>finally:</code> — runs ALWAYS, whether error happened or not</p>
+      </div>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 The Safety Net Analogy</span>
+      <p>Imagine a trapeze artist in a circus. The <strong>try block</strong> is when they attempt the daring jump. The <strong>except block</strong> is the safety net below — if they fall, the net catches them and they don't get hurt. The show goes on! Without exception handling, one small mistake crashes the whole program — like removing the safety net.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">3handle_value_error.py</div></div>
+      <pre><span class="kw">try</span>:
+    num = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter a number: "</span>))
+    <span class="kw">if</span>   num > <span class="nm">0</span>: <span class="bi">print</span>(<span class="st">"Positive"</span>)
+    <span class="kw">elif</span> num < <span class="nm">0</span>: <span class="bi">print</span>(<span class="st">"Negative"</span>)
+    <span class="kw">else</span>:        <span class="bi">print</span>(<span class="st">"Zero"</span>)
+<span class="kw">except</span> Exception <span class="kw">as</span> e:
+    <span class="bi">print</span>(e.__class__)  <span class="cm"># shows the TYPE of error</span>
+    <span class="bi">print</span>(e)            <span class="cm"># shows the error MESSAGE</span>
+<span class="bi">print</span>(<span class="st">"Program continues after the error!"</span>)  <span class="cm"># ← always runs!</span></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">6handle_index_error.py — Nested try for different errors</div></div>
+      <pre>list1 = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>]
+<span class="kw">try</span>:
+    index = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter an index (0–4): "</span>))
+    <span class="kw">try</span>:
+        <span class="bi">print</span>(<span class="st">f"Item at [{index}]: {list1[index]}"</span>)
+    <span class="kw">except</span> IndexError:
+        <span class="bi">print</span>(<span class="st">f"❌ Index must be 0 to {len(list1)-1}"</span>)
+<span class="kw">except</span> ValueError:
+    <span class="bi">print</span>(<span class="st">"❌ Please enter a whole number, not text!"</span>)
+<span class="bi">print</span>(list1)</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">7.IOError.py — File Not Found Handling</div></div>
+      <pre><span class="kw">try</span>:
+    f = <span class="bi">open</span>(<span class="st">"file.txt"</span>, <span class="st">"r"</span>)
+<span class="kw">except</span> IOError:
+    <span class="bi">print</span>(<span class="st">"❌ File not found!"</span>)
+<span class="kw">else</span>:
+    <span class="cm"># This block only runs if NO exception happened</span>
+    <span class="bi">print</span>(<span class="st">"✅ File opened successfully!"</span>)
+    content = f.read()
+    <span class="bi">print</span>(content)
+    f.close()</pre>
+    </div>
+  </div>
+
+  <!-- 5.3 Multiple Exceptions -->
+  <div class="subsection" id="s5-multiple">
+    <h2 style="color:#dc2626;">📌 5.3 Handling Multiple Exceptions</h2>
+
+    <div class="card">
+      <h3>🎯 Why Handle Different Errors Differently?</h3>
+      <p>Think about a vending machine. If you press an invalid button, the message should be "Invalid selection." If you don't insert enough money, it should say "Insufficient balance." If the machine is out of stock, it says "Item unavailable." Each type of problem needs its own appropriate response — not just one generic "Something went wrong!" message.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">4handle_value_divby0_error.py — Multiple except clauses</div></div>
+      <pre><span class="kw">while</span> <span class="bi">True</span>:
+    <span class="kw">try</span>:
+        num1   = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"Enter first number: "</span>))
+        num2   = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"Enter second number: "</span>))
+        result = num1 / num2
+        <span class="bi">print</span>(<span class="st">f"Result: {result}"</span>)
+        <span class="kw">break</span>
+    <span class="kw">except</span> ZeroDivisionError:
+        <span class="bi">print</span>(<span class="st">"❌ You can't divide by zero! Try again."</span>)
+    <span class="kw">except</span> ValueError:
+        <span class="bi">print</span>(<span class="st">"❌ Please enter a number, not text! Try again."</span>)
+    <span class="kw">except</span> Exception <span class="kw">as</span> e:
+        <span class="bi">print</span>(<span class="st">"Something unexpected went wrong:"</span>, e)
+<span class="bi">print</span>(<span class="st">"Program finished successfully!"</span>)</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">5handle_valueerror2.py — Square Root with nested try</div></div>
+      <pre><span class="kw">import</span> math
+
+<span class="kw">while</span> <span class="bi">True</span>:
+    <span class="kw">try</span>:
+        x = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"Enter a positive number: "</span>))
+        <span class="kw">try</span>:
+            <span class="bi">print</span>(<span class="st">f"√{x} = {math.sqrt(x)}"</span>)
+            <span class="kw">break</span>
+        <span class="kw">except</span> ValueError:
+            <span class="bi">print</span>(<span class="st">"❌ Square root of negative numbers doesn't exist!"</span>)
+    <span class="kw">except</span> ValueError:
+        <span class="bi">print</span>(<span class="st">"❌ That wasn't a number. Please try again."</span>)</pre>
+    </div>
+  </div>
+
+  <!-- 5.4 Raise -->
+  <div class="subsection" id="s5-raise">
+    <h2 style="color:#dc2626;">📌 5.4 Raising Custom Exceptions</h2>
+
+    <div class="card">
+      <h3>🚨 When Do We Raise Our Own Exceptions?</h3>
+      <p>Sometimes Python doesn't automatically raise an error — for example, if someone enters <code>-5</code> as their age or <code>-100</code> as a product price. The code runs without crashing, but the <em>value</em> makes no logical sense! We use <code>raise Exception("message")</code> to deliberately stop the program and show a meaningful error.</p>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 Real-Life Examples of Raising Exceptions</span>
+      <ul>
+        <li>🎢 <strong>Amusement park height checker</strong> — "You must be at least 120cm tall to ride this." If someone's height is below the limit, the system raises an error: "Height requirement not met." Python doesn't know this rule automatically — you have to program and raise it yourself!</li>
+        <li>🎂 <strong>Age verification</strong> — A website that sells rated-18 content: if user enters age below 18, raise an Exception: "You must be 18 or older."</li>
+        <li>🏦 <strong>Withdrawal limit</strong> — If someone tries to withdraw more money than their balance, the bank app raises an exception: "Insufficient funds."</li>
+        <li>🔒 <strong>Password attempts</strong> — After 5 wrong password attempts, the system raises: "Maximum login attempts exceeded. Account locked."</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">8raiseexception.py — Raise Exceptions</div></div>
+      <pre><span class="cm"># Only print multiplication table for positive numbers</span>
+num = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter a number: "</span>))
+<span class="kw">if</span> num > <span class="nm">0</span>:
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">11</span>):
+        <span class="bi">print</span>(num, <span class="st">"×"</span>, i, <span class="st">"="</span>, num * i)
+<span class="kw">else</span>:
+    <span class="kw">raise</span> Exception(<span class="st">"❌ Positive number expected!"</span>)
+
+
+<span class="cm"># Accept only even numbers</span>
+x = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter an even number only: "</span>))
+<span class="kw">if</span> (x % <span class="nm">2</span>) != <span class="nm">0</span>:
+    <span class="kw">raise</span> Exception(<span class="st">"❌ That's an odd number — only evens allowed!"</span>)
+<span class="bi">print</span>(<span class="st">"✅ Great! You entered an even number."</span>)</pre>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 6 – JSON
+═══════════════════════════════════════ -->
+<div class="section s6" id="s6">
+  <div class="section-header">
+    <div class="section-icon">🔗</div>
+    <div>
+      <h1 style="color:#0891b2;">6. Python JSON</h1>
+      <p>A universal language for sharing data between apps and websites!</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤔 What is JSON?</h3>
+    <p><strong>JSON</strong> (JavaScript Object Notation) is a <strong>standard format</strong> for storing and sharing structured data as text. It's not a Python thing — it works across ALL programming languages (Python, Java, C++, JavaScript, etc.). This makes it the universal "language" that different apps use to talk to each other!</p>
+    <ul style="margin-top:10px;">
+      <li>JSON data looks very similar to a Python dictionary: keys and values inside <code>{ }</code></li>
+      <li>JSON is always stored as a <strong>string</strong> — even if it looks like a dictionary</li>
+      <li>Python has a built-in <code>json</code> module to easily convert between Python and JSON</li>
+    </ul>
+  </div>
+
+  <div class="real-life">
+    <span class="rl-title">🌍 Real-Life Examples of JSON</span>
+    <ul>
+      <li>🌤️ <strong>Weather app</strong> — When you open a weather app, it asks a server "What's the weather in Mumbai?" The server sends back JSON data:<br/>
+        <code>{"city": "Mumbai", "temp": 32, "condition": "sunny", "humidity": 70}</code><br/>
+        The app then reads (parses) this JSON and displays it beautifully!</li>
+      <li>📱 <strong>Instagram / social media</strong> — When you scroll your feed, your phone sends a request to Instagram's servers. The server responds with JSON containing your posts, likes, comments, profile pictures. Your app displays them on screen.</li>
+      <li>🛍️ <strong>Online shopping</strong> — When you search for a product on Amazon, their server sends JSON: <code>{"product": "shoes", "price": 1499, "inStock": true, "rating": 4.5}</code></li>
+      <li>🎮 <strong>Game settings / save files</strong> — Many modern games store player settings and save data in JSON files: <code>{"player": "Rohan", "level": 12, "health": 85, "coins": 4500}</code></li>
+      <li>🗺️ <strong>Google Maps</strong> — Location data, routes, and business info are all exchanged as JSON between your phone and Google's servers.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔄 Python ↔ JSON Conversion Table</h3>
+    <table class="method-table">
+      <tr><th>Python Type</th><th>JSON Equivalent</th><th>Example</th></tr>
+      <tr><td>dict</td><td>object <code>{ }</code></td><td><code>{"name": "Bob"}</code></td></tr>
+      <tr><td>list / tuple</td><td>array <code>[ ]</code></td><td><code>[1, 2, 3]</code></td></tr>
+      <tr><td>str</td><td>string</td><td><code>"hello"</code></td></tr>
+      <tr><td>int / float</td><td>number</td><td><code>42, 3.14</code></td></tr>
+      <tr><td>True</td><td>true (lowercase!)</td><td><code>true</code></td></tr>
+      <tr><td>False</td><td>false (lowercase!)</td><td><code>false</code></td></tr>
+      <tr><td>None</td><td>null</td><td><code>null</code></td></tr>
+    </table>
+  </div>
+
+  <!-- 6.1 JSON Strings -->
+  <div class="subsection" id="s6-string">
+    <h2 style="color:#0891b2;">📌 6.1 Working with JSON Strings</h2>
+
+    <div class="card">
+      <h3>🔧 Two Key Functions</h3>
+      <ul>
+        <li><code>json.dumps(dict)</code> → <strong>d</strong>ump to <strong>s</strong>tring — Python dict → JSON string (packing data to send)</li>
+        <li><code>json.loads(string)</code> → <strong>lo</strong>ad from <strong>s</strong>tring — JSON string → Python dict (unpacking received data)</li>
+      </ul>
+    </div>
+
+    <div class="analogy">
+      <span class="an-title">🧠 The Packing/Unpacking Analogy</span>
+      <p>Imagine you want to send a lunchbox from India to your friend in Japan. You <strong>pack</strong> the food tightly for travel (<code>json.dumps</code> — converting Python dict into a portable JSON string). When your friend receives it, they <strong>unpack</strong> it and arrange the food properly (<code>json.loads</code> — converting JSON string back into a usable Python dict).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">1.python_json.py — JSON Strings</div></div>
+      <pre><span class="kw">import</span> json
+
+<span class="cm"># Start with a Python dictionary</span>
+d = {<span class="st">'name'</span>: <span class="st">'Bob'</span>, <span class="st">'languages'</span>: [<span class="st">'English'</span>, <span class="st">'French'</span>],
+     <span class="st">'married'</span>: <span class="bi">True</span>, <span class="st">'age'</span>: <span class="nm">32</span>}
+
+<span class="cm"># Python dict → JSON string (for sending over the internet)</span>
+s = json.dumps(d)
+<span class="bi">print</span>(s)           <span class="cm"># '{"name": "Bob", "languages": [...], "married": true}'</span>
+<span class="bi">print</span>(<span class="bi">type</span>(s))     <span class="cm"># &lt;class 'str'&gt;  ← it's a string now!</span>
+
+<span class="cm"># JSON string → Python dict (for using received data)</span>
+s = <span class="st">'{"name": "Bob", "languages": ["English", "French"], "age": 32}'</span>
+d = json.loads(s)
+<span class="bi">print</span>(d)           <span class="cm"># {'name': 'Bob', 'languages': [...], 'age': 32}</span>
+<span class="bi">print</span>(<span class="bi">type</span>(d))     <span class="cm"># &lt;class 'dict'&gt;  ← Python dict again!</span>
+
+<span class="cm"># Now you can use it like any normal dictionary</span>
+<span class="bi">print</span>(d[<span class="st">"languages"</span>])  <span class="cm"># ['English', 'French']</span>
+<span class="bi">print</span>(d[<span class="st">"name"</span>])        <span class="cm"># Bob</span></pre>
+    </div>
+  </div>
+
+  <!-- 6.2 JSON Files -->
+  <div class="subsection" id="s6-file">
+    <h2 style="color:#0891b2;">📌 6.2 Working with JSON Files</h2>
+
+    <div class="card">
+      <h3>📂 Two Key Functions for Files</h3>
+      <ul>
+        <li><code>json.dump(data, file)</code> → Write Python data into a <code>.json</code> file on disk</li>
+        <li><code>json.load(file)</code> → Read a <code>.json</code> file from disk into Python</li>
+      </ul>
+    </div>
+
+    <div class="real-life">
+      <span class="rl-title">🌍 JSON Files in Practice</span>
+      <p>Many real apps store their configuration and data in <code>.json</code> files:</p>
+      <ul>
+        <li>VS Code stores your editor settings in a file called <code>settings.json</code></li>
+        <li>Node.js projects use <code>package.json</code> to store project information</li>
+        <li>The interactive dictionary project in Section 7 loads <em>thousands</em> of words from a <code>data.json</code> file!</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">2.python_json2.py — Read/Write JSON Files</div></div>
+      <pre><span class="kw">import</span> json
+
+person_dict = {
+    <span class="st">"name"</span>:      <span class="st">"Bob"</span>,
+    <span class="st">"languages"</span>: [<span class="st">"English"</span>, <span class="st">"French"</span>],
+    <span class="st">"married"</span>:   <span class="bi">True</span>,
+    <span class="st">"age"</span>:       <span class="nm">32</span>
+}
+
+<span class="cm"># Write Python dict to a .json file</span>
+f = <span class="bi">open</span>(<span class="st">"j.json"</span>, <span class="st">"w"</span>)
+json.dump(person_dict, f)   <span class="cm"># saves as JSON inside the file</span>
+f.close()
+
+<span class="cm"># Read the .json file back into Python</span>
+f    = <span class="bi">open</span>(<span class="st">"j.json"</span>, <span class="st">"r"</span>)
+data = json.load(f)         <span class="cm"># converts JSON → Python dict</span>
+<span class="bi">print</span>(data)
+<span class="bi">print</span>(<span class="bi">type</span>(data))            <span class="cm"># &lt;class 'dict'&gt;</span>
+f.close()</pre>
+    </div>
+  </div>
+
+  <!-- 6.3 Pretty Print -->
+  <div class="subsection" id="s6-pretty">
+    <h2 style="color:#0891b2;">📌 6.3 Pretty Printing JSON</h2>
+
+    <div class="card">
+      <h3>💅 Why Pretty Print?</h3>
+      <p>Normal JSON is written on one long line — hard for humans to read. When debugging (fixing bugs) or showing data to another person, you want it formatted nicely with indentation. <code>indent=4</code> adds 4 spaces per level, and <code>sort_keys=True</code> orders keys alphabetically.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">3.pretty.py — Formatted JSON Output</div></div>
+      <pre><span class="kw">import</span> json
+
+person_dict = {
+    <span class="st">"name"</span>:    <span class="st">"Bob"</span>,
+    <span class="st">"languages"</span>: <span class="st">"English"</span>,
+    <span class="st">"numbers"</span>: [<span class="nm">2</span>, <span class="nm">1.6</span>, <span class="bi">None</span>]
+}
+
+<span class="cm"># indent=4 → adds 4 spaces for each level (nice and readable!)
+# sort_keys=True → keys appear in alphabetical order</span>
+<span class="bi">print</span>(json.dumps(person_dict, indent=<span class="nm">4</span>, sort_keys=<span class="bi">True</span>))
+
+<span class="cm">"""
+Output:
+{
+    "languages": "English",
+    "name": "Bob",
+    "numbers": [
+        2,
+        1.6,
+        null
+    ]
+}
+"""</span></pre>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════
+     SECTION 7 – INTERACTIVE DICTIONARY
+═══════════════════════════════════════ -->
+<div class="section s7" id="s7">
+  <div class="section-header">
+    <div class="section-icon">📖</div>
+    <div>
+      <h1 style="color:#7c3aed;">7. Interactive Dictionary Project</h1>
+      <p>A smart dictionary that even corrects your spelling mistakes!</p>
+    </div>
+  </div>
+
+  <div class="project-badge">🚀 FINAL PROJECT — Combines JSON + Dictionaries + Loops + difflib</div>
+
+  <div class="card">
+    <h3>📖 What Does This Project Do?</h3>
+    <p>This is a fully working <strong>English dictionary</strong> program that:</p>
+    <ul>
+      <li>Loads <strong>thousands of English words</strong> and their meanings from a <code>data.json</code> file</li>
+      <li>Lets the user search for any word and see all its meanings</li>
+      <li>If the word isn't found, it <strong>suggests similar words</strong> (like autocorrect!) using Python's <code>difflib</code> module</li>
+      <li>Keeps running until the user says "no" — a complete, interactive program!</li>
+    </ul>
+  </div>
+
+  <div class="real-life">
+    <span class="rl-title">🌍 Real-Life Connection — How Google Search Autocorrect Works</span>
+    <p>Have you ever typed something wrong in Google and it still found what you were looking for? Like typing "pythn" and Google says "Showing results for: python"? That's fuzzy matching — and this project does the same thing!</p>
+    <ul>
+      <li>Type "catt" → program suggests "cat" ✅</li>
+      <li>Type "hous" → program suggests "house" ✅</li>
+      <li>Type "serentipity" → program suggests "serendipity" ✅</li>
+    </ul>
+    <p>Python's <code>difflib.get_close_matches()</code> compares your input word to ALL words in the dictionary and returns those that are most similar in letter patterns. This is the same technology used in spell checkers, search engines, and DNA sequence matching in biology!</p>
+  </div>
+
+  <div class="card">
+    <h3>🔬 How difflib Works</h3>
+    <p><code>difflib.get_close_matches(word, possibilities)</code> measures how <em>similar</em> two strings are by comparing their sequences of characters. It returns a list of the closest matching words from your dictionary keys. You can control how many suggestions to return and how close the match must be.</p>
+    <div class="analogy">
+      <span class="an-title">🧠 The Similarity Score Idea</span>
+      <p>"cat" and "catt" are 75% similar (3 of 4 characters match). "cat" and "xyz" are 0% similar. difflib calculates this score for your input word vs every word in the dictionary, and returns those above a threshold. It's like finding the closest rhyme to a word!</p>
+    </div>
+  </div>
+
+  <div class="subsection" id="s7-project">
+    <h2 style="color:#7c3aed;">📌 7.1 The Complete Project Code</h2>
+
+    <div class="code-block">
+      <div class="code-header"><div class="dots"><span></span><span></span><span></span></div><div class="label">inter_dict_final.py — Interactive Dictionary</div></div>
+      <pre><span class="kw">import</span> json
+<span class="kw">import</span> difflib
+
+<span class="cm"># Load dictionary data from JSON file
+# The JSON has structure: {"word": ["meaning1", "meaning2", ...], ...}</span>
+f    = <span class="bi">open</span>(<span class="st">'data.json'</span>)
+data = json.load(f)    <span class="cm"># converts the JSON file → Python dictionary</span>
+
+<span class="kw">while</span> <span class="bi">True</span>:
+    answer = <span class="bi">input</span>(<span class="st">"Do you want to find the meaning of a word? : "</span>)
+
+    <span class="kw">if</span> answer == <span class="st">'yes'</span>:
+        word = <span class="bi">input</span>(<span class="st">'Enter the word: '</span>)
+
+        <span class="kw">if</span> word <span class="kw">in</span> data.keys():
+            <span class="cm"># ✅ Exact match found!</span>
+            meanings = data[word]
+            i = <span class="nm">1</span>
+            <span class="bi">print</span>(<span class="st">f'\nAll meanings of "{word}":'</span>)
+            <span class="kw">for</span> m <span class="kw">in</span> meanings:
+                <span class="bi">print</span>(<span class="st">f"  {i}. {m}"</span>)
+                i += <span class="nm">1</span>
+
+        <span class="kw">else</span>:
+            <span class="cm"># ❌ Exact match not found — try fuzzy matching!</span>
+            matchingwords = difflib.get_close_matches(word, data.keys())
+
+            <span class="kw">for</span> x <span class="kw">in</span> matchingwords:
+                answer = <span class="bi">input</span>(<span class="st">f'Did you mean "{x}"? (yes/no): '</span>)
+                <span class="kw">if</span> answer == <span class="st">'yes'</span>:
+                    meanings = data[x]
+                    i = <span class="nm">1</span>
+                    <span class="bi">print</span>(<span class="st">'\nAll meanings:'</span>)
+                    <span class="kw">for</span> m <span class="kw">in</span> meanings:
+                        <span class="bi">print</span>(<span class="st">f"  {i}. {m}"</span>)
+                        i += <span class="nm">1</span>
+                    <span class="kw">break</span>   <span class="cm"># stop once we found and showed the meaning</span>
+            <span class="kw">else</span>:
+                <span class="bi">print</span>(<span class="st">'❌ No such word exists in the dictionary.'</span>)
+    <span class="kw">else</span>:
+        <span class="kw">break</span>
+
+
+<span class="cm">"""
+💡 CHALLENGE — Extend this project:
+  1. Add a new word and meaning to the dictionary (and save to JSON)
+  2. Delete a word and its meanings from the dictionary
+  3. Update/change the meaning of an existing word
+  4. Display all words starting with a given letter
+  5. Count how many words are in the dictionary
+"""</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="margin-top:64px; padding:24px 0; border-top:2px solid var(--border); text-align:center; color:var(--subtext); font-size:0.85rem;">
+  <div style="font-family:var(--heading-font); font-size:1.2rem; color:var(--accent1); margin-bottom:6px;">🐍 Python Data Structures — Grade 6</div>
+  Topics: Lists · Stack · Queue · File Handling · Exception Handling · JSON · Interactive Dictionary
+</div>
+
+</main>
+
+<script>
+  function setActive(el) {
+    document.querySelectorAll('.nav-item, .nav-sub-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+  }
+  // Highlight nav on scroll
+  const allIds   = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('.nav-item, .nav-sub-item');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    allIds.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

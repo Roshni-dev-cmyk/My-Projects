@@ -1,0 +1,215 @@
+body{
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+
+/*nav bar styling*/
+nav{
+    height:80px;
+
+   /* display: flex;  
+   background-color: rgb(7, 152, 84);
+   justify-content:center;
+   align-items: center; */
+/* easy way */
+   text-align: center;
+   background-color:rgb(7, 152, 84);
+   padding-top: 15px;
+
+   /* to fix the nav bar on top */
+   position:fixed;
+   width: 98%;
+   left: 0;/*  For margin: auto to center an element with absolute/fixed positioning, all sides must be defined. */
+   right: 0; /*strick to the right*/
+   top:0;/*stick to the top */
+   margin: auto;  
+}
+nav a{
+   text-decoration: none;
+   margin: 0px 10px 0px 10px; /*margin: top right bottom left;*/
+   color:rgb(0, 4, 255);
+}
+#about,#menu,#services,#contact{
+  scroll-margin-top: 80px;      /* 80 is ht of nav bar, this is added to avoid overlap*/
+}
+
+
+
+/* header styling*/
+header{
+   background-color: gold;
+   text-align: center;
+   /* padding:10px 0px 10px 0px; */
+   
+}
+header img{
+    height: 500px;
+    width: 500px;
+    border: 1px solid rgb(231, 197, 10);
+    border-radius: 50px;
+    box-shadow: 10px 10px 10px yellow;
+}
+
+
+
+h1{
+   text-align: center;
+   padding-top:20px;
+}
+
+
+.side{
+   display: flex;
+   justify-content: center;
+   
+}
+
+.side p{
+   width:500px;
+   text-align: justify;
+   margin-right: 20px;
+   
+}
+
+#about{
+   background-color: lavender;
+   /* padding:10px 0px 10px 0px;
+   margin:10px 0px 10px 0px; */
+}
+
+#menu{
+    background-color: burlywood;
+    /* padding:10px 0px 10px 0px;
+   margin:10px 0px 10px 0px; */
+}
+
+table,th,td{
+   border: 1px solid black;
+   border-collapse: collapse;
+   margin:auto;
+}
+
+thead{
+    background-color: brown;
+    color: white;
+}
+
+tbody{
+    background-color: bisque;
+}
+
+h2{
+   text-align: center;
+}
+
+#menu ol{
+ 
+  width: max-content;
+   margin: auto;
+  
+}
+
+#menu ol li::marker{
+           color: brown; /*change marker color */
+           font-size: 25px;    /*change the marker size */
+       }
+     
+
+
+
+#menu ul li{
+   list-style-type: none;
+   background-image: url('https://png.pngtree.com/png-vector/20240512/ourmid/pngtree-this-photo-portrays-a-single-coffee-bean-isolated-against-blank-backdrop-png-image_12439812.png'); /* Replace with your image URL */
+   background-size: 15px 15px; /* Resize the image */
+   background-repeat: no-repeat; /* Prevent repetition */
+   padding-left: 25px; /* Add space for the image */
+   line-height: 20px; /* Adjust alignment */
+}
+   
+
+
+
+#ss{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.service img{
+    height: 50%;
+    width:90%;
+    border-radius:100px
+}
+
+.service{
+    border: 1px solid black;
+    margin:10px;
+    width:30%;
+    height: 400px;
+    padding: 10px;
+    background-color: antiquewhite;
+    text-align: center;
+}
+
+#services{
+    background-color: rgb(231, 218, 150);
+   
+    padding:10px 0px 10px 0px;
+   margin:10px 0px 10px 0px;
+}
+
+
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input, .form-group textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    background-color: rgb(7, 152, 84);;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #7dc681;
+}
+
+footer {
+    background-color: gold;
+    color: #fff;
+    padding: 30px 0;
+    text-align: center;
+    margin-top:10px;
+}
+
+
+footer p {
+    font-size: 1rem;
+    color: black;
+}
+

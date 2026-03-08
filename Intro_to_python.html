@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to Python — Student Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e1117;
+    --surface: #161b27;
+    --surface2: #1e2535;
+    --border: #2a3347;
+    --accent: #4ecca3;
+    --accent2: #f9a826;
+    --accent3: #e84393;
+    --accent4: #6c63ff;
+    --text: #e2e8f0;
+    --text-muted: #8899bb;
+    --code-bg: #0d1117;
+    --green: #4ecca3;
+    --yellow: #f9a826;
+    --pink: #e84393;
+    --purple: #6c63ff;
+    --blue: #38bdf8;
+    --red: #f87171;
+    --sidebar-w: 280px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ===== SIDEBAR ===== */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .sidebar-header {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .sidebar-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  #sidebar nav { padding: 12px 0; }
+
+  #sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+  }
+
+  #sidebar nav a:hover {
+    color: var(--text);
+    background: var(--surface2);
+    border-left-color: var(--accent);
+  }
+
+  #sidebar nav a .num {
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--surface2);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    min-width: 22px;
+    text-align: center;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 40px 48px 80px;
+    max-width: 1100px;
+  }
+
+  .page-header {
+    margin-bottom: 56px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-header .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(78,204,163,0.1);
+    border: 1px solid rgba(78,204,163,0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .page-header h1 {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #e2e8f0 0%, var(--accent) 60%, var(--accent4) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 17px;
+    max-width: 600px;
+  }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    margin-bottom: 72px;
+    scroll-margin-top: 20px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .section-number {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .section-number.c1 { background: rgba(78,204,163,0.15); color: var(--green); }
+  .section-number.c2 { background: rgba(249,168,38,0.15); color: var(--yellow); }
+  .section-number.c3 { background: rgba(232,67,147,0.15); color: var(--pink); }
+  .section-number.c4 { background: rgba(108,99,255,0.15); color: var(--purple); }
+  .section-number.c5 { background: rgba(56,189,248,0.15); color: var(--blue); }
+  .section-number.c6 { background: rgba(248,113,113,0.15); color: var(--red); }
+  .section-number.c7 { background: rgba(78,204,163,0.15); color: var(--green); }
+  .section-number.c8 { background: rgba(249,168,38,0.15); color: var(--yellow); }
+  .section-number.c9 { background: rgba(232,67,147,0.15); color: var(--pink); }
+  .section-number.c10 { background: rgba(108,99,255,0.15); color: var(--purple); }
+  .section-number.c11 { background: rgba(56,189,248,0.15); color: var(--blue); }
+  .section-number.c12 { background: rgba(248,113,113,0.15); color: var(--red); }
+
+  .section-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-title span {
+    display: block;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ===== CONTENT CARDS ===== */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card h3 .icon { font-size: 18px; }
+
+  .card p { color: #c8d8f0; margin-bottom: 10px; font-size: 15px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* ===== REAL-LIFE BOX ===== */
+  .reallife {
+    background: linear-gradient(135deg, rgba(78,204,163,0.08), rgba(108,99,255,0.08));
+    border: 1px solid rgba(78,204,163,0.25);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #b8e8d8;
+  }
+
+  .reallife strong {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  /* ===== TIP / WARNING ===== */
+  .tip, .warning, .hw {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+
+  .tip {
+    background: rgba(56,189,248,0.08);
+    border-left: 4px solid var(--blue);
+    color: #9dd8f0;
+  }
+
+  .warning {
+    background: rgba(249,168,38,0.08);
+    border-left: 4px solid var(--yellow);
+    color: #f0d090;
+  }
+
+  .hw {
+    background: rgba(232,67,147,0.08);
+    border-left: 4px solid var(--pink);
+    color: #f0a0c8;
+  }
+
+  .tip strong, .warning strong, .hw strong {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+    opacity: 0.7;
+  }
+
+  /* ===== TABLE ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+
+  th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: #c8d8f0;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  td code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent2);
+  }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-header .filename {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .code-header .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #ffbd2e; }
+  .dot.g { background: #28ca41; }
+
+  .code-block pre {
+    padding: 16px 20px;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .kw { color: #ff79c6; }   /* keyword */
+  .fn { color: #50fa7b; }   /* function */
+  .st { color: #f1fa8c; }   /* string */
+  .cm { color: #6272a4; font-style: italic; }  /* comment */
+  .nm { color: #bd93f9; }   /* number */
+  .bi { color: #8be9fd; }   /* builtin */
+  .op { color: #ff79c6; }   /* operator */
+  .va { color: #f8f8f2; }   /* variable */
+
+  /* ===== GRID LAYOUT ===== */
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  @media (max-width: 768px) {
+    .grid2 { grid-template-columns: 1fr; }
+    #sidebar { display: none; }
+    #main { margin-left: 0; padding: 24px 20px; }
+  }
+
+  /* ===== PROJECT BADGE ===== */
+  .project-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  .project-badge.green { background: rgba(78,204,163,0.15); color: var(--green); border: 1px solid rgba(78,204,163,0.3); }
+  .project-badge.yellow { background: rgba(249,168,38,0.15); color: var(--yellow); border: 1px solid rgba(249,168,38,0.3); }
+  .project-badge.pink { background: rgba(232,67,147,0.15); color: var(--pink); border: 1px solid rgba(232,67,147,0.3); }
+  .project-badge.purple { background: rgba(108,99,255,0.15); color: var(--purple); border: 1px solid rgba(108,99,255,0.3); }
+  .project-badge.blue { background: rgba(56,189,248,0.15); color: var(--blue); border: 1px solid rgba(56,189,248,0.3); }
+
+  h2.sub {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 24px 0 12px;
+  }
+
+  ul.concept-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul.concept-list li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    color: #c8d8f0;
+    font-size: 15px;
+  }
+
+  ul.concept-list li::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 9px;
+    top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">🐍 Python Notes</div>
+    <div class="sidebar-subtitle">Intro to Python · Grade 6–10</div>
+  </div>
+  <nav>
+    <a href="#s1"><span class="num">1</span> Hello Python</a>
+    <a href="#s2"><span class="num">2</span> Taking Decisions</a>
+    <a href="#s3"><span class="num">3</span> Python Strings</a>
+    <a href="#s4"><span class="num">4</span> Menu Programs</a>
+    <a href="#s5"><span class="num">5</span> Random Module</a>
+    <a href="#s6"><span class="num">6</span> List Manipulation</a>
+    <a href="#s7"><span class="num">7</span> Marvel vs DC</a>
+    <a href="#s8"><span class="num">8</span> Hangman Game</a>
+    <a href="#s9"><span class="num">9</span> Cryptography</a>
+    <a href="#s10"><span class="num">10</span> Dictionaries</a>
+    <a href="#s11"><span class="num">11</span> Rock Paper Scissors</a>
+    <a href="#s12"><span class="num">12</span> Extras &amp; Projects</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="tag">📚 Complete Course Notes</div>
+    <h1>Introduction to Python</h1>
+    <p>All concepts, code examples, projects and exercises in one place. Use the sidebar to jump to any topic.</p>
+  </div>
+
+  <!-- ============================= SECTION 1 ============================= -->
+  <section class="section" id="s1">
+    <div class="section-header">
+      <div class="section-number c1">1</div>
+      <div class="section-title">Hello Python
+        <span>print · input · variables · data types · arithmetic · area & perimeter</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">💡</span> What is Python?</h3>
+      <p>Python is a high-level, easy-to-read programming language used for everything from websites and games to artificial intelligence. It reads almost like plain English!</p>
+      <div class="reallife">
+        <strong>🌍 Real Life</strong>
+        Instagram, YouTube, Spotify and NASA all use Python in their software.
+      </div>
+    </div>
+
+    <h2 class="sub">print() and input()</h2>
+    <div class="card">
+      <p><code style="color:var(--accent2);font-family:'JetBrains Mono',monospace">print()</code> — displays output on screen.<br>
+      <code style="color:var(--accent2);font-family:'JetBrains Mono',monospace">input()</code> — reads text typed by the user (always returns a string).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">1.print_input.py — Chatbot</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="fn">print</span>(<span class="st">"Welcome to the chatbot!"</span>)
+<span class="va">name</span> = <span class="fn">input</span>(<span class="st">"Enter your name: "</span>)
+<span class="fn">print</span>(<span class="st">"Hello"</span>, <span class="va">name</span>)
+<span class="va">color</span> = <span class="fn">input</span>(<span class="st">"What is your favourite color?: "</span>)
+<span class="fn">print</span>(<span class="va">color</span>, <span class="st">"is a nice color"</span>)
+<span class="va">food</span> = <span class="fn">input</span>(<span class="st">"What is your favourite food?: "</span>)
+<span class="fn">print</span>(<span class="va">food</span>, <span class="st">"is very tasty. But don't eat too much!"</span>)</pre>
+    </div>
+
+    <h2 class="sub">Data Types &amp; Variables</h2>
+    <table>
+      <tr><th>Type</th><th>Example Value</th><th>Python Type</th></tr>
+      <tr><td>Integer</td><td><code>2</code>, <code>-5</code>, <code>100</code></td><td><code>int</code></td></tr>
+      <tr><td>Float (decimal)</td><td><code>10.6</code>, <code>3.14</code></td><td><code>float</code></td></tr>
+      <tr><td>String (text)</td><td><code>"Jacob"</code>, <code>"hello"</code></td><td><code>str</code></td></tr>
+      <tr><td>Boolean</td><td><code>True</code>, <code>False</code></td><td><code>bool</code></td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">2.datatypes_variables.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">number</span> = <span class="nm">2</span>           <span class="cm"># integer</span>
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="va">number</span>))  <span class="cm"># &lt;class 'int'&gt;</span>
+
+<span class="va">a</span> = <span class="nm">10.6</span>           <span class="cm"># float</span>
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="va">a</span>))      <span class="cm"># &lt;class 'float'&gt;</span>
+
+<span class="va">name</span> = <span class="st">"Jacob"</span>     <span class="cm"># string</span>
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="va">name</span>))
+
+<span class="va">a</span> = <span class="kw">True</span>           <span class="cm"># boolean</span>
+<span class="fn">print</span>(<span class="fn">type</span>(<span class="va">a</span>))</pre>
+    </div>
+
+    <div class="tip"><strong>💡 Tip</strong>Use <code>type()</code> to check what kind of data a variable holds at any time.</div>
+
+    <h2 class="sub">Arithmetic Operators</h2>
+    <table>
+      <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr>
+      <tr><td><code>+</code></td><td>Addition</td><td><code>5 + 3</code></td><td><code>8</code></td></tr>
+      <tr><td><code>-</code></td><td>Subtraction</td><td><code>5 - 3</code></td><td><code>2</code></td></tr>
+      <tr><td><code>*</code></td><td>Multiplication</td><td><code>5 * 3</code></td><td><code>15</code></td></tr>
+      <tr><td><code>/</code></td><td>Division</td><td><code>7 / 2</code></td><td><code>3.5</code></td></tr>
+      <tr><td><code>//</code></td><td>Floor division</td><td><code>7 // 2</code></td><td><code>3</code></td></tr>
+      <tr><td><code>%</code></td><td>Remainder (modulo)</td><td><code>7 % 2</code></td><td><code>1</code></td></tr>
+      <tr><td><code>**</code></td><td>Exponent (power)</td><td><code>2 ** 3</code></td><td><code>8</code></td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">3.arithmetic_operations.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">a</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+<span class="va">b</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"The sum of {a} and {b} is {a+b}"</span>)
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"The difference of {a} and {b} is {a-b}"</span>)
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"The product of {a} and {b} is {a*b}"</span>)
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"The quotient of {a} and {b} is {a/b}"</span>)
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"The floor division of {a} and {b} is {a//b}"</span>)
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"The remainder of {a} and {b} is {a%b}"</span>)
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"The cube of {a} is {a**3}"</span>)</pre>
+    </div>
+
+    <div class="tip"><strong>💡 f-strings</strong><code>f"text {variable}"</code> lets you insert variables directly inside a string. Much cleaner than + concatenation!</div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">4.area_perimeter.py — Square Calculator</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="cm"># Area = side²    Perimeter = 4 × side</span>
+<span class="va">side</span> = <span class="fn">float</span>(<span class="fn">input</span>(<span class="st">"Enter the length of side: "</span>))
+<span class="va">area</span> = <span class="va">side</span> ** <span class="nm">2</span>
+<span class="va">perimeter</span> = <span class="nm">4</span> * <span class="va">side</span>
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"Area of square with side {side} is {area}"</span>)
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"Perimeter of square with side {side} is {perimeter}"</span>)</pre>
+    </div>
+
+    <div class="reallife">
+      <strong>🌍 Real Life</strong>
+      Architects use area and perimeter to calculate materials needed for rooms, tiles and fencing.
+    </div>
+  </section>
+
+  <!-- ============================= SECTION 2 ============================= -->
+  <section class="section" id="s2">
+    <div class="section-header">
+      <div class="section-number c2">2</div>
+      <div class="section-title">Taking Decisions
+        <span>if / elif / else · comparison &amp; logical operators · for loops · break · prime numbers</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">🔀</span> Comparison Operators</h3>
+      <p>These compare two values and return <code>True</code> or <code>False</code>.</p>
+    </div>
+
+    <table>
+      <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td><code>==</code></td><td>Equal to</td><td><code>5 == 5</code> → True</td></tr>
+      <tr><td><code>!=</code></td><td>Not equal</td><td><code>5 != 3</code> → True</td></tr>
+      <tr><td><code>&gt;</code></td><td>Greater than</td><td><code>7 &gt; 4</code> → True</td></tr>
+      <tr><td><code>&lt;</code></td><td>Less than</td><td><code>3 &lt; 6</code> → True</td></tr>
+      <tr><td><code>&gt;=</code></td><td>Greater than or equal</td><td><code>5 &gt;= 5</code> → True</td></tr>
+      <tr><td><code>&lt;=</code></td><td>Less than or equal</td><td><code>3 &lt;= 9</code> → True</td></tr>
+    </table>
+
+    <div class="card">
+      <h3><span class="icon">🔗</span> Logical Operators</h3>
+      <table>
+        <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td><code>and</code></td><td>Both must be True</td><td><code>5&gt;3 and 2&lt;4</code> → True</td></tr>
+        <tr><td><code>or</code></td><td>At least one True</td><td><code>5&gt;10 or 2&lt;4</code> → True</td></tr>
+        <tr><td><code>not</code></td><td>Flip True/False</td><td><code>not False</code> → True</td></tr>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">1.even_or_odd.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">num</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter the number: "</span>))
+<span class="kw">if</span> <span class="va">num</span> % <span class="nm">2</span> == <span class="nm">0</span>:
+    <span class="fn">print</span>(<span class="bi">f</span><span class="st">"{num} is even"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="bi">f</span><span class="st">"{num} is odd"</span>)</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">2.score.py — Grade System (if / elif / else)</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">score</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter the score: "</span>))
+<span class="kw">if</span> <span class="va">score</span> >= <span class="nm">85</span>:
+    <span class="fn">print</span>(<span class="st">"You are an ace player!! Keep it up!"</span>)
+<span class="kw">elif</span> <span class="va">score</span> >= <span class="nm">70</span>:
+    <span class="fn">print</span>(<span class="st">"Good job done but need practice"</span>)
+<span class="kw">elif</span> <span class="va">score</span> >= <span class="nm">50</span>:
+    <span class="fn">print</span>(<span class="st">"Need to put more efforts!!"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"I don't think you like playing game.."</span>)</pre>
+    </div>
+
+    <div class="reallife">
+      <strong>🌍 Real Life</strong>
+      Traffic lights, ATM machines and video game scoring systems all use if/elif/else logic.
+    </div>
+
+    <h2 class="sub">Leap Year (Nested conditions)</h2>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">3a.leap.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">year</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a year: "</span>))
+<span class="kw">if</span> ((<span class="va">year</span> % <span class="nm">4</span> == <span class="nm">0</span>) <span class="kw">and</span> (<span class="va">year</span> % <span class="nm">100</span> != <span class="nm">0</span>)) <span class="kw">or</span> (<span class="va">year</span> % <span class="nm">400</span> == <span class="nm">0</span>):
+    <span class="fn">print</span>(<span class="st">"It is a leap year"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"It is not a leap year"</span>)</pre>
+    </div>
+
+    <h2 class="sub">The for Loop</h2>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">3b.forloop.py — Multiplication Table</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">num</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+<span class="kw">for</span> <span class="va">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">1</span>, <span class="nm">11</span>):
+    <span class="fn">print</span>(<span class="va">i</span> * <span class="va">num</span>)
+
+<span class="cm"># range(10)       → 0 to 9</span>
+<span class="cm"># range(1, 11)    → 1 to 10</span>
+<span class="cm"># range(1, 10, 2) → 1, 3, 5, 7, 9</span></pre>
+    </div>
+
+    <h2 class="sub">Prime Numbers (break &amp; for-else)</h2>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">4.prime.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">number</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+<span class="kw">if</span> <span class="va">number</span> > <span class="nm">1</span>:
+    <span class="kw">for</span> <span class="va">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">2</span>, <span class="va">number</span> // <span class="nm">2</span> + <span class="nm">1</span>):
+        <span class="kw">if</span> <span class="va">number</span> % <span class="va">i</span> == <span class="nm">0</span>:
+            <span class="fn">print</span>(<span class="st">"Not a prime number"</span>)
+            <span class="kw">break</span>
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"This is a prime number"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"Not a prime number"</span>)</pre>
+    </div>
+
+    <div class="tip"><strong>💡 for-else</strong>The <code>else</code> block of a <code>for</code> loop runs only if the loop completed WITHOUT hitting a <code>break</code>.</div>
+
+    <div class="hw"><strong>📝 Homework</strong>Write a Python program to print all numbers divisible by 7 between 1 and 100.</div>
+  </section>
+
+  <!-- ============================= SECTION 3 ============================= -->
+  <section class="section" id="s3">
+    <div class="section-header">
+      <div class="section-number c3">3</div>
+      <div class="section-title">Python Strings
+        <span>operations · slicing · methods · iteration · vowels</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">🔤</span> What is a String?</h3>
+      <p>A string is a sequence of characters enclosed in quotes. Each character has an index starting from 0.</p>
+      <div class="reallife">
+        <strong>🌍 Real Life</strong>
+        Every text message, social media post, email and webpage is stored as strings in a computer.
+      </div>
+    </div>
+
+    <h2 class="sub">String Operations</h2>
+    <table>
+      <tr><th>Operation</th><th>Code</th><th>Result</th></tr>
+      <tr><td>Concatenation</td><td><code>"Roshni" + "Mahajan"</code></td><td><code>"RoshniMahajan"</code></td></tr>
+      <tr><td>Repetition</td><td><code>"Hi" * 3</code></td><td><code>"HiHiHi"</code></td></tr>
+      <tr><td>Indexing</td><td><code>"Roshni"[2]</code></td><td><code>"s"</code></td></tr>
+      <tr><td>Slicing</td><td><code>"Roshni"[1:4]</code></td><td><code>"osh"</code></td></tr>
+      <tr><td>Membership</td><td><code>"R" in "Roshni"</code></td><td><code>True</code></td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">1.string.py — String Operations</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">first_name</span> = <span class="st">"Roshni"</span>
+<span class="va">last_name</span>  = <span class="st">"Mahajan"</span>
+
+<span class="va">full_name</span> = <span class="va">first_name</span> + <span class="va">last_name</span>   <span class="cm"># concatenation</span>
+<span class="va">name2</span>     = <span class="va">first_name</span> * <span class="nm">2</span>          <span class="cm"># repetition</span>
+
+<span class="fn">print</span>(<span class="va">first_name</span>[<span class="nm">2</span>])         <span class="cm"># s  (indexing)</span>
+<span class="fn">print</span>(<span class="va">first_name</span>[<span class="nm">1</span>:<span class="nm">4</span>])       <span class="cm"># osh (slicing)</span>
+<span class="fn">print</span>(<span class="st">"R"</span> <span class="kw">in</span> <span class="va">first_name</span>)      <span class="cm"># True</span>
+
+<span class="cm"># Iterating a string:</span>
+<span class="kw">for</span> <span class="va">i</span> <span class="kw">in</span> <span class="va">first_name</span>:
+    <span class="fn">print</span>(<span class="va">i</span>)
+
+<span class="cm"># Useful methods:</span>
+<span class="va">string</span> = <span class="st">"My name is Roshni"</span>
+<span class="fn">print</span>(<span class="va">string</span>.<span class="fn">count</span>(<span class="st">'a'</span>))           <span class="cm"># count occurrences</span>
+<span class="fn">print</span>(<span class="va">string</span>.<span class="fn">replace</span>(<span class="st">'a'</span>, <span class="st">'v'</span>))  <span class="cm"># replace characters</span></pre>
+    </div>
+
+    <h2 class="sub">Common String Methods</h2>
+    <table>
+      <tr><th>Method</th><th>What it does</th></tr>
+      <tr><td><code>.upper()</code></td><td>Converts to UPPERCASE</td></tr>
+      <tr><td><code>.lower()</code></td><td>Converts to lowercase</td></tr>
+      <tr><td><code>.count(ch)</code></td><td>Counts how many times ch appears</td></tr>
+      <tr><td><code>.replace(old, new)</code></td><td>Replaces all old with new</td></tr>
+      <tr><td><code>.isupper()</code></td><td>Returns True if all uppercase</td></tr>
+      <tr><td><code>.islower()</code></td><td>Returns True if all lowercase</td></tr>
+      <tr><td><code>len(s)</code></td><td>Returns length of the string</td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">3.vowels.py — Count Vowels</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">text</span>   = <span class="fn">input</span>(<span class="st">"Enter the text: "</span>)
+<span class="va">vowels</span> = <span class="st">"aeiouAEIOU"</span>
+<span class="va">count</span>  = <span class="nm">0</span>
+<span class="kw">for</span> <span class="va">x</span> <span class="kw">in</span> <span class="va">text</span>:
+    <span class="kw">if</span> <span class="va">x</span> <span class="kw">in</span> <span class="va">vowels</span>:
+        <span class="va">count</span> += <span class="nm">1</span>
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"Number of vowels = {count}"</span>)</pre>
+    </div>
+  </section>
+
+  <!-- ============================= SECTION 4 ============================= -->
+  <section class="section" id="s4">
+    <div class="section-header">
+      <div class="section-number c4">4</div>
+      <div class="section-title">Menu-Driven Programs
+        <span>while loop · break · calculator · area/perimeter calculator</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">🔄</span> The while Loop</h3>
+      <p>A <code>while</code> loop repeats as long as a condition is True. Using <code>while True</code> with <code>break</code> is perfect for menus that run until the user decides to quit.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">1.while_loop.py — Square/Cube Menu</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">while</span> <span class="kw">True</span>:
+    <span class="fn">print</span>(<span class="st">"""
+    1 --> square
+    2 --> cube
+    3 --> exit"""</span>)
+    <span class="va">ans</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter 1, 2, or 3: "</span>))
+    <span class="kw">if</span> <span class="va">ans</span> == <span class="nm">1</span>:
+        <span class="va">num</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+        <span class="fn">print</span>(<span class="st">"Square:"</span>, <span class="va">num</span>**<span class="nm">2</span>)
+    <span class="kw">elif</span> <span class="va">ans</span> == <span class="nm">2</span>:
+        <span class="va">num</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+        <span class="fn">print</span>(<span class="st">"Cube:"</span>, <span class="va">num</span>**<span class="nm">3</span>)
+    <span class="kw">elif</span> <span class="va">ans</span> == <span class="nm">3</span>:
+        <span class="kw">break</span>
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"Invalid choice!"</span>)</pre>
+    </div>
+
+    <div class="project-badge yellow">🧮 Project — Calculator</div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">2.calculator.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">choice</span> = <span class="st">''</span>
+<span class="kw">while</span> <span class="va">choice</span> != <span class="st">'quit'</span>:
+    <span class="fn">print</span>(<span class="st">"""
+    + -> Addition    - -> Subtraction
+    / -> Division    * -> Multiplication
+    // -> Floor div  ** -> Power   % -> Remainder"""</span>)
+    <span class="va">a</span>  = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"First value: "</span>))
+    <span class="va">b</span>  = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Second value: "</span>))
+    <span class="va">op</span> = <span class="fn">input</span>(<span class="st">"Operation: "</span>)
+    <span class="kw">if</span>   <span class="va">op</span> == <span class="st">'+'</span>:  <span class="fn">print</span>(<span class="bi">f</span><span class="st">"{a} + {b} = {a+b}"</span>)
+    <span class="kw">elif</span> <span class="va">op</span> == <span class="st">'-'</span>:  <span class="fn">print</span>(<span class="bi">f</span><span class="st">"{a} - {b} = {a-b}"</span>)
+    <span class="kw">elif</span> <span class="va">op</span> == <span class="st">'*'</span>:  <span class="fn">print</span>(<span class="bi">f</span><span class="st">"{a} * {b} = {a*b}"</span>)
+    <span class="kw">elif</span> <span class="va">op</span> == <span class="st">'/'</span>:  <span class="fn">print</span>(<span class="bi">f</span><span class="st">"{a} / {b} = {a/b}"</span>)
+    <span class="kw">elif</span> <span class="va">op</span> == <span class="st">'//'</span>: <span class="fn">print</span>(<span class="bi">f</span><span class="st">"{a} // {b} = {a//b}"</span>)
+    <span class="kw">elif</span> <span class="va">op</span> == <span class="st">'**'</span>: <span class="fn">print</span>(<span class="bi">f</span><span class="st">"{a} ** {b} = {a**b}"</span>)
+    <span class="kw">elif</span> <span class="va">op</span> == <span class="st">'%'</span>:  <span class="fn">print</span>(<span class="bi">f</span><span class="st">"{a} % {b} = {a%b}"</span>)
+    <span class="kw">else</span>: <span class="fn">print</span>(<span class="st">"Wrong operator"</span>)
+    <span class="va">choice</span> = <span class="fn">input</span>(<span class="st">"Type quit to stop: "</span>)</pre>
+    </div>
+
+    <div class="project-badge green">📐 Project — Area &amp; Perimeter Calculator</div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">3.area_perimeter_calculator.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">import</span> <span class="va">math</span>
+<span class="va">choice</span> = <span class="st">""</span>
+<span class="kw">while</span> <span class="va">choice</span> != <span class="st">"quit"</span>:
+    <span class="fn">print</span>(<span class="st">"""\n  1->area   2->perimeter   3->Quit"""</span>)
+    <span class="va">op</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter choice: "</span>))
+    <span class="kw">if</span> <span class="va">op</span> == <span class="nm">1</span>:
+        <span class="cm"># shapes: a=square, b=rectangle, c=triangle, d=circle</span>
+        <span class="va">shape</span> = <span class="fn">input</span>(<span class="st">"Shape (a/b/c/d): "</span>)
+        <span class="kw">if</span> <span class="va">shape</span> == <span class="st">"a"</span>:
+            <span class="va">s</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Side: "</span>))
+            <span class="fn">print</span>(<span class="st">"Area ="</span>, <span class="va">s</span>**<span class="nm">2</span>)
+        <span class="kw">elif</span> <span class="va">shape</span> == <span class="st">"b"</span>:
+            <span class="va">l</span>, <span class="va">w</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Length: "</span>)), <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Width: "</span>))
+            <span class="fn">print</span>(<span class="st">"Area ="</span>, <span class="va">l</span>*<span class="va">w</span>)
+        <span class="kw">elif</span> <span class="va">shape</span> == <span class="st">"c"</span>:
+            <span class="va">b</span>, <span class="va">h</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Base: "</span>)), <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Height: "</span>))
+            <span class="fn">print</span>(<span class="st">"Area ="</span>, <span class="nm">0.5</span>*<span class="va">b</span>*<span class="va">h</span>)
+        <span class="kw">elif</span> <span class="va">shape</span> == <span class="st">"d"</span>:
+            <span class="va">r</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Radius: "</span>))
+            <span class="fn">print</span>(<span class="st">"Area ="</span>, <span class="va">math</span>.<span class="va">pi</span> * <span class="va">r</span>**<span class="nm">2</span>)
+    <span class="kw">elif</span> <span class="va">op</span> == <span class="nm">3</span>:
+        <span class="kw">break</span></pre>
+    </div>
+
+    <div class="reallife">
+      <strong>🌍 Real Life</strong>
+      ATMs use menu-driven programs so you can choose to withdraw, check balance, or transfer money.
+    </div>
+  </section>
+
+  <!-- ============================= SECTION 5 ============================= -->
+  <section class="section" id="s5">
+    <div class="section-header">
+      <div class="section-number c5">5</div>
+      <div class="section-title">The Random Module
+        <span>randint · choice · guess-a-number · difficulty modes · dice simulator</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">🎲</span> Importing random</h3>
+      <p>The <code>random</code> module lets us generate random numbers and pick random items.</p>
+      <p><code>random.randint(a, b)</code> → random integer from a to b (inclusive)</p>
+      <p><code>random.choice(list)</code> → randomly picks one item from a list</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">guess_a_number.py — Basic Version</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">import</span> <span class="va">random</span>
+<span class="va">num</span> = <span class="va">random</span>.<span class="fn">randint</span>(<span class="nm">1</span>, <span class="nm">10</span>)
+<span class="kw">while</span> <span class="kw">True</span>:
+    <span class="va">x</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+    <span class="kw">if</span> <span class="va">num</span> == <span class="va">x</span>:
+        <span class="fn">print</span>(<span class="st">"Congratulations! You guessed it right."</span>)
+        <span class="kw">break</span>
+    <span class="kw">elif</span> <span class="va">x</span> > <span class="va">num</span>:
+        <span class="fn">print</span>(<span class="st">"Guess a smaller number."</span>)
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"Guess a larger number."</span>)</pre>
+    </div>
+
+    <div class="project-badge blue">🕹️ Project — Guess a Number with Difficulty Modes</div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">guess_a_number2.py — Easy / Medium / Difficult</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">import</span> <span class="va">random</span>
+<span class="va">mode</span> = <span class="fn">input</span>(<span class="st">"Select mode: E-Easy / M-Medium / D-Difficult: "</span>)
+<span class="kw">if</span>   <span class="va">mode</span> == <span class="st">'E'</span>: <span class="va">num</span> = <span class="va">random</span>.<span class="fn">randint</span>(<span class="nm">1</span>, <span class="nm">10</span>);   <span class="fn">print</span>(<span class="st">"Guess 1–10"</span>)
+<span class="kw">elif</span> <span class="va">mode</span> == <span class="st">'M'</span>: <span class="va">num</span> = <span class="va">random</span>.<span class="fn">randint</span>(<span class="nm">1</span>, <span class="nm">50</span>);   <span class="fn">print</span>(<span class="st">"Guess 1–50"</span>)
+<span class="kw">elif</span> <span class="va">mode</span> == <span class="st">'D'</span>: <span class="va">num</span> = <span class="va">random</span>.<span class="fn">randint</span>(-<span class="nm">100</span>,<span class="nm">100</span>); <span class="fn">print</span>(<span class="st">"Guess -100 to 100"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"Incorrect mode."</span>); <span class="fn">exit</span>()
+
+<span class="kw">while</span> <span class="kw">True</span>:
+    <span class="va">x</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Guess: "</span>))
+    <span class="kw">if</span>   <span class="va">x</span> == <span class="va">num</span>: <span class="fn">print</span>(<span class="st">"Correct!"</span>); <span class="kw">break</span>
+    <span class="kw">elif</span> <span class="va">x</span> > <span class="va">num</span>:  <span class="fn">print</span>(<span class="st">"Too high!"</span>)
+    <span class="kw">else</span>:          <span class="fn">print</span>(<span class="st">"Too low!"</span>)</pre>
+    </div>
+
+    <div class="project-badge purple">🎲 Project — Dice Simulator</div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">rolling_dice_simulation.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">import</span> <span class="va">random</span>
+<span class="kw">while</span> <span class="kw">True</span>:
+    <span class="fn">print</span>(<span class="st">"\n    1->Roll the dice\n    2->Exit"</span>)
+    <span class="va">user</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Choice: "</span>))
+    <span class="kw">if</span>   <span class="va">user</span> == <span class="nm">1</span>: <span class="fn">print</span>(<span class="va">random</span>.<span class="fn">randint</span>(<span class="nm">1</span>, <span class="nm">6</span>))
+    <span class="kw">elif</span> <span class="va">user</span> == <span class="nm">2</span>: <span class="kw">break</span>
+    <span class="kw">else</span>:           <span class="fn">print</span>(<span class="st">"Enter correct choice"</span>)</pre>
+    </div>
+
+    <div class="reallife">
+      <strong>🌍 Real Life</strong>
+      Games like Minecraft use random generation to create terrain, loot drops and mob spawns — all using concepts like <code>randint()</code>.
+    </div>
+  </section>
+
+  <!-- ============================= SECTION 6 ============================= -->
+  <section class="section" id="s6">
+    <div class="section-header">
+      <div class="section-number c6">6</div>
+      <div class="section-title">List Manipulation
+        <span>create · index · slice · append · insert · pop · remove · sort · iteration</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">📋</span> What is a List?</h3>
+      <p>A list is an ordered, changeable collection of items in square brackets <code>[]</code>. It can hold any mix of data types.</p>
+      <div class="reallife">
+        <strong>🌍 Real Life</strong>
+        A shopping cart, a playlist, a student roll-call — all are real-life lists!
+      </div>
+    </div>
+
+    <h2 class="sub">List Operations</h2>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">operations.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">fruits</span>  = [<span class="st">"apple"</span>, <span class="st">"mango"</span>, <span class="st">"grapes"</span>, <span class="st">"orange"</span>, <span class="st">"kiwi"</span>]
+<span class="va">numbers</span> = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>]
+
+<span class="cm"># Concatenation, repetition, membership</span>
+<span class="fn">print</span>(<span class="va">fruits</span> + <span class="va">numbers</span>)        <span class="cm"># join two lists</span>
+<span class="fn">print</span>(<span class="va">fruits</span> * <span class="nm">2</span>)              <span class="cm"># repeat</span>
+<span class="fn">print</span>(<span class="st">"apple"</span> <span class="kw">in</span> <span class="va">fruits</span>)       <span class="cm"># True</span>
+
+<span class="cm"># Useful functions</span>
+<span class="fn">print</span>(<span class="fn">len</span>(<span class="va">fruits</span>))             <span class="cm"># length</span>
+<span class="fn">print</span>(<span class="fn">max</span>(<span class="va">fruits</span>))             <span class="cm"># alphabetically largest</span>
+<span class="fn">print</span>(<span class="fn">min</span>(<span class="va">fruits</span>))             <span class="cm"># alphabetically smallest</span>
+<span class="fn">print</span>(<span class="fn">sum</span>(<span class="va">numbers</span>))            <span class="cm"># 15</span>
+
+<span class="cm"># Sorting</span>
+<span class="va">numbers</span>.<span class="fn">sort</span>()                 <span class="cm"># ascending</span>
+<span class="va">numbers</span>.<span class="fn">sort</span>(<span class="va">reverse</span>=<span class="kw">True</span>)    <span class="cm"># descending</span></pre>
+    </div>
+
+    <h2 class="sub">Adding &amp; Removing Items</h2>
+    <table>
+      <tr><th>Method</th><th>Action</th><th>Notes</th></tr>
+      <tr><td><code>.append(x)</code></td><td>Add x to the end</td><td>Most common way to add</td></tr>
+      <tr><td><code>.insert(i, x)</code></td><td>Add x at index i</td><td>Shifts everything right</td></tr>
+      <tr><td><code>.extend(list2)</code></td><td>Merge another list in</td><td>Adds all items of list2</td></tr>
+      <tr><td><code>.pop(i)</code></td><td>Remove &amp; return item at index i</td><td>pop() removes last item</td></tr>
+      <tr><td><code>.remove(x)</code></td><td>Remove first occurrence of x</td><td>Error if not found</td></tr>
+      <tr><td><code>.clear()</code></td><td>Remove ALL items</td><td>List becomes []</td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">manipulation.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">fruits</span> = [<span class="st">"apple"</span>, <span class="st">"mango"</span>, <span class="st">"grapes"</span>]
+<span class="va">fruits</span>.<span class="fn">append</span>(<span class="st">"cherry"</span>)         <span class="cm"># add to end</span>
+<span class="va">fruits</span>.<span class="fn">insert</span>(<span class="nm">1</span>, <span class="st">"banana"</span>)      <span class="cm"># add at index 1</span>
+<span class="va">fruits</span>.<span class="fn">extend</span>([<span class="st">"kiwi"</span>, <span class="st">"lime"</span>]) <span class="cm"># merge a list</span>
+
+<span class="va">item</span> = <span class="va">fruits</span>.<span class="fn">pop</span>(<span class="nm">1</span>)            <span class="cm"># removes & returns index 1</span>
+<span class="va">fruits</span>.<span class="fn">remove</span>(<span class="st">"apple"</span>)         <span class="cm"># remove by value</span>
+<span class="fn">print</span>(<span class="va">fruits</span>)</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">even_nos.py — User-built list, find even numbers</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">nos</span> = []
+<span class="va">total</span> = <span class="nm">0</span>
+<span class="kw">while</span> <span class="kw">True</span>:
+    <span class="va">addon</span> = <span class="fn">input</span>(<span class="st">"Add a number? (Y/N): "</span>)
+    <span class="kw">if</span> <span class="va">addon</span> == <span class="st">"Y"</span>:
+        <span class="va">nos</span>.<span class="fn">append</span>(<span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Number: "</span>)))
+    <span class="kw">else</span>:
+        <span class="kw">break</span>
+<span class="fn">print</span>(<span class="st">"Even numbers:"</span>)
+<span class="kw">for</span> <span class="va">x</span> <span class="kw">in</span> <span class="va">nos</span>:
+    <span class="kw">if</span> <span class="va">x</span> % <span class="nm">2</span> == <span class="nm">0</span>:
+        <span class="fn">print</span>(<span class="va">x</span>)
+        <span class="va">total</span> += <span class="va">x</span>
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"Sum of even numbers: {total}"</span>)</pre>
+    </div>
+
+    <div class="hw"><strong>📝 Homework</strong>Create a To-Do list program with options: 1) Add task, 2) Remove task, 3) View all tasks, 4) Exit.</div>
+  </section>
+
+  <!-- ============================= SECTION 7 ============================= -->
+  <section class="section" id="s7">
+    <div class="section-header">
+      <div class="section-number c7">7</div>
+      <div class="section-title">Marvel vs DC
+        <span>lists · random.choice() · loops · score tracking</span>
+      </div>
+    </div>
+
+    <div class="project-badge green">🦸 Project — Marvel vs DC Battle</div>
+
+    <div class="card">
+      <h3><span class="icon">⚔️</span> Project Overview</h3>
+      <p>Two teams fight 6 rounds. Each round randomly picks one hero from each team and randomly decides the winner. At the end, the team that won the most rounds is declared champion.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">7.Marvel vs DC/marvelVSdc.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">import</span> <span class="va">random</span>
+
+<span class="va">avengers</span>      = [<span class="st">'Iron Man'</span>, <span class="st">'Captain America'</span>, <span class="st">'Black Widow'</span>,
+                  <span class="st">'Hawkeye'</span>, <span class="st">'Hulk'</span>, <span class="st">'Thor'</span>]
+<span class="va">justice_league</span> = [<span class="st">'Aquaman'</span>, <span class="st">'Batman'</span>, <span class="st">'Flash'</span>,
+                   <span class="st">'Green Lantern'</span>, <span class="st">'Superman'</span>, <span class="st">'Wonder Woman'</span>]
+<span class="va">teams</span> = [<span class="st">'avengers'</span>, <span class="st">'justice_league'</span>]
+
+<span class="fn">print</span>(<span class="st">'------- AVENGERS vs JUSTICE LEAGUE -------'</span>)
+<span class="va">win</span> = []
+<span class="kw">for</span> <span class="va">round</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">6</span>):
+    <span class="fn">print</span>(<span class="bi">f</span><span class="st">"Round {round+1}: {random.choice(avengers)} vs {random.choice(justice_league)}"</span>)
+    <span class="va">winner</span> = <span class="va">random</span>.<span class="fn">choice</span>(<span class="va">teams</span>)
+    <span class="fn">print</span>(<span class="bi">f</span><span class="st">"Winner: {winner}"</span>)
+    <span class="va">win</span>.<span class="fn">append</span>(<span class="va">winner</span>)
+
+<span class="cm"># Overall winner:</span>
+<span class="kw">if</span> <span class="va">win</span>.<span class="fn">count</span>(<span class="st">'avengers'</span>) > <span class="va">win</span>.<span class="fn">count</span>(<span class="st">'justice_league'</span>):
+    <span class="fn">print</span>(<span class="st">"🏆 Avengers win!"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"🏆 Justice League wins!"</span>)</pre>
+    </div>
+
+    <div class="reallife">
+      <strong>🌍 Real Life</strong>
+      Simulations like this are used in sports analytics to predict match outcomes and test team strategies.
+    </div>
+  </section>
+
+  <!-- ============================= SECTION 8 ============================= -->
+  <section class="section" id="s8">
+    <div class="section-header">
+      <div class="section-number c8">8</div>
+      <div class="section-title">Hangman Game
+        <span>lists · strings · random · while loop · guessing game</span>
+      </div>
+    </div>
+
+    <div class="project-badge yellow">🪢 Project — Hangman</div>
+
+    <div class="card">
+      <h3><span class="icon">🎮</span> How it Works</h3>
+      <ul class="concept-list">
+        <li>Computer picks a random word from a list</li>
+        <li>Display dashes (one per letter) instead of the word</li>
+        <li>Player guesses letters one at a time</li>
+        <li>Correct guess → reveal the letter in position</li>
+        <li>Wrong guess → show hangman body part, reduce chances</li>
+        <li>Player wins if they guess all letters before 7 wrong guesses</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">8.Hangman/hangman_final.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">import</span> <span class="va">random</span>
+<span class="cm"># hangman ASCII art stages (indices 0–6)</span>
+<span class="va">hangman1</span> = [<span class="st">r"""
+ +---+
+     |
+     |
+     
+    ===""</span>, <span class="cm">...  # 7 stages total</span>]
+
+<span class="va">words</span> = [<span class="st">"apple"</span>, <span class="st">"orange"</span>, <span class="st">"grapes"</span>, <span class="st">"banana"</span>, <span class="st">"kiwi"</span>]
+<span class="va">word</span>   = <span class="va">random</span>.<span class="fn">choice</span>(<span class="va">words</span>)
+<span class="va">guessedletters</span> = <span class="st">""</span>
+<span class="va">chances</span> = <span class="nm">7</span>
+
+<span class="fn">print</span>(<span class="st">"Guess the Fruit | You have"</span>, <span class="va">chances</span>, <span class="st">"chances"</span>)
+<span class="kw">for</span> <span class="va">i</span> <span class="kw">in</span> <span class="va">word</span>:
+    <span class="fn">print</span>(<span class="st">"-"</span>, <span class="va">end</span>=<span class="st">" "</span>)
+
+<span class="kw">while</span> <span class="va">chances</span> > <span class="nm">0</span>:
+    <span class="va">guess</span> = <span class="fn">input</span>(<span class="st">"Enter a letter: "</span>)
+    <span class="va">guessedletters</span> += <span class="va">guess</span>
+    <span class="va">wrong</span> = <span class="nm">0</span>
+    <span class="kw">for</span> <span class="va">i</span> <span class="kw">in</span> <span class="va">word</span>:
+        <span class="kw">if</span> <span class="va">i</span> <span class="kw">in</span> <span class="va">guessedletters</span>:
+            <span class="fn">print</span>(<span class="va">i</span>, <span class="va">end</span>=<span class="st">" "</span>)
+        <span class="kw">else</span>:
+            <span class="fn">print</span>(<span class="st">"-"</span>, <span class="va">end</span>=<span class="st">" "</span>)
+            <span class="va">wrong</span> = <span class="nm">1</span>
+    <span class="fn">print</span>()
+    <span class="kw">if</span> <span class="va">wrong</span> == <span class="nm">0</span>:
+        <span class="fn">print</span>(<span class="st">"Correct! You won!"</span>); <span class="kw">break</span>
+    <span class="kw">if</span> <span class="va">guess</span> <span class="kw">not</span> <span class="kw">in</span> <span class="va">word</span>:
+        <span class="fn">print</span>(<span class="st">"Wrong guess"</span>)
+        <span class="fn">print</span>(<span class="va">hangman1</span>[<span class="nm">7</span>-<span class="va">chances</span>])
+        <span class="va">chances</span> -= <span class="nm">1</span></pre>
+    </div>
+
+    <div class="hw"><strong>📝 Challenge</strong>Modify the code so that if the user enters the same letter again, it prints "Already guessed!" and does NOT deduct a chance.</div>
+  </section>
+
+  <!-- ============================= SECTION 9 ============================= -->
+  <section class="section" id="s9">
+    <div class="section-header">
+      <div class="section-number c9">9</div>
+      <div class="section-title">Cryptography
+        <span>Caesar cipher · functions · encrypt &amp; decrypt</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">🔐</span> What is Cryptography?</h3>
+      <p><strong>Cryptography</strong> (from Greek: "hidden writing") is the art of converting information into an unreadable format so only the intended recipient can read it.</p>
+      <p><strong>Encrypt</strong> = convert readable text → unreadable code</p>
+      <p><strong>Decrypt</strong> = convert code → readable text back</p>
+      <div class="reallife">
+        <strong>🌍 Real Life</strong>
+        Every time you log in to a website, your password is encrypted. WhatsApp messages use end-to-end encryption.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">🔢</span> Functions</h3>
+      <p>A <strong>function</strong> is a named block of code that performs one specific task. Define it once, call it many times!</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">9.Cryptography/cryptography2.py — Encrypt &amp; Decrypt</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">letters</span> = [<span class="st">'a'</span>,<span class="st">'b'</span>,<span class="st">'c'</span>,<span class="st">'d'</span>,...,<span class="st">'z'</span>]  <span class="cm"># full 26-letter alphabet list</span>
+
+<span class="kw">def</span> <span class="fn">encrypt</span>(<span class="va">text</span>, <span class="va">n</span>):
+    <span class="va">result</span> = []
+    <span class="kw">for</span> <span class="va">x</span> <span class="kw">in</span> <span class="va">text</span>:
+        <span class="kw">if</span> <span class="va">x</span> == <span class="st">" "</span>:
+            <span class="va">result</span>.<span class="fn">append</span>(<span class="st">" "</span>)
+        <span class="kw">else</span>:
+            <span class="va">converted</span> = (<span class="va">letters</span>.<span class="fn">index</span>(<span class="va">x</span>) + <span class="va">n</span>) % <span class="nm">26</span>
+            <span class="va">result</span>.<span class="fn">append</span>(<span class="va">letters</span>[<span class="va">converted</span>])
+    <span class="fn">print</span>(<span class="st">''</span>.<span class="fn">join</span>(<span class="va">result</span>))   <span class="cm"># join() converts list → string</span>
+
+<span class="kw">def</span> <span class="fn">decrypt</span>(<span class="va">text</span>, <span class="va">n</span>):
+    <span class="va">result</span> = []
+    <span class="kw">for</span> <span class="va">i</span> <span class="kw">in</span> <span class="va">text</span>:
+        <span class="kw">if</span> <span class="va">i</span> == <span class="st">" "</span>:
+            <span class="va">result</span>.<span class="fn">append</span>(<span class="st">" "</span>)
+        <span class="kw">else</span>:
+            <span class="va">converted</span> = (<span class="va">letters</span>.<span class="fn">index</span>(<span class="va">i</span>) - <span class="va">n</span>) % <span class="nm">26</span>
+            <span class="va">result</span>.<span class="fn">append</span>(<span class="va">letters</span>[<span class="va">converted</span>])
+    <span class="fn">print</span>(<span class="st">''</span>.<span class="fn">join</span>(<span class="va">result</span>))
+
+<span class="va">playing</span> = <span class="st">''</span>
+<span class="kw">while</span> <span class="va">playing</span> != <span class="st">'quit'</span>:
+    <span class="va">text</span>   = <span class="fn">input</span>(<span class="st">'Enter the text: '</span>).<span class="fn">lower</span>()
+    <span class="va">key</span>    = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter the key: "</span>))
+    <span class="va">choice</span> = <span class="fn">input</span>(<span class="st">'Encrypt or decrypt? '</span>).<span class="fn">lower</span>()
+    <span class="kw">if</span>   <span class="va">choice</span> == <span class="st">'encrypt'</span>: <span class="fn">encrypt</span>(<span class="va">text</span>, <span class="va">key</span>)
+    <span class="kw">elif</span> <span class="va">choice</span> == <span class="st">'decrypt'</span>: <span class="fn">decrypt</span>(<span class="va">text</span>, <span class="va">key</span>)
+    <span class="va">playing</span> = <span class="fn">input</span>(<span class="st">'Enter quit to stop: '</span>)</pre>
+    </div>
+
+    <div class="tip"><strong>💡 How it works</strong>Each letter shifts forward by the key number. "a" with key 3 becomes "d". We use <code>% 26</code> to wrap around from "z" back to "a".</div>
+  </section>
+
+  <!-- ============================= SECTION 10 ============================= -->
+  <section class="section" id="s10">
+    <div class="section-header">
+      <div class="section-number c10">10</div>
+      <div class="section-title">Dictionaries
+        <span>key-value pairs · CRUD operations · methods · iteration · projects</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="icon">📖</span> What is a Dictionary?</h3>
+      <p>A dictionary stores data as <strong>key: value</strong> pairs inside curly braces <code>{}</code>. Keys must be unique; values can repeat.</p>
+      <div class="reallife">
+        <strong>🌍 Real Life</strong>
+        A real dictionary: word (key) → definition (value). A phone contact: name (key) → number (value).
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">1.dictionary.py — Basics</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="cm"># Creating dictionaries</span>
+<span class="va">my_dict</span> = {}                       <span class="cm"># empty</span>
+<span class="va">my_dict</span> = {<span class="nm">1</span>: <span class="st">'apple'</span>, <span class="nm">2</span>: <span class="st">'ball'</span>}  <span class="cm"># integer keys</span>
+<span class="va">my_dict</span> = {<span class="st">'name'</span>: <span class="st">'Jack'</span>, <span class="st">'age'</span>: <span class="nm">26</span>}
+
+<span class="cm"># Accessing values</span>
+<span class="fn">print</span>(<span class="va">my_dict</span>[<span class="st">'name'</span>])      <span class="cm"># Jack (KeyError if missing)</span>
+<span class="fn">print</span>(<span class="va">my_dict</span>.<span class="fn">get</span>(<span class="st">'age'</span>))   <span class="cm"># 26  (None if missing)</span>
+
+<span class="cm"># Updating / Adding</span>
+<span class="va">my_dict</span>[<span class="st">'age'</span>]     = <span class="nm">27</span>       <span class="cm"># update</span>
+<span class="va">my_dict</span>[<span class="st">'address'</span>] = <span class="st">'Mumbai'</span> <span class="cm"># add new key</span>
+
+<span class="cm"># Removing</span>
+<span class="va">my_dict</span>.<span class="fn">pop</span>(<span class="st">'age'</span>)            <span class="cm"># remove key, return value</span>
+<span class="kw">del</span> <span class="va">my_dict</span>[<span class="st">'address'</span>]       <span class="cm"># delete key</span></pre>
+    </div>
+
+    <h2 class="sub">Dictionary Methods</h2>
+    <table>
+      <tr><th>Method</th><th>Returns</th></tr>
+      <tr><td><code>.keys()</code></td><td>All the keys</td></tr>
+      <tr><td><code>.values()</code></td><td>All the values</td></tr>
+      <tr><td><code>.items()</code></td><td>All (key, value) pairs</td></tr>
+      <tr><td><code>.get(key)</code></td><td>Value for key, or None</td></tr>
+      <tr><td><code>.pop(key)</code></td><td>Remove key, return value</td></tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">2.month.py — Months Dictionary</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">months</span> = {<span class="st">"Jan"</span>:<span class="nm">31</span>, <span class="st">"Feb"</span>:<span class="nm">28</span>, <span class="st">"Mar"</span>:<span class="nm">31</span>, <span class="st">"Apr"</span>:<span class="nm">30</span>,
+           <span class="st">"May"</span>:<span class="nm">31</span>, <span class="st">"Jun"</span>:<span class="nm">30</span>, <span class="st">"Jul"</span>:<span class="nm">31</span>, <span class="st">"Aug"</span>:<span class="nm">31</span>,
+           <span class="st">"Sep"</span>:<span class="nm">30</span>, <span class="st">"Oct"</span>:<span class="nm">31</span>, <span class="st">"Nov"</span>:<span class="nm">30</span>, <span class="st">"Dec"</span>:<span class="nm">31</span>}
+<span class="fn">print</span>(<span class="va">months</span>.<span class="fn">keys</span>())
+<span class="fn">print</span>(<span class="va">months</span>.<span class="fn">values</span>())
+<span class="fn">print</span>(<span class="st">"Months with 31 days:"</span>)
+<span class="kw">for</span> <span class="va">name</span>, <span class="va">days</span> <span class="kw">in</span> <span class="va">months</span>.<span class="fn">items</span>():
+    <span class="kw">if</span> <span class="va">days</span> == <span class="nm">31</span>:
+        <span class="fn">print</span>(<span class="va">name</span>)</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">3.characters.py — Character Frequency</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">mystr</span>       = <span class="fn">input</span>(<span class="st">"Enter some text: "</span>)
+<span class="va">str_dict</span>    = {}
+<span class="kw">for</span> <span class="va">x</span> <span class="kw">in</span> <span class="va">mystr</span>:
+    <span class="va">str_dict</span>[<span class="va">x</span>] = <span class="va">mystr</span>.<span class="fn">count</span>(<span class="va">x</span>)
+<span class="fn">print</span>(<span class="va">str_dict</span>)</pre>
+    </div>
+
+    <div class="project-badge purple">🛒 Project — Shopping Cart (uses dictionary)</div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">12.extras/shopping_cart.py — Key concept</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="va">cart</span> = {}     <span class="cm"># item → price</span>
+
+<span class="cm"># Add item:</span>
+<span class="va">item</span>, <span class="va">price</span> = <span class="fn">input</span>(<span class="st">"Item, price (comma-separated): "</span>).<span class="fn">split</span>(<span class="st">","</span>)
+<span class="va">cart</span>[<span class="va">item</span>] = <span class="fn">float</span>(<span class="va">price</span>)
+
+<span class="cm"># View cart:</span>
+<span class="kw">for</span> <span class="va">item</span>, <span class="va">price</span> <span class="kw">in</span> <span class="va">cart</span>.<span class="fn">items</span>():
+    <span class="fn">print</span>(<span class="va">item</span>, <span class="st">"- $"</span>, <span class="va">price</span>)
+
+<span class="cm"># Total cost:</span>
+<span class="va">total</span> = <span class="fn">sum</span>(<span class="va">cart</span>.<span class="fn">values</span>())
+<span class="fn">print</span>(<span class="st">"Total: $"</span>, <span class="va">total</span>)</pre>
+    </div>
+
+    <div class="hw"><strong>📝 Homework</strong>Get a number n from user and display a dictionary where keys are 1 to n and values are their squares.</div>
+  </section>
+
+  <!-- ============================= SECTION 11 ============================= -->
+  <section class="section" id="s11">
+    <div class="section-header">
+      <div class="section-number c11">11</div>
+      <div class="section-title">Rock Paper Scissors
+        <span>random.choice · conditions · score tracking · rounds</span>
+      </div>
+    </div>
+
+    <div class="project-badge blue">✂️ Project — Rock Paper Scissors</div>
+
+    <div class="card">
+      <h3><span class="icon">🎮</span> Game Rules</h3>
+      <ul class="concept-list">
+        <li>Rock crushes Scissors → Rock wins</li>
+        <li>Scissors cuts Paper → Scissors wins</li>
+        <li>Paper covers Rock → Paper wins</li>
+        <li>Same choice → Tie</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">11.Rock Paper Scissors/RPC2.py — Full Version with Score</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">import</span> <span class="va">random</span>
+<span class="va">rps1</span>   = [<span class="st">'Rock'</span>, <span class="st">'Paper'</span>, <span class="st">'Scissor'</span>]
+<span class="va">name</span>   = <span class="fn">input</span>(<span class="st">"Enter your name: "</span>).<span class="fn">upper</span>()
+<span class="va">cscore</span> = <span class="va">uscore</span> = <span class="va">rounds</span> = <span class="nm">0</span>
+
+<span class="kw">while</span> <span class="kw">True</span>:
+    <span class="va">comp</span> = <span class="va">random</span>.<span class="fn">choice</span>(<span class="va">rps1</span>)
+    <span class="va">user</span> = <span class="fn">input</span>(<span class="st">"Rock / Paper / Scissor: "</span>).<span class="fn">title</span>()
+    <span class="fn">print</span>(<span class="st">"Computer chose:"</span>, <span class="va">comp</span>)
+    
+    <span class="kw">if</span> <span class="va">comp</span> == <span class="va">user</span>:
+        <span class="fn">print</span>(<span class="st">"Tie!"</span>)
+    <span class="kw">elif</span> ((<span class="va">comp</span>==<span class="st">'Rock'</span>    <span class="kw">and</span> <span class="va">user</span>==<span class="st">'Scissor'</span>) <span class="kw">or</span>
+          (<span class="va">comp</span>==<span class="st">'Scissor'</span> <span class="kw">and</span> <span class="va">user</span>==<span class="st">'Paper'</span>)   <span class="kw">or</span>
+          (<span class="va">comp</span>==<span class="st">'Paper'</span>   <span class="kw">and</span> <span class="va">user</span>==<span class="st">'Rock'</span>)):
+        <span class="fn">print</span>(<span class="st">"Computer wins!"</span>); <span class="va">cscore</span> += <span class="nm">1</span>
+    <span class="kw">elif</span> ((<span class="va">user</span>==<span class="st">'Rock'</span>    <span class="kw">and</span> <span class="va">comp</span>==<span class="st">'Scissor'</span>) <span class="kw">or</span>
+          (<span class="va">user</span>==<span class="st">'Scissor'</span> <span class="kw">and</span> <span class="va">comp</span>==<span class="st">'Paper'</span>)   <span class="kw">or</span>
+          (<span class="va">user</span>==<span class="st">'Paper'</span>   <span class="kw">and</span> <span class="va">comp</span>==<span class="st">'Rock'</span>)):
+        <span class="fn">print</span>(<span class="st">"You win!"</span>); <span class="va">uscore</span> += <span class="nm">1</span>
+    <span class="kw">else</span>:
+        <span class="fn">print</span>(<span class="st">"Invalid choice"</span>)
+
+    <span class="va">rounds</span> += <span class="nm">1</span>
+    <span class="fn">print</span>(<span class="bi">f</span><span class="st">"\nRound {rounds} | Score: {name}: {uscore} | COMPUTER: {cscore}"</span>)
+    <span class="kw">if</span> <span class="fn">input</span>(<span class="st">"Type quit to exit: "</span>).<span class="fn">lower</span>() == <span class="st">'quit'</span>:
+        <span class="kw">break</span></pre>
+    </div>
+  </section>
+
+  <!-- ============================= SECTION 12 ============================= -->
+  <section class="section" id="s12">
+    <div class="section-header">
+      <div class="section-number c12">12</div>
+      <div class="section-title">Extras &amp; Advanced Projects
+        <span>recursion · patterns · Wordle · password checker · string rotation</span>
+      </div>
+    </div>
+
+    <div class="project-badge pink">🔁 Recursion — Factorial</div>
+
+    <div class="card">
+      <h3><span class="icon">🌀</span> What is Recursion?</h3>
+      <p>A function that calls <em>itself</em> to solve a smaller version of the same problem. Every recursive function needs a <strong>base case</strong> (when to stop) and a <strong>recursive case</strong> (calls itself).</p>
+      <div class="reallife">
+        <strong>🌍 Real Life</strong>
+        Russian nesting dolls. A folder inside a folder inside a folder. A mirror reflecting another mirror.
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">12.extras/Recursion/factorial.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">def</span> <span class="fn">fact</span>(<span class="va">num</span>):
+    <span class="kw">if</span> <span class="va">num</span> == <span class="nm">1</span>:              <span class="cm"># BASE CASE</span>
+        <span class="kw">return</span> <span class="va">num</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="va">num</span> * <span class="fn">fact</span>(<span class="va">num</span> - <span class="nm">1</span>)  <span class="cm"># RECURSIVE CASE</span>
+
+<span class="va">num</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="st">"Enter a number: "</span>))
+<span class="kw">if</span> <span class="va">num</span> < <span class="nm">0</span>:
+    <span class="fn">print</span>(<span class="st">"Factorial of negative numbers cannot be found"</span>)
+<span class="kw">elif</span> <span class="va">num</span> == <span class="nm">0</span>:
+    <span class="fn">print</span>(<span class="st">"Factorial of 0 is 1"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"Factorial of"</span>, <span class="va">num</span>, <span class="st">"is"</span>, <span class="fn">fact</span>(<span class="va">num</span>))</pre>
+    </div>
+
+    <div class="tip"><strong>💡 Example: fact(4)</strong><br>
+    fact(4) = 4 × fact(3) = 4 × 3 × fact(2) = 4 × 3 × 2 × fact(1) = 4 × 3 × 2 × 1 = <strong>24</strong></div>
+
+    <div class="project-badge green">✳️ Project — Star Patterns</div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">12.extras/patterns.py — Nested Loops</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="cm"># Triangle pattern</span>
+<span class="kw">for</span> <span class="va">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>):
+    <span class="kw">for</span> <span class="va">j</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="va">i</span>+<span class="nm">1</span>):
+        <span class="fn">print</span>(<span class="st">"*"</span>, <span class="va">end</span>=<span class="st">""</span>)
+    <span class="fn">print</span>()
+<span class="cm"># Output: *  **  ***  ****  *****</span>
+
+<span class="cm"># Diamond pattern</span>
+<span class="kw">for</span> <span class="va">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>):
+    <span class="fn">print</span>(<span class="st">" "</span>*(<span class="nm">5</span>-<span class="va">i</span>-<span class="nm">1</span>) + <span class="st">"*"</span>*(<span class="nm">2</span>*<span class="va">i</span>+<span class="nm">1</span>))
+<span class="kw">for</span> <span class="va">j</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">5</span>,<span class="nm">0</span>,-<span class="nm">1</span>):
+    <span class="fn">print</span>(<span class="st">" "</span>*(<span class="nm">5</span>-<span class="va">j</span>) + <span class="st">"*"</span>*(<span class="nm">2</span>*<span class="va">j</span>-<span class="nm">1</span>))</pre>
+    </div>
+
+    <div class="project-badge yellow">🟩 Project — Wordle Game</div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">12.extras/wordle.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">import</span> <span class="va">random</span>
+<span class="va">words</span> = [<span class="st">"alive"</span>, <span class="st">"bench"</span>, <span class="st">"begin"</span>, <span class="st">"alarm"</span>]
+<span class="va">word</span>  = <span class="va">random</span>.<span class="fn">choice</span>(<span class="va">words</span>)
+<span class="kw">for</span> <span class="va">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">6</span>):            <span class="cm"># 6 guesses allowed</span>
+    <span class="va">guess</span> = <span class="fn">input</span>(<span class="st">"Enter a 5-letter word: "</span>)
+    <span class="kw">if</span> <span class="va">guess</span> == <span class="va">word</span>:
+        <span class="fn">print</span>(<span class="bi">f</span><span class="st">"\033[42m{word}\033[0m"</span>)   <span class="cm"># green highlight</span>
+        <span class="kw">break</span>
+    <span class="kw">elif</span> <span class="fn">len</span>(<span class="va">guess</span>) < <span class="nm">5</span>: <span class="fn">print</span>(<span class="st">"Too short"</span>)
+    <span class="kw">elif</span> <span class="fn">len</span>(<span class="va">guess</span>) > <span class="nm">5</span>: <span class="fn">print</span>(<span class="st">"Too long"</span>)
+    <span class="kw">else</span>:
+        <span class="kw">for</span> <span class="va">j</span> <span class="kw">in</span> <span class="va">guess</span>:
+            <span class="kw">if</span> <span class="va">j</span> <span class="kw">in</span> <span class="va">word</span>:
+                <span class="kw">if</span> <span class="va">word</span>.<span class="fn">index</span>(<span class="va">j</span>) == <span class="va">guess</span>.<span class="fn">index</span>(<span class="va">j</span>):
+                    <span class="fn">print</span>(<span class="bi">f</span><span class="st">"\033[42m{j}\033[0m"</span>, <span class="va">end</span>=<span class="st">" "</span>)  <span class="cm"># green (right place)</span>
+                <span class="kw">else</span>:
+                    <span class="fn">print</span>(<span class="bi">f</span><span class="st">"\033[43m{j}\033[0m"</span>, <span class="va">end</span>=<span class="st">" "</span>)  <span class="cm"># yellow (wrong place)</span>
+            <span class="kw">else</span>:
+                <span class="fn">print</span>(<span class="va">j</span>, <span class="va">end</span>=<span class="st">" "</span>)                    <span class="cm"># grey (not in word)</span>
+    <span class="fn">print</span>()</pre>
+    </div>
+
+    <div class="tip"><strong>💡 Color Codes</strong><code>\033[42m</code> = green background, <code>\033[43m</code> = yellow background, <code>\033[0m</code> = reset color. Used in terminal output!</div>
+
+    <div class="project-badge blue">🔑 Project — Password Strength Checker</div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">12.extras/password strength checker.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="kw">import</span> <span class="va">string</span>, <span class="va">getpass</span>
+<span class="va">password</span> = <span class="va">getpass</span>.<span class="fn">getpass</span>(<span class="st">'Enter password: '</span>)
+<span class="va">strength</span> = <span class="nm">0</span>
+<span class="va">lower</span> = <span class="va">upper</span> = <span class="va">nums</span> = <span class="va">spaces</span> = <span class="va">special</span> = <span class="nm">0</span>
+
+<span class="kw">for</span> <span class="va">ch</span> <span class="kw">in</span> <span class="va">password</span>:
+    <span class="kw">if</span>   <span class="va">ch</span> <span class="kw">in</span> <span class="va">string</span>.<span class="va">ascii_lowercase</span>: <span class="va">lower</span> += <span class="nm">1</span>
+    <span class="kw">elif</span> <span class="va">ch</span> <span class="kw">in</span> <span class="va">string</span>.<span class="va">ascii_uppercase</span>: <span class="va">upper</span> += <span class="nm">1</span>
+    <span class="kw">elif</span> <span class="va">ch</span> <span class="kw">in</span> <span class="va">string</span>.<span class="va">digits</span>:         <span class="va">nums</span>   += <span class="nm">1</span>
+    <span class="kw">elif</span> <span class="va">ch</span> == <span class="st">' '</span>:                    <span class="va">spaces</span> += <span class="nm">1</span>
+    <span class="kw">else</span>:                              <span class="va">special</span>+= <span class="nm">1</span>
+
+<span class="kw">if</span> <span class="va">lower</span>   >= <span class="nm">1</span>: <span class="va">strength</span> += <span class="nm">1</span>
+<span class="kw">if</span> <span class="va">upper</span>   >= <span class="nm">1</span>: <span class="va">strength</span> += <span class="nm">1</span>
+<span class="kw">if</span> <span class="va">nums</span>    >= <span class="nm">1</span>: <span class="va">strength</span> += <span class="nm">1</span>
+<span class="kw">if</span> <span class="va">spaces</span>  >= <span class="nm">1</span>: <span class="va">strength</span> += <span class="nm">1</span>
+<span class="kw">if</span> <span class="va">special</span> >= <span class="nm">1</span>: <span class="va">strength</span> += <span class="nm">1</span>
+<span class="fn">print</span>(<span class="bi">f</span><span class="st">"Password Score: {strength}/5"</span>)</pre>
+    </div>
+
+    <div class="project-badge pink">🔄 Bonus — String Rotation Check</div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="filename">12.extras/string_rotation.py</span>
+        <div class="dots"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
+      </div>
+      <pre>
+<span class="cm"># "water" and "erwat" are rotations of each other</span>
+<span class="va">str1</span> = <span class="st">"water"</span>
+<span class="va">str2</span> = <span class="st">"erwat"</span>
+<span class="kw">if</span> <span class="fn">len</span>(<span class="va">str1</span>) != <span class="fn">len</span>(<span class="va">str2</span>):
+    <span class="fn">print</span>(<span class="st">"Not rotations of each other"</span>)
+<span class="kw">else</span>:
+    <span class="va">doubled</span> = <span class="va">str1</span> + <span class="va">str1</span>           <span class="cm"># "waterwater"</span>
+    <span class="kw">if</span> <span class="va">str2</span> <span class="kw">in</span> <span class="va">doubled</span>:
+        <span class="fn">print</span>(<span class="st">"They ARE rotations of each other"</span>)</pre>
+    </div>
+
+    <div class="tip"><strong>💡 Clever trick!</strong>If you double a string ("waterwater"), any rotation of that string will appear as a substring of the doubled version.</div>
+
+  </section>
+
+</main>
+</body>
+</html>

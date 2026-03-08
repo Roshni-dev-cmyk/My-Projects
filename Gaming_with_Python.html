@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐢 Gaming with Python – Class Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e17;
+    --sidebar: #1a1830;
+    --sidebar-border: #2e2b50;
+    --card: #1e1c35;
+    --card2: #252240;
+    --accent1: #ff6b6b;
+    --accent2: #ffd166;
+    --accent3: #06d6a0;
+    --accent4: #118ab2;
+    --accent5: #a855f7;
+    --text: #e8e6ff;
+    --muted: #9b98c4;
+    --code-bg: #12111f;
+    --code-border: #2e2b50;
+    --nav-active: #ff6b6b;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ===== SIDEBAR ===== */
+  #sidebar {
+    width: 270px;
+    min-width: 270px;
+    background: var(--sidebar);
+    border-right: 2px solid var(--sidebar-border);
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 30px;
+  }
+
+  #sidebar::-webkit-scrollbar { width: 5px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--sidebar-border); border-radius: 10px; }
+
+  .sidebar-header {
+    padding: 22px 20px 18px;
+    border-bottom: 2px solid var(--sidebar-border);
+    background: linear-gradient(135deg, #1a1830, #0f0e17);
+    position: sticky; top: 0; z-index: 10;
+  }
+
+  .sidebar-header h2 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--accent2);
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+  }
+  .sidebar-header p { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+  .nav-section { padding: 10px 0 0; }
+  .nav-section-title {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 8px 20px 4px;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all 0.18s;
+    cursor: pointer;
+  }
+  .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.04); border-left-color: var(--muted); }
+  .nav-link.active { color: var(--nav-active); background: rgba(255,107,107,0.08); border-left-color: var(--nav-active); }
+  .nav-link .icon { font-size: 1rem; min-width: 20px; text-align: center; }
+  .nav-sub-link {
+    padding-left: 50px;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  /* ===== MAIN ===== */
+  #main {
+    margin-left: 270px;
+    flex: 1;
+    padding: 40px 48px 80px;
+    max-width: 1100px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: linear-gradient(135deg, #1e1c35 0%, #12111f 100%);
+    border: 2px solid var(--sidebar-border);
+    border-radius: 20px;
+    padding: 48px 44px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '🐢';
+    position: absolute;
+    font-size: 10rem;
+    right: 30px; top: 10px;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--accent5), var(--accent4));
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 2.6rem; font-weight: 900; line-height: 1.15; margin-bottom: 12px; }
+  .hero h1 span { color: var(--accent2); }
+  .hero p { font-size: 1.05rem; color: var(--muted); max-width: 560px; line-height: 1.65; }
+
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .pill {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ===== SECTION ===== */
+  .section { margin-bottom: 56px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--sidebar-border);
+  }
+  .section-num {
+    background: linear-gradient(135deg, var(--accent1), #ff9f43);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 900;
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-icon { font-size: 1.8rem; }
+  .section-title { font-size: 1.5rem; font-weight: 900; }
+  .section-subtitle { font-size: 0.9rem; color: var(--muted); margin-top: 2px; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--sidebar-border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ===== CALLOUT BOXES ===== */
+  .callout {
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-left: 4px solid;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .callout-idea { background: rgba(255,209,102,0.08); border-color: var(--accent2); }
+  .callout-tip { background: rgba(6,214,160,0.08); border-color: var(--accent3); }
+  .callout-warn { background: rgba(255,107,107,0.08); border-color: var(--accent1); }
+  .callout-info { background: rgba(17,138,178,0.08); border-color: var(--accent4); }
+  .callout-title { font-weight: 800; margin-bottom: 4px; }
+
+  /* ===== CODE ===== */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin: 16px 0;
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-label {
+    position: absolute;
+    top: 10px; right: 14px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--card2);
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+  pre {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.83rem;
+    line-height: 1.7;
+    color: #cdd6f4;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Syntax colors */
+  .kw { color: #cba6f7; font-weight: 600; }   /* keywords */
+  .fn { color: #89b4fa; }                       /* functions */
+  .str { color: #a6e3a1; }                      /* strings */
+  .num { color: #fab387; }                      /* numbers */
+  .cm { color: #6c7086; font-style: italic; }  /* comments */
+  .var { color: #f38ba8; }                      /* variables */
+
+  /* ===== TABLE ===== */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem; }
+  th {
+    background: var(--card2);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 800;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    color: var(--accent2);
+    border-bottom: 2px solid var(--sidebar-border);
+  }
+  td { padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); line-height: 1.5; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  code { font-family: 'Fira Code', monospace; font-size: 0.82rem; background: var(--code-bg); padding: 2px 7px; border-radius: 5px; color: #cba6f7; }
+
+  /* ===== GRID ===== */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 14px 0; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 14px 0; }
+
+  .mini-card {
+    background: var(--card2);
+    border: 1px solid var(--sidebar-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .mini-card h4 { font-size: 0.85rem; font-weight: 800; margin-bottom: 6px; }
+  .mini-card p, .mini-card li { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .mini-card ul { padding-left: 16px; }
+
+  /* ===== PROJECT BOX ===== */
+  .project-box {
+    border: 2px solid var(--accent5);
+    border-radius: 14px;
+    padding: 24px 26px;
+    margin: 20px 0;
+    background: rgba(168,85,247,0.05);
+  }
+  .project-box h3 { font-size: 1.1rem; font-weight: 900; color: var(--accent5); margin-bottom: 10px; }
+
+  /* ===== STEP LIST ===== */
+  .steps { list-style: none; padding: 0; }
+  .steps li {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .step-num {
+    background: var(--accent4);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 900;
+    min-width: 26px; height: 26px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+
+  p { line-height: 1.7; margin-bottom: 10px; font-size: 0.92rem; }
+  ul, ol { padding-left: 22px; margin-bottom: 10px; }
+  li { line-height: 1.7; font-size: 0.92rem; margin-bottom: 4px; }
+  h3 { font-size: 1.1rem; font-weight: 800; margin: 18px 0 10px; }
+  h4 { font-size: 0.95rem; font-weight: 800; margin: 14px 0 8px; color: var(--accent2); }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 6px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+  }
+  .tag-green { background: rgba(6,214,160,0.15); color: var(--accent3); }
+  .tag-yellow { background: rgba(255,209,102,0.15); color: var(--accent2); }
+  .tag-red { background: rgba(255,107,107,0.15); color: var(--accent1); }
+  .tag-blue { background: rgba(17,138,178,0.15); color: var(--accent4); }
+  .tag-purple { background: rgba(168,85,247,0.15); color: var(--accent5); }
+
+  .divider { height: 2px; background: linear-gradient(90deg, var(--sidebar-border), transparent); margin: 32px 0; border-radius: 2px; }
+
+  @media (max-width: 900px) {
+    #sidebar { transform: translateX(-100%); }
+    #main { margin-left: 0; padding: 24px 20px; }
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <h2>🐢 Gaming with Python</h2>
+    <p>Grade 6 · Turtle Graphics</p>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Introduction</div>
+    <a class="nav-link" href="#intro"><span class="icon">🏠</span> What is Turtle?</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Topics</div>
+    <a class="nav-link" href="#topic1"><span class="icon">🎨</span> 1. Playing with Colors</a>
+    <a class="nav-link nav-sub-link" href="#topic1-code1">↳ Color &amp; Text</a>
+    <a class="nav-link nav-sub-link" href="#topic1-code2">↳ Random Colors</a>
+
+    <a class="nav-link" href="#topic2"><span class="icon">📐</span> 2. Geometric Shapes</a>
+    <a class="nav-link nav-sub-link" href="#topic2-rect">↳ Rectangle</a>
+    <a class="nav-link nav-sub-link" href="#topic2-tri">↳ Triangle</a>
+
+    <a class="nav-link" href="#topic3"><span class="icon">🐼</span> 3. Fun with Objects</a>
+    <a class="nav-link nav-sub-link" href="#topic3-shapes">↳ Shapes with Loops</a>
+    <a class="nav-link nav-sub-link" href="#topic3-panda">↳ Panda Face</a>
+    <a class="nav-link nav-sub-link" href="#topic3-spiral">↳ Spiral</a>
+
+    <a class="nav-link" href="#topic4"><span class="icon">🔷</span> 4. Polygons</a>
+    <a class="nav-link nav-sub-link" href="#topic4-hex">↳ Hexagon</a>
+    <a class="nav-link nav-sub-link" href="#topic4-poly">↳ Any Polygon</a>
+
+    <a class="nav-link" href="#topic5"><span class="icon">⭐</span> 5. Random Stars</a>
+    <a class="nav-link nav-sub-link" href="#topic5-h">↳ Horizontal Stars</a>
+    <a class="nav-link nav-sub-link" href="#topic5-v">↳ Vertical Stars</a>
+    <a class="nav-link nav-sub-link" href="#topic5-r">↳ Twinkling Stars</a>
+
+    <a class="nav-link" href="#topic6"><span class="icon">🧩</span> 6. Functions</a>
+    <a class="nav-link nav-sub-link" href="#topic6-shapes">↳ Shape Functions</a>
+    <a class="nav-link nav-sub-link" href="#topic6-smiley">↳ Smiley Face</a>
+
+    <a class="nav-link" href="#topic7"><span class="icon">🌀</span> 7. Fidget Spinner</a>
+    <a class="nav-link" href="#topic8"><span class="icon">🐍</span> 8. Snake Game</a>
+    <a class="nav-link" href="#topic9"><span class="icon">🏁</span> 9. Turtle Race</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Extras (Bonus)</div>
+    <a class="nav-link" href="#extra1"><span class="icon">🌸</span> Patterns</a>
+    <a class="nav-link" href="#extra2"><span class="icon">🔵</span> Animated Circles</a>
+    <a class="nav-link" href="#extra3a"><span class="icon">🖱️</span> Click Coordinates</a>
+    <a class="nav-link" href="#extra3b"><span class="icon">🍪</span> Cookie Clicker</a>
+    <a class="nav-link" href="#extra4a"><span class="icon">🕐</span> Digital Clock</a>
+    <a class="nav-link" href="#extra4b"><span class="icon">🕰️</span> Analog Clock</a>
+    <a class="nav-link" href="#extra5"><span class="icon">⌨️</span> Typing Speed Test</a>
+    <a class="nav-link" href="#extra6"><span class="icon">⏱️</span> Countdown Timer</a>
+    <a class="nav-link" href="#extra7"><span class="icon">✏️</span> Draw Tool</a>
+    <a class="nav-link" href="#extra8"><span class="icon">❤️</span> Heart</a>
+    <a class="nav-link" href="#extra9"><span class="icon">🧊</span> Snowman</a>
+    <a class="nav-link" href="#extra10"><span class="icon">🎮</span> Pong Game</a>
+    <a class="nav-link" href="#extra11"><span class="icon">🎲</span> Rolling Dice</a>
+    <a class="nav-link" href="#extra12"><span class="icon">🌟</span> Wordle</a>
+    <a class="nav-link" href="#extra13"><span class="icon">🎄</span> Xmas Tree</a>
+    <a class="nav-link" href="#extra14"><span class="icon">🗺️</span> Maze Game</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main id="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Module 2 · Grade 6</div>
+    <h1>Gaming with <span>Python 🐢</span></h1>
+    <p>Learn to draw shapes, build animations, and create real games using Python's Turtle library. From coloring a canvas to building Snake and Pong!</p>
+    <div class="hero-pills">
+      <span class="pill">🎨 Colors &amp; Drawing</span>
+      <span class="pill">📐 Shapes &amp; Geometry</span>
+      <span class="pill">🔁 Loops</span>
+      <span class="pill">🧩 Functions</span>
+      <span class="pill">🎮 Real Games</span>
+      <span class="pill">⌨️ Keyboard Events</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="section" id="intro">
+    <div class="section-header">
+      <span class="section-icon">🏠</span>
+      <div>
+        <div class="section-title">What is Python Turtle?</div>
+        <div class="section-subtitle">Your digital paintbrush</div>
+      </div>
+    </div>
+
+    <p>Imagine you have a tiny turtle 🐢 on your screen holding a pen. You can tell it to move forward, turn left, change colour, and draw all sorts of shapes. That's exactly what Python's <strong>Turtle library</strong> does!</p>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Think of the turtle like an Etch-A-Sketch toy or a robot with a marker attached to its belly. Wherever the robot walks, it draws a line. You control the robot with code!
+    </div>
+
+    <div class="grid2">
+      <div class="mini-card">
+        <h4>🖥️ The Screen</h4>
+        <p>Like a blank piece of paper or a whiteboard. We set its size, title, and background colour.</p>
+      </div>
+      <div class="mini-card">
+        <h4>🐢 The Turtle (Pen)</h4>
+        <p>A small arrow/turtle shape. We move it around and it draws on the screen.</p>
+      </div>
+    </div>
+
+    <h3>Essential Turtle Commands Cheat Sheet</h3>
+    <table>
+      <tr><th>Command</th><th>What it does</th><th>Example</th></tr>
+      <tr><td><code>t.forward(n)</code> / <code>t.fd(n)</code></td><td>Move forward n steps</td><td><code>t.forward(100)</code></td></tr>
+      <tr><td><code>t.backward(n)</code> / <code>t.bk(n)</code></td><td>Move backward n steps</td><td><code>t.bk(50)</code></td></tr>
+      <tr><td><code>t.left(angle)</code> / <code>t.lt()</code></td><td>Turn left by angle degrees</td><td><code>t.left(90)</code></td></tr>
+      <tr><td><code>t.right(angle)</code> / <code>t.rt()</code></td><td>Turn right by angle degrees</td><td><code>t.right(120)</code></td></tr>
+      <tr><td><code>t.penup()</code> / <code>t.pu()</code></td><td>Lift pen (move without drawing)</td><td><code>t.pu()</code></td></tr>
+      <tr><td><code>t.pendown()</code> / <code>t.pd()</code></td><td>Put pen down (start drawing)</td><td><code>t.pd()</code></td></tr>
+      <tr><td><code>t.goto(x, y)</code></td><td>Jump to coordinates (x, y)</td><td><code>t.goto(0, 100)</code></td></tr>
+      <tr><td><code>t.color("red")</code></td><td>Set pen colour</td><td><code>t.color("blue")</code></td></tr>
+      <tr><td><code>t.circle(r)</code></td><td>Draw a circle of radius r</td><td><code>t.circle(50)</code></td></tr>
+      <tr><td><code>t.dot(size)</code></td><td>Draw a filled dot</td><td><code>t.dot(30)</code></td></tr>
+      <tr><td><code>t.pensize(n)</code></td><td>Set thickness of pen</td><td><code>t.pensize(5)</code></td></tr>
+      <tr><td><code>t.speed(n)</code></td><td>Set speed (0=fastest, 1=slowest)</td><td><code>t.speed(0)</code></td></tr>
+      <tr><td><code>t.hideturtle()</code> / <code>t.ht()</code></td><td>Hide the turtle cursor</td><td><code>t.ht()</code></td></tr>
+      <tr><td><code>t.begin_fill()</code></td><td>Start filling a shape with colour</td><td></td></tr>
+      <tr><td><code>t.end_fill()</code></td><td>Stop filling</td><td></td></tr>
+      <tr><td><code>turtle.done()</code></td><td>Keep window open at the end</td><td></td></tr>
+    </table>
+
+    <div class="callout callout-info">
+      <div class="callout-title">📍 Understanding Coordinates</div>
+      The centre of the screen is (0, 0). Going <strong>right</strong> increases X. Going <strong>up</strong> increases Y. Think of it like a map: East = +X, North = +Y.
+    </div>
+  </section>
+
+  <!-- ===== TOPIC 1 ===== -->
+  <section class="section" id="topic1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <span class="section-icon">🎨</span>
+      <div>
+        <div class="section-title">Playing with Colors</div>
+        <div class="section-subtitle">Setting up screens, colours, and writing text</div>
+      </div>
+    </div>
+
+    <p>Before drawing shapes, let's learn how to decorate the canvas! In this topic we learn how to set background colours, choose pen colours, and write text on the screen.</p>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Think of it like decorating a greeting card. First you pick the card colour (background), then you choose a marker colour, then you write your message!
+    </div>
+
+    <h3>Key Concepts</h3>
+    <div class="grid2">
+      <div class="mini-card">
+        <h4>🖼️ Screen Setup</h4>
+        <ul>
+          <li><code>scr.setup(800, 600)</code> → width × height</li>
+          <li><code>scr.title("My Title")</code> → window name</li>
+          <li><code>scr.bgcolor("light pink")</code> → background</li>
+        </ul>
+      </div>
+      <div class="mini-card">
+        <h4>✍️ Writing Text</h4>
+        <ul>
+          <li><code>t.write("Hello", font=("Arial", 20, "bold"))</code></li>
+          <li>Align: <code>"left"</code>, <code>"center"</code>, <code>"right"</code></li>
+          <li>Style: <code>"normal"</code>, <code>"bold"</code>, <code>"italic"</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Colour Formats in Python Turtle</h3>
+    <table>
+      <tr><th>Format</th><th>Example</th><th>Notes</th></tr>
+      <tr><td>Colour name</td><td><code>"red"</code>, <code>"light pink"</code>, <code>"lime"</code></td><td>Easy &amp; readable</td></tr>
+      <tr><td>Hex code</td><td><code>"#ff0000"</code>, <code>"#000080"</code></td><td>Any colour you want</td></tr>
+      <tr><td>RGB (0–255)</td><td><code>t.color(255, 0, 0)</code></td><td>Need <code>turtle.colormode(255)</code></td></tr>
+      <tr><td>RGB (0–1.0)</td><td><code>t.color(1.0, 0, 0)</code></td><td>Need <code>turtle.colormode(1.0)</code></td></tr>
+    </table>
+
+    <!-- Project 1.1 -->
+    <div class="project-box" id="topic1-code1">
+      <h3>📁 Project 1.1 – Color &amp; Text</h3>
+      <p>Setting up a screen with a pink background and writing "Welcome" in navy blue using a fancy font.</p>
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="cm">''' Canvas has default size (700x650), white background, pensize 1 '''</span>
+<span class="kw">import</span> turtle
+
+<span class="cm"># Create a screen and set it up</span>
+scr = turtle.Screen()
+scr.setup(<span class="num">800</span>, <span class="num">600</span>)         <span class="cm"># width=800, height=600</span>
+scr.title(<span class="str">"Playing with colors"</span>)
+scr.bgcolor(<span class="str">'light pink'</span>)     <span class="cm"># background colour</span>
+
+<span class="cm"># Create a turtle (the pen)</span>
+t = turtle.Turtle()
+t.penup()                     <span class="cm"># don't draw while moving</span>
+t.goto(<span class="num">-100</span>, <span class="num">200</span>)            <span class="cm"># move to position</span>
+t.color(<span class="str">'#000080'</span>)           <span class="cm"># hex colour: navy blue</span>
+t.write(<span class="str">"Welcome "</span>, font=(<span class="str">'bradley hand itc'</span>, <span class="num">40</span>, <span class="str">"bold"</span>))
+
+<span class="cm"># Another turtle writing at centre</span>
+t1 = turtle.Turtle()
+t1.pu()
+t1.goto(<span class="num">0</span>, <span class="num">0</span>)
+t1.pd()
+t1.write(<span class="str">"Welcome"</span>, move=<span class="kw">True</span>, align=<span class="str">"center"</span>,
+         font=(<span class="str">"Arial"</span>, <span class="num">8</span>, <span class="str">"normal"</span>))
+
+turtle.done()</pre>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">💡 Fun Fonts to Try!</div>
+      Verdana · Arial · Courier · Calibri · Times New Roman · Ink Free · Blackadder ITC · Bradley Hand ITC
+    </div>
+
+    <!-- Project 1.2 -->
+    <div class="project-box" id="topic1-code2">
+      <h3>📁 Project 1.2 – Random Colors</h3>
+      <p>Using the <code>random</code> module to generate random RGB colour values every time the program runs!</p>
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle, random
+
+<span class="cm"># colormode(255) lets us use numbers 0-255 for colours</span>
+turtle.colormode(<span class="num">255</span>)
+
+s = turtle.Screen()
+s.setup(<span class="num">500</span>, <span class="num">500</span>)
+s.title(<span class="str">"Playing with colors"</span>)
+s.bgcolor(<span class="str">"#E0FFFF"</span>)   <span class="cm"># light cyan using hex code</span>
+
+t = turtle.Turtle()
+
+<span class="cm"># Random colour: pick a random value for Red, Green, Blue</span>
+r = random.randint(<span class="num">0</span>, <span class="num">255</span>)
+g = random.randint(<span class="num">0</span>, <span class="num">255</span>)
+b = random.randint(<span class="num">0</span>, <span class="num">255</span>)
+t.color(r, g, b)           <span class="cm"># set colour using RGB</span>
+
+t.write(<span class="str">'Roshni'</span>, align=<span class="str">"center"</span>, font=(<span class="str">"Ink free"</span>, <span class="num">20</span>, <span class="str">"bold"</span>))
+
+turtle.done()</pre>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-title">🔢 What is RGB?</div>
+      RGB stands for <strong>Red, Green, Blue</strong>. Every colour on a screen is a mix of these three. Like mixing paints — but instead of physical paint, we mix light! RGB(255,0,0) = pure red. RGB(0,255,0) = pure green. RGB(0,0,255) = pure blue. RGB(255,255,255) = white. RGB(0,0,0) = black.
+    </div>
+  </section>
+
+  <!-- ===== TOPIC 2 ===== -->
+  <section class="section" id="topic2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <span class="section-icon">📐</span>
+      <div>
+        <div class="section-title">Geometric Shapes</div>
+        <div class="section-subtitle">Drawing rectangles and triangles with angles</div>
+      </div>
+    </div>
+
+    <p>Now we learn to draw geometric shapes by moving the turtle forward and turning at specific angles. We also learn to <strong>fill shapes with colour</strong>!</p>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Think of yourself drawing on graph paper. To draw a rectangle, you go right → up → left → down. Each corner is a 90° turn. Your pencil traces the outline. <code>begin_fill()</code> is like pouring paint inside the outline!
+    </div>
+
+    <h3>How Turning Works</h3>
+    <table>
+      <tr><th>Shape</th><th>Sides</th><th>Turn Angle</th><th>Why?</th></tr>
+      <tr><td>Square</td><td>4</td><td>90°</td><td>360 ÷ 4 = 90</td></tr>
+      <tr><td>Rectangle</td><td>4</td><td>90°</td><td>360 ÷ 4 = 90</td></tr>
+      <tr><td>Triangle</td><td>3</td><td>120°</td><td>360 ÷ 3 = 120</td></tr>
+      <tr><td>Hexagon</td><td>6</td><td>60°</td><td>360 ÷ 6 = 60</td></tr>
+      <tr><td>Pentagon</td><td>5</td><td>72°</td><td>360 ÷ 5 = 72</td></tr>
+    </table>
+
+    <div id="topic2-rect">
+    <div class="project-box">
+      <h3>📁 Project 2.1 – Rectangle</h3>
+      <p>Draw a filled blue rectangle using <code>begin_fill()</code> and <code>end_fill()</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+
+scr = turtle.Screen()
+scr.title(<span class="str">'Rectangle'</span>)
+t = turtle.Turtle()
+t.color(<span class="str">"blue"</span>)
+
+<span class="cm"># Fill the rectangle with colour</span>
+t.begin_fill()
+t.forward(<span class="num">100</span>)    <span class="cm"># bottom side (width)</span>
+t.left(<span class="num">90</span>)
+t.forward(<span class="num">200</span>)    <span class="cm"># right side (height)</span>
+t.left(<span class="num">90</span>)
+t.forward(<span class="num">100</span>)    <span class="cm"># top side</span>
+t.left(<span class="num">90</span>)
+t.forward(<span class="num">200</span>)    <span class="cm"># left side</span>
+t.left(<span class="num">90</span>)
+t.end_fill()       <span class="cm"># fills the traced area</span>
+
+turtle.done()</pre>
+    </div>
+    </div>
+
+    <div id="topic2-tri">
+    <div class="project-box">
+      <h3>📁 Project 2.2 – Triangle</h3>
+      <p>Draw a triangle with a thick purple outline and a light pink fill on a lime background.</p>
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+
+scr = turtle.Screen()
+scr.title(<span class="str">"Triangle"</span>)
+scr.setup(<span class="num">600</span>, <span class="num">600</span>)
+scr.bgcolor(<span class="str">"Lime"</span>)
+
+t = turtle.Turtle()
+t.pensize(<span class="num">25</span>)            <span class="cm"># thick border</span>
+t.color(<span class="str">"purple"</span>)
+t.fillcolor(<span class="str">'light pink'</span>) <span class="cm"># different fill colour</span>
+
+t.begin_fill()
+t.forward(<span class="num">200</span>)    <span class="cm"># side 1</span>
+t.left(<span class="num">120</span>)       <span class="cm"># turn 120° (360÷3)</span>
+t.forward(<span class="num">200</span>)    <span class="cm"># side 2</span>
+t.left(<span class="num">120</span>)
+t.forward(<span class="num">200</span>)    <span class="cm"># side 3</span>
+t.end_fill()
+
+turtle.done()</pre>
+    </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">🖌️ Tip: color vs fillcolor</div>
+      <code>t.color("purple")</code> sets BOTH the pen and fill to purple.<br>
+      <code>t.fillcolor("light pink")</code> sets a <em>separate</em> fill colour while keeping the pen colour.
+    </div>
+  </section>
+
+  <!-- ===== TOPIC 3 ===== -->
+  <section class="section" id="topic3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <span class="section-icon">🐼</span>
+      <div>
+        <div class="section-title">Fun with Objects</div>
+        <div class="section-subtitle">Loops, dots, and cool compositions</div>
+      </div>
+    </div>
+
+    <p>Instead of writing the same commands over and over, we use <strong>loops</strong> to repeat instructions. We also learn to use <code>dot()</code> and <code>circle()</code> to draw fun pictures!</p>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Imagine a cake-decorating machine. Instead of placing 100 flowers one by one, you program it: "Do this flower action 100 times, moving 2 cm each time." That's a loop!
+    </div>
+
+    <div id="topic3-shapes">
+    <div class="project-box">
+      <h3>📁 Project 3.1 – Multiple Shapes</h3>
+      <p>Draw a rectangle, square, triangle, and circle in different positions using <code>penup</code>/<code>pendown</code> and loops.</p>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+s = turtle.Screen()
+s.title(<span class="str">'Shapes'</span>)
+s.setup(<span class="num">800</span>, <span class="num">600</span>)
+s.bgcolor(<span class="str">"lightgrey"</span>)
+t = turtle.Turtle()
+
+<span class="cm"># Rectangle at centre (default start)</span>
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">2</span>):
+    t.fd(<span class="num">50</span>)
+    t.right(<span class="num">90</span>)
+    t.fd(<span class="num">100</span>)
+    t.right(<span class="num">90</span>)
+
+<span class="cm"># Move to top-left, draw a square</span>
+t.pu()
+t.goto(<span class="num">-300</span>, <span class="num">200</span>)
+t.pd()
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">4</span>):
+    t.fd(<span class="num">100</span>)
+    t.right(<span class="num">90</span>)
+
+<span class="cm"># Move to bottom-left, draw a triangle</span>
+t.pu()
+t.goto(<span class="num">-300</span>, <span class="num">-200</span>)
+t.pd()
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">3</span>):
+    t.fd(<span class="num">100</span>)
+    t.right(<span class="num">120</span>)
+
+<span class="cm"># Move to bottom-right, draw a circle</span>
+t.pu()
+t.goto(<span class="num">300</span>, <span class="num">-200</span>)
+t.pd()
+t.circle(<span class="num">50</span>)
+
+turtle.done()</pre>
+    </div>
+    </div>
+
+    <div id="topic3-panda">
+    <div class="project-box">
+      <h3>📁 Project 3.2 – Panda Face 🐼</h3>
+      <p>Build a cute panda face using only <code>dot()</code> and <code>circle()</code>. Learn how <code>t.dot(size, color)</code> works!</p>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+scr = turtle.Screen()
+scr.setup(<span class="num">800</span>, <span class="num">500</span>)
+scr.title(<span class="str">"Panda"</span>)
+t = turtle.Turtle()
+
+<span class="cm"># Black ears (big dots)</span>
+t.pu(); t.goto(<span class="num">-180</span>, <span class="num">120</span>); t.pd()
+t.dot(<span class="num">150</span>)           <span class="cm"># default black</span>
+t.pu(); t.goto(<span class="num">180</span>, <span class="num">120</span>); t.pd()
+t.dot(<span class="num">150</span>)
+
+<span class="cm"># White face (circle)</span>
+t.pu(); t.goto(<span class="num">0</span>, <span class="num">-200</span>); t.pd()
+t.fillcolor(<span class="str">"white"</span>)
+t.begin_fill()
+t.circle(<span class="num">200</span>)
+t.end_fill()
+
+<span class="cm"># Black eyes (big)</span>
+t.pu(); t.goto(<span class="num">-100</span>, <span class="num">20</span>); t.pd()
+t.dot(<span class="num">100</span>)
+t.pu(); t.goto(<span class="num">100</span>, <span class="num">20</span>); t.pd()
+t.dot(<span class="num">100</span>)
+
+<span class="cm"># White shine on eyes</span>
+t.pu(); t.goto(<span class="num">-100</span>, <span class="num">20</span>); t.pd()
+t.dot(<span class="num">30</span>, <span class="str">"white"</span>)
+t.pu(); t.goto(<span class="num">100</span>, <span class="num">20</span>); t.pd()
+t.dot(<span class="num">30</span>, <span class="str">"white"</span>)
+
+<span class="cm"># Nose</span>
+t.pu(); t.goto(<span class="num">0</span>, <span class="num">-80</span>); t.pd()
+t.dot(<span class="num">50</span>)
+
+<span class="cm"># Draw smile using two semicurves</span>
+t.goto(<span class="num">0</span>, <span class="num">-100</span>)
+t.rt(<span class="num">90</span>)
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">180</span>):   <span class="cm"># upper curve</span>
+    t.fd(<span class="num">1</span>); t.lt(<span class="num">1</span>)
+
+t.pu(); t.goto(<span class="num">0</span>, <span class="num">-100</span>); t.rt(<span class="num">180</span>); t.pd()
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">180</span>):   <span class="cm"># lower curve</span>
+    t.fd(<span class="num">1</span>); t.rt(<span class="num">1</span>)
+
+t.ht()
+scr.ontimer(scr.bye, <span class="num">3000</span>)  <span class="cm"># auto-close after 3 seconds</span>
+turtle.done()</pre>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-title">📌 How dot() works</div>
+      <code>t.dot(size, color)</code> — Both size and color are optional.<br>
+      If size is missing → draws based on pensize.<br>
+      If color is missing → uses the current colour.
+    </div>
+    </div>
+
+    <div id="topic3-spiral">
+    <div class="project-box">
+      <h3>📁 Project 3.3 – Square / Triangle Spiral</h3>
+      <p>Draw a growing spiral by increasing the step size in each loop iteration. A beautiful pattern using just a loop and a variable!</p>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+s = turtle.Screen()
+s.title(<span class="str">"Square Spiral"</span>)
+s.bgcolor(<span class="str">"light blue"</span>)
+s.setup(<span class="num">600</span>, <span class="num">600</span>)
+t = turtle.Turtle()
+
+length = <span class="num">10</span>
+angle = <span class="num">90</span>
+
+<span class="cm"># Triangle Spiral (each time we go further!)</span>
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">10</span>):
+    t.fd(length)
+    t.right(<span class="num">120</span>)
+    length += <span class="num">10</span>   <span class="cm"># increase length each time</span>
+
+<span class="cm"># To make a SQUARE spiral: change 120 to 90</span>
+<span class="cm"># To make a CIRCLE spiral: use t.circle(i, 45)</span>
+
+turtle.done()</pre>
+    </div>
+    </div>
+  </section>
+
+  <!-- ===== TOPIC 4 ===== -->
+  <section class="section" id="topic4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <span class="section-icon">🔷</span>
+      <div>
+        <div class="section-title">Polygons</div>
+        <div class="section-subtitle">Drawing any polygon using the formula: 360 ÷ sides</div>
+      </div>
+    </div>
+
+    <p>A <strong>polygon</strong> is any shape with straight sides. The magic formula is:<br>
+    <strong>Turn Angle = 360 ÷ number of sides</strong></p>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Imagine you're marching in a circle. If you need to complete the circle in 6 equal turns (hexagon), each turn is 360 ÷ 6 = 60°. If you do it in 3 turns (triangle), each is 120°. Same idea works for any polygon!
+    </div>
+
+    <div id="topic4-hex">
+    <div class="project-box">
+      <h3>📁 Project 4.1 – Hexagon</h3>
+      <p>Draw a hexagon (6 sides) and label each side number.</p>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+s = turtle.Screen()
+s.title(<span class="str">'Hexagon'</span>)
+s.setup(<span class="num">800</span>, <span class="num">600</span>)
+s.bgcolor(<span class="str">"lightgrey"</span>)
+t = turtle.Turtle()
+
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">6</span>):          <span class="cm"># 6 sides</span>
+    t.fd(<span class="num">100</span>)
+    t.write(i + <span class="num">1</span>)         <span class="cm"># label side number</span>
+    t.right(<span class="num">60</span>)             <span class="cm"># 360 ÷ 6 = 60°</span>
+
+turtle.done()</pre>
+    </div>
+    </div>
+
+    <div id="topic4-poly">
+    <div class="project-box">
+      <h3>📁 Project 4.2 – Any Polygon (User Input)</h3>
+      <p>Ask the user how many sides they want using <code>numinput()</code> and what colour using <code>textinput()</code>, then draw that polygon!</p>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+s = turtle.Screen()
+s.title(<span class="str">'Polygon'</span>)
+s.setup(<span class="num">800</span>, <span class="num">600</span>)
+s.bgcolor(<span class="str">"lightgrey"</span>)
+t = turtle.Turtle()
+
+t.penup()
+t.goto(<span class="num">0</span>, <span class="num">250</span>)
+t.pendown()
+
+<span class="cm"># Ask user: how many sides?</span>
+inp = int(s.numinput(<span class="str">"Sides"</span>, <span class="str">"How many sides?"</span>))
+
+<span class="cm"># Ask user: what colour?</span>
+color = s.textinput(<span class="str">"Color"</span>, <span class="str">"Enter the color: "</span>)
+
+t.fillcolor(color)
+t.begin_fill()
+<span class="kw">for</span> i <span class="kw">in</span> range(inp):
+    t.fd(<span class="num">100</span>)
+    t.write(i + <span class="num">1</span>)
+    t.right(<span class="num">360</span> / inp)    <span class="cm"># magic formula!</span>
+t.end_fill()
+
+turtle.done()</pre>
+    </div>
+
+    <h3>Input Functions</h3>
+    <table>
+      <tr><th>Function</th><th>What it does</th><th>Returns</th></tr>
+      <tr><td><code>s.numinput("title","prompt")</code></td><td>Popup asking for a number</td><td>float (convert with <code>int()</code>)</td></tr>
+      <tr><td><code>s.textinput("title","prompt")</code></td><td>Popup asking for text</td><td>string</td></tr>
+    </table>
+    </div>
+  </section>
+
+  <!-- ===== TOPIC 5 ===== -->
+  <section class="section" id="topic5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <span class="section-icon">⭐</span>
+      <div>
+        <div class="section-title">Random Stars</div>
+        <div class="section-subtitle">Nested loops, setheading, and random placement</div>
+      </div>
+    </div>
+
+    <p>Stars are drawn using a neat trick: move forward and turn by 144° five times! We'll draw rows and columns of stars, then scatter them randomly using the <code>random</code> module.</p>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Think of printing stickers on a sheet. First row (horizontal), then column by column (vertical), then you scatter them randomly like confetti at a party! Each "sticker" = one star.
+    </div>
+
+    <div class="card">
+      <div class="card-title">⭐ How to Draw One Star</div>
+      <p>A 5-pointed star needs <strong>5 forward moves</strong> with a <strong>144° right turn</strong> after each.</p>
+      <div class="code-block">
+        <span class="code-label">Star Logic</span>
+<pre><span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">5</span>):
+    t.forward(<span class="num">50</span>)
+    t.right(<span class="num">144</span>)   <span class="cm"># 144° gives a 5-pointed star</span></pre>
+      </div>
+    </div>
+
+    <div id="topic5-h">
+    <div class="project-box">
+      <h3>📁 Project 5.1 – Horizontal Stars</h3>
+      <p>Draw 8 stars in a row using a <strong>nested loop</strong>: outer loop = number of stars, inner loop = drawing one star.</p>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+s = turtle.Screen()
+s.title(<span class="str">"Horizontal stars"</span>)
+s.bgcolor(<span class="str">"lavender"</span>)
+s.setup(<span class="num">500</span>, <span class="num">500</span>)
+t = turtle.Turtle()
+t.pu()
+t.goto(<span class="num">-200</span>, <span class="num">0</span>)
+t.pd()
+
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">8</span>):          <span class="cm"># 8 stars in a row</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">5</span>):      <span class="cm"># draw one star</span>
+        t.forward(<span class="num">50</span>)
+        t.right(<span class="num">144</span>)
+    t.forward(<span class="num">50</span>)           <span class="cm"># move to next star position</span>
+
+turtle.done()</pre>
+    </div>
+    </div>
+
+    <div id="topic5-v">
+    <div class="project-box">
+      <h3>📁 Project 5.2 – Vertical Stars</h3>
+      <p>Draw 10 stars going downward. After each star, we use <code>setheading(270)</code> to face down, move, then reset to face right with <code>seth(0)</code>.</p>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+s = turtle.Screen()
+s.setup(<span class="num">600</span>, <span class="num">600</span>)
+t = turtle.Turtle()
+t.pu(); t.goto(<span class="num">0</span>, <span class="num">250</span>); t.pd()
+t.speed(<span class="num">0</span>)
+
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">10</span>):          <span class="cm"># 10 stars going down</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">5</span>):      <span class="cm"># draw one star</span>
+        t.forward(<span class="num">50</span>)
+        t.right(<span class="num">144</span>)
+    t.setheading(<span class="num">270</span>)       <span class="cm"># face DOWN (south)</span>
+    t.pu()
+    t.fd(<span class="num">50</span>)
+    t.pd()
+    t.setheading(<span class="num">0</span>)         <span class="cm"># face RIGHT (east) again</span>
+
+turtle.done()</pre>
+    </div>
+
+    <h4>setheading() Compass Directions</h4>
+    <table>
+      <tr><th>Angle</th><th>Direction</th></tr>
+      <tr><td>0°</td><td>East (right) ➡️</td></tr>
+      <tr><td>90°</td><td>North (up) ⬆️</td></tr>
+      <tr><td>180°</td><td>West (left) ⬅️</td></tr>
+      <tr><td>270°</td><td>South (down) ⬇️</td></tr>
+    </table>
+    </div>
+
+    <div id="topic5-r">
+    <div class="project-box">
+      <h3>📁 Project 5.3 – Twinkling Stars (Random)</h3>
+      <p>Scatter 50 colourful filled stars at random positions using <code>randint</code> for position and <code>choice</code> for colour!</p>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+<span class="kw">from</span> random <span class="kw">import</span> randint, choice
+
+colors = [<span class="str">"red"</span>, <span class="str">"blue"</span>, <span class="str">"orange"</span>, <span class="str">"pink"</span>,
+          <span class="str">"indigo"</span>, <span class="str">"violet"</span>, <span class="str">"green"</span>, <span class="str">"yellow"</span>]
+
+s = turtle.Screen()
+s.title(<span class="str">'Twinkling Stars'</span>)
+s.setup(<span class="num">800</span>, <span class="num">600</span>)
+s.bgcolor(<span class="str">"lightgrey"</span>)
+t = turtle.Turtle()
+
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">50</span>):            <span class="cm"># 50 random stars</span>
+    t.color(choice(colors))   <span class="cm"># random colour from list</span>
+    x = randint(<span class="num">-400</span>, <span class="num">400</span>)    <span class="cm"># random x position</span>
+    y = randint(<span class="num">-300</span>, <span class="num">300</span>)    <span class="cm"># random y position</span>
+    turns = <span class="num">6</span>
+    t.begin_fill()
+    <span class="kw">while</span> turns > <span class="num">0</span>:
+        t.forward(<span class="num">25</span>)
+        t.left(<span class="num">145</span>)
+        turns -= <span class="num">1</span>
+    t.end_fill()
+    t.penup()
+    t.goto(x, y)
+    t.pendown()
+
+s.exitonclick()</pre>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-title">🎲 Random Functions</div>
+      <code>random.randint(a, b)</code> → Returns a random whole number between a and b (inclusive).<br>
+      <code>random.choice(list)</code> → Picks a random item from a list.
+    </div>
+    </div>
+  </section>
+
+  <!-- ===== TOPIC 6 ===== -->
+  <section class="section" id="topic6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <span class="section-icon">🧩</span>
+      <div>
+        <div class="section-title">Functions</div>
+        <div class="section-subtitle">Reusable blocks of code with def</div>
+      </div>
+    </div>
+
+    <p>A <strong>function</strong> is a named block of code that you can run (call) whenever you need it. Instead of writing the same code 5 times, you write it once inside a function and call it 5 times!</p>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Think of a function like a recipe card 📋. The recipe for "make tea" is written once. Whenever you want tea, you just follow that one recipe card instead of writing out all the steps again. In Python, <code>def make_tea():</code> is your recipe card!
+    </div>
+
+    <div class="code-block">
+      <span class="code-label">Function Syntax</span>
+<pre><span class="kw">def</span> <span class="fn">function_name</span>(parameter1, parameter2):
+    <span class="cm"># code goes here</span>
+    <span class="cm"># this is the function BODY</span>
+
+<span class="cm"># Calling the function:</span>
+<span class="fn">function_name</span>(value1, value2)</pre>
+    </div>
+
+    <div id="topic6-shapes">
+    <div class="project-box">
+      <h3>📁 Project 6.1 – Shape Functions</h3>
+      <p>Define separate functions for rectangle, square, triangle, and circle — then call them to draw shapes anywhere on screen!</p>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+s = turtle.Screen()
+s.setup(<span class="num">800</span>, <span class="num">600</span>)
+t = turtle.Turtle()
+
+<span class="cm"># Function to draw a rectangle (l=length, b=breadth)</span>
+<span class="kw">def</span> <span class="fn">drawRect</span>(l, b):
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">2</span>):
+        t.fd(l)
+        t.right(<span class="num">90</span>)
+        t.fd(b)
+        t.right(<span class="num">90</span>)
+
+<span class="cm"># Function to draw a square</span>
+<span class="kw">def</span> <span class="fn">drawSquare</span>(s):
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">4</span>):
+        t.fd(s)
+        t.right(<span class="num">90</span>)
+
+<span class="cm"># Function to draw a triangle</span>
+<span class="kw">def</span> <span class="fn">drawTriangle</span>(s):
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">3</span>):
+        t.fd(s)
+        t.right(<span class="num">120</span>)
+
+<span class="cm"># Now CALL the functions!</span>
+<span class="fn">drawRect</span>(<span class="num">50</span>, <span class="num">100</span>)
+
+t.pu(); t.goto(<span class="num">-300</span>, <span class="num">200</span>); t.pd()
+<span class="fn">drawSquare</span>(<span class="num">100</span>)
+
+t.pu(); t.goto(<span class="num">-300</span>, <span class="num">-200</span>); t.pd()
+<span class="fn">drawTriangle</span>(<span class="num">80</span>)
+
+t.pu(); t.goto(<span class="num">300</span>, <span class="num">-200</span>); t.pd()
+t.circle(<span class="num">50</span>)
+
+turtle.done()</pre>
+    </div>
+    </div>
+
+    <div id="topic6-smiley">
+    <div class="project-box">
+      <h3>📁 Project 6.2 – Smiley Face with Functions 😊</h3>
+      <p>Notice in Project 3.2 (Panda), we moved the turtle to many positions to draw dots. We kept repeating <code>pu, goto, pd, dot</code>. Let's create a function <code>c_shape()</code> to avoid repetition!</p>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+scr = turtle.Screen()
+scr.setup(<span class="num">800</span>, <span class="num">500</span>)
+scr.title(<span class="str">"Smiley"</span>)
+t = turtle.Turtle()
+
+<span class="cm"># Reusable function to draw a dot at any position!</span>
+<span class="kw">def</span> <span class="fn">c_shape</span>(x, y, size, color):
+    t.pu()
+    t.goto(x, y)
+    t.pd()
+    t.dot(size, color)
+
+<span class="cm"># Ears</span>
+<span class="fn">c_shape</span>(<span class="num">-180</span>, <span class="num">180</span>, <span class="num">140</span>, <span class="str">'black'</span>)
+<span class="fn">c_shape</span>(<span class="num">180</span>, <span class="num">180</span>, <span class="num">140</span>, <span class="str">'black'</span>)
+
+<span class="cm"># White face</span>
+t.pu(); t.goto(<span class="num">0</span>, <span class="num">-200</span>); t.pd()
+t.fillcolor(<span class="str">"white"</span>)
+t.begin_fill()
+t.circle(<span class="num">200</span>)
+t.end_fill()
+
+<span class="cm"># Eyes (black outer + white inner)</span>
+<span class="fn">c_shape</span>(<span class="num">-100</span>, <span class="num">20</span>, <span class="num">70</span>, <span class="str">'black'</span>)
+<span class="fn">c_shape</span>(<span class="num">100</span>, <span class="num">20</span>, <span class="num">70</span>, <span class="str">'black'</span>)
+<span class="fn">c_shape</span>(<span class="num">-100</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="str">'white'</span>)
+<span class="fn">c_shape</span>(<span class="num">100</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="str">'white'</span>)
+
+<span class="cm"># Nose</span>
+<span class="fn">c_shape</span>(<span class="num">0</span>, <span class="num">-80</span>, <span class="num">50</span>, <span class="str">'black'</span>)
+
+<span class="cm"># Smile (two semicurves)</span>
+t.goto(<span class="num">0</span>, <span class="num">-100</span>)
+t.rt(<span class="num">90</span>)
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">180</span>):
+    t.fd(<span class="num">1</span>); t.lt(<span class="num">1</span>)
+
+t.pu(); t.goto(<span class="num">0</span>, <span class="num">-100</span>); t.rt(<span class="num">180</span>); t.pd()
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">180</span>):
+    t.fd(<span class="num">1</span>); t.rt(<span class="num">1</span>)
+
+t.ht()
+turtle.done()</pre>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-title">✅ Why Functions are Awesome</div>
+      Without the <code>c_shape()</code> function, we'd write <code>pu → goto → pd → dot</code> seven times = 28 lines! With the function, calling it 7 times = 7 lines. Less code, less mistakes, easier to read!
+    </div>
+    </div>
+  </section>
+
+  <!-- ===== TOPIC 7 ===== -->
+  <section class="section" id="topic7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <span class="section-icon">🌀</span>
+      <div>
+        <div class="section-title">Fidget Spinner</div>
+        <div class="section-subtitle">Keyboard events, global variables, animation timer</div>
+      </div>
+    </div>
+
+    <p>This is our first interactive animation! Press SPACE to spin. The spinner gradually slows down like a real fidget spinner. We learn <strong>key binding</strong>, <strong>global variables</strong>, and <strong>timers</strong>.</p>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Like a real fidget spinner toy: you flick it (press space = flick), it spins fast, then slowly stops. In code, we add to speed when you press space and subtract a little every frame until it reaches zero!
+    </div>
+
+    <h3>New Concepts</h3>
+    <div class="grid3">
+      <div class="mini-card">
+        <h4>⌨️ Key Binding</h4>
+        <p><code>scr.listen()</code> tells Python to watch for key presses.<br><code>scr.onkeypress(func, "space")</code> calls <code>func</code> when space is pressed.</p>
+      </div>
+      <div class="mini-card">
+        <h4>🌐 Global Variables</h4>
+        <p>A variable created outside any function. To change it inside a function, you must write <code>global variable_name</code> first.</p>
+      </div>
+      <div class="mini-card">
+        <h4>⏱️ Timer</h4>
+        <p><code>scr.ontimer(func, ms)</code> calls <code>func</code> after <code>ms</code> milliseconds. This creates smooth animation!</p>
+      </div>
+    </div>
+
+    <div class="project-box">
+      <h3>📁 Project 7 – Fidget Spinner</h3>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+
+scr = turtle.Screen()
+scr.bgcolor(<span class="str">"pink"</span>)
+scr.title(<span class="str">"Fidget Spinner"</span>)
+scr.setup(<span class="num">800</span>, <span class="num">600</span>)
+
+t = turtle.Turtle()
+t.pensize(<span class="num">20</span>)
+t.color(<span class="str">"yellow"</span>)
+
+<span class="kw">def</span> <span class="fn">spinner</span>():
+    t.clear()             <span class="cm"># erase previous frame</span>
+    angle = turn / <span class="num">10</span>
+    t.right(angle)
+    <span class="cm"># Draw 3 blades</span>
+    t.forward(<span class="num">100</span>); t.dot(<span class="num">120</span>, <span class="str">"red"</span>);   t.backward(<span class="num">100</span>); t.right(<span class="num">120</span>)
+    t.forward(<span class="num">100</span>); t.dot(<span class="num">120</span>, <span class="str">"blue"</span>);  t.backward(<span class="num">100</span>); t.right(<span class="num">120</span>)
+    t.forward(<span class="num">100</span>); t.dot(<span class="num">120</span>, <span class="str">"green"</span>); t.backward(<span class="num">100</span>); t.right(<span class="num">120</span>)
+    scr.update()
+
+<span class="kw">def</span> <span class="fn">flick</span>():
+    <span class="kw">global</span> turn
+    turn += <span class="num">10</span>          <span class="cm"># pressing space adds spin speed</span>
+
+<span class="kw">def</span> <span class="fn">animate</span>():
+    <span class="kw">global</span> turn
+    <span class="kw">if</span> turn > <span class="num">0</span>:
+        turn -= <span class="num">1</span>       <span class="cm"># slowly reduce speed (friction)</span>
+    <span class="fn">spinner</span>()
+    scr.ontimer(<span class="fn">animate</span>, <span class="num">20</span>)  <span class="cm"># call animate every 20ms</span>
+
+turn = <span class="num">0</span>                    <span class="cm"># global variable</span>
+scr.tracer(<span class="kw">False</span>)           <span class="cm"># hide drawing steps for speed</span>
+scr.listen()
+scr.onkeypress(<span class="fn">flick</span>, <span class="str">"space"</span>)
+<span class="fn">animate</span>()
+turtle.done()</pre>
+    </div>
+
+    <h4>Common Key Names for onkey()</h4>
+    <div class="grid2">
+      <div>
+        <table>
+          <tr><th>Key</th><th>String to use</th></tr>
+          <tr><td>Arrow Up</td><td><code>"Up"</code></td></tr>
+          <tr><td>Arrow Down</td><td><code>"Down"</code></td></tr>
+          <tr><td>Arrow Left</td><td><code>"Left"</code></td></tr>
+          <tr><td>Arrow Right</td><td><code>"Right"</code></td></tr>
+          <tr><td>Spacebar</td><td><code>"space"</code></td></tr>
+          <tr><td>Enter</td><td><code>"Return"</code></td></tr>
+        </table>
+      </div>
+      <div>
+        <table>
+          <tr><th>Key</th><th>String to use</th></tr>
+          <tr><td>Escape</td><td><code>"Escape"</code></td></tr>
+          <tr><td>Letter a</td><td><code>"a"</code></td></tr>
+          <tr><td>Letter w</td><td><code>"w"</code></td></tr>
+          <tr><td>Number 1</td><td><code>"1"</code></td></tr>
+          <tr><td>Backspace</td><td><code>"BackSpace"</code></td></tr>
+          <tr><td>Tab</td><td><code>"Tab"</code></td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TOPIC 8 ===== -->
+  <section class="section" id="topic8">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <span class="section-icon">🐍</span>
+      <div>
+        <div class="section-title">Snake Game</div>
+        <div class="section-subtitle">Direction movement, collision, growing body</div>
+      </div>
+    </div>
+
+    <p>Our first real game! The snake moves in a direction you control with arrow keys. It eats food and grows longer. If it hits the wall or itself, it resets!</p>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Like the classic Nokia phone game! The snake (a line of squares) moves around. It eats dots (food) and its tail gets longer. If it crashes into a wall or its own body, game over!
+    </div>
+
+    <h3>Key Concepts in Snake Game</h3>
+    <div class="grid2">
+      <div class="mini-card">
+        <h4>📍 xcor() and ycor()</h4>
+        <p>Get the turtle's current x or y position.<br><code>t.xcor()</code> → x coordinate<br><code>t.ycor()</code> → y coordinate</p>
+      </div>
+      <div class="mini-card">
+        <h4>📏 distance()</h4>
+        <p><code>t.distance(f)</code> returns how many pixels apart two turtles are. We use this to detect when snake eats food (&lt; 20 pixels).</p>
+      </div>
+      <div class="mini-card">
+        <h4>📋 List for Body</h4>
+        <p><code>segments = []</code> stores all body pieces. Each time food is eaten, a new turtle square is added!</p>
+      </div>
+      <div class="mini-card">
+        <h4>🔄 Body Movement</h4>
+        <p>Each segment moves to where the segment in front of it was. Segment N → goes to position of Segment N-1. Like a line of people copying the person ahead!</p>
+      </div>
+    </div>
+
+    <div class="project-box">
+      <h3>📁 Project 8 – Snake Game</h3>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle, random, time
+
+scr = turtle.Screen()
+scr.setup(<span class="num">600</span>, <span class="num">600</span>)
+scr.bgcolor(<span class="str">"pink"</span>)
+scr.title(<span class="str">"Snake game"</span>)
+scr.tracer(<span class="kw">False</span>)
+
+<span class="cm"># Snake head</span>
+t = turtle.Turtle()
+t.penup(); t.shape(<span class="str">"square"</span>); t.color(<span class="str">"white"</span>)
+t.direction = <span class="str">"stop"</span>    <span class="cm"># custom attribute on turtle object</span>
+
+<span class="cm"># Food</span>
+f = turtle.Turtle()
+f.shape(<span class="str">"circle"</span>); f.color(<span class="str">"green"</span>); f.penup()
+f.goto(random.randint(<span class="num">-250</span>, <span class="num">250</span>), random.randint(<span class="num">-250</span>, <span class="num">250</span>))
+
+<span class="cm"># Direction functions</span>
+<span class="kw">def</span> <span class="fn">up</span>():    t.direction = <span class="str">"up"</span>
+<span class="kw">def</span> <span class="fn">down</span>():  t.direction = <span class="str">"down"</span>
+<span class="kw">def</span> <span class="fn">left</span>():  t.direction = <span class="str">"left"</span>
+<span class="kw">def</span> <span class="fn">right</span>(): t.direction = <span class="str">"right"</span>
+
+<span class="kw">def</span> <span class="fn">move</span>():
+    <span class="kw">if</span> t.direction == <span class="str">"up"</span>:    t.sety(t.ycor() + <span class="num">20</span>)
+    <span class="kw">if</span> t.direction == <span class="str">"down"</span>:  t.sety(t.ycor() - <span class="num">20</span>)
+    <span class="kw">if</span> t.direction == <span class="str">"right"</span>: t.setx(t.xcor() + <span class="num">20</span>)
+    <span class="kw">if</span> t.direction == <span class="str">"left"</span>:  t.setx(t.xcor() - <span class="num">20</span>)
+
+scr.listen()
+scr.onkey(<span class="fn">up</span>, <span class="str">"Up"</span>); scr.onkey(<span class="fn">down</span>, <span class="str">"Down"</span>)
+scr.onkey(<span class="fn">left</span>, <span class="str">"Left"</span>); scr.onkey(<span class="fn">right</span>, <span class="str">"Right"</span>)
+
+segments = []
+
+<span class="kw">while True</span>:
+    scr.update()
+    <span class="cm"># Eat food</span>
+    <span class="kw">if</span> t.distance(f) &lt; <span class="num">20</span>:
+        f.goto(random.randint(<span class="num">-250</span>, <span class="num">250</span>), random.randint(<span class="num">-250</span>, <span class="num">250</span>))
+        new_seg = turtle.Turtle()
+        new_seg.penup(); new_seg.shape(<span class="str">"square"</span>); new_seg.color(<span class="str">"orange"</span>)
+        segments.append(new_seg)
+
+    <span class="cm"># Move body segments (from tail to head)</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range(len(segments) - <span class="num">1</span>, <span class="num">0</span>, <span class="num">-1</span>):
+        x = segments[i - <span class="num">1</span>].xcor()
+        y = segments[i - <span class="num">1</span>].ycor()
+        segments[i].goto(x, y)
+    <span class="kw">if</span> len(segments) > <span class="num">0</span>:
+        segments[<span class="num">0</span>].goto(t.xcor(), t.ycor())
+
+    <span class="cm"># Wall collision — reset game</span>
+    <span class="kw">if</span> t.xcor() > <span class="num">290</span> <span class="kw">or</span> t.xcor() &lt; <span class="num">-290</span> <span class="kw">or</span> t.ycor() > <span class="num">290</span> <span class="kw">or</span> t.ycor() &lt; <span class="num">-290</span>:
+        t.goto(<span class="num">0</span>, <span class="num">0</span>); t.direction = <span class="str">"stop"</span>
+        <span class="kw">for</span> seg <span class="kw">in</span> segments: seg.goto(<span class="num">1000</span>, <span class="num">1000</span>)
+        segments.clear()
+
+    <span class="cm"># Self collision</span>
+    <span class="kw">for</span> seg <span class="kw">in</span> segments:
+        <span class="kw">if</span> seg.distance(t) &lt; <span class="num">20</span>:
+            t.goto(<span class="num">0</span>, <span class="num">0</span>); t.direction = <span class="str">"stop"</span>
+            <span class="kw">for</span> s <span class="kw">in</span> segments: s.goto(<span class="num">1000</span>, <span class="num">1000</span>)
+            segments.clear()
+
+    <span class="fn">move</span>()
+    time.sleep(<span class="num">0.2</span>)          <span class="cm"># controls game speed</span>
+
+turtle.done()</pre>
+    </div>
+  </section>
+
+  <!-- ===== TOPIC 9 ===== -->
+  <section class="section" id="topic9">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <span class="section-icon">🏁</span>
+      <div>
+        <div class="section-title">Turtle Race</div>
+        <div class="section-subtitle">Multiple turtles, random movement, winner detection</div>
+      </div>
+    </div>
+
+    <p>A fun race between 4 coloured turtles! Each turtle moves a random distance (1–5 steps) each turn. The first one to cross the finish line wins!</p>
+
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Like a real horse race 🐎 — each horse moves a random amount each second. You don't know who will win! In our game, each turtle moves <code>random.randint(1,5)</code> pixels per turn. The randomness makes it exciting!
+    </div>
+
+    <div class="project-box">
+      <h3>📁 Project 9 – Turtle Race</h3>
+    </div>
+    <div class="code-block">
+      <span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle, random
+
+scr = turtle.Screen()
+scr.bgcolor(<span class="str">"light blue"</span>)
+scr.title(<span class="str">"turtle race"</span>)
+
+<span class="cm"># Draw the race track (dashed lines)</span>
+t = turtle.Turtle()
+t.speed(<span class="num">10</span>)
+t.penup(); t.goto(<span class="num">-140</span>, <span class="num">140</span>)
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">16</span>):
+    t.write(i)
+    t.right(<span class="num">90</span>); t.forward(<span class="num">10</span>)
+    <span class="kw">for</span> j <span class="kw">in</span> range(<span class="num">10</span>):
+        t.pd(); t.fd(<span class="num">10</span>); t.pu(); t.fd(<span class="num">10</span>)
+    t.pu(); t.bk(<span class="num">210</span>); t.left(<span class="num">90</span>); t.forward(<span class="num">20</span>)
+
+<span class="cm"># Create 4 racing turtles</span>
+roshni = turtle.Turtle(); roshni.shape(<span class="str">"turtle"</span>); roshni.color(<span class="str">"red"</span>)
+roshni.penup(); roshni.goto(<span class="num">-160</span>, <span class="num">100</span>); roshni.pd()
+
+divya = turtle.Turtle(); divya.shape(<span class="str">"turtle"</span>); divya.color(<span class="str">"green"</span>)
+divya.penup(); divya.goto(<span class="num">-160</span>, <span class="num">80</span>); divya.pd()
+
+sheetal = turtle.Turtle(); sheetal.shape(<span class="str">"turtle"</span>); sheetal.color(<span class="str">"pale green"</span>)
+sheetal.penup(); sheetal.goto(<span class="num">-160</span>, <span class="num">60</span>); sheetal.pd()
+
+kishor = turtle.Turtle(); kishor.shape(<span class="str">"turtle"</span>); kishor.color(<span class="str">"sky blue"</span>)
+kishor.penup(); kishor.goto(<span class="num">-160</span>, <span class="num">40</span>); kishor.pd()
+
+<span class="kw">def</span> <span class="fn">declareWinner</span>(winner):
+    winner.pu(); winner.goto(<span class="num">0</span>, <span class="num">-200</span>); winner.pd()
+    winner.write(<span class="str">"I Won The Race!!"</span>, font=(<span class="str">"Jokerman"</span>, <span class="num">40</span>, <span class="str">"bold"</span>, <span class="str">"italic"</span>), align=<span class="str">"center"</span>)
+    <span class="kw">while True</span>:
+        winner.right(<span class="num">5</span>)   <span class="cm"># winner spins!</span>
+
+finish_line = <span class="num">150</span>
+<span class="kw">while True</span>:
+    roshni.forward(random.randint(<span class="num">1</span>, <span class="num">5</span>))
+    <span class="kw">if</span> roshni.xcor() >= finish_line:
+        <span class="fn">declareWinner</span>(roshni); <span class="kw">break</span>
+    divya.forward(random.randint(<span class="num">1</span>, <span class="num">5</span>))
+    <span class="kw">if</span> divya.xcor() >= finish_line:
+        <span class="fn">declareWinner</span>(divya); <span class="kw">break</span>
+    sheetal.forward(random.randint(<span class="num">1</span>, <span class="num">5</span>))
+    <span class="kw">if</span> sheetal.xcor() >= finish_line:
+        <span class="fn">declareWinner</span>(sheetal); <span class="kw">break</span>
+    kishor.forward(random.randint(<span class="num">1</span>, <span class="num">5</span>))
+    <span class="kw">if</span> kishor.xcor() >= finish_line:
+        <span class="fn">declareWinner</span>(kishor); <span class="kw">break</span>
+
+turtle.done()</pre>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-title">📌 turtle.speed() values</div>
+      1 = slowest, 2, 3, 4, 5 (normal), 6, 7, 8, 9, 10 or 0 = fastest
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== EXTRAS ===== -->
+  <div class="section-header" style="margin-bottom:24px;">
+    <span class="section-icon">🎁</span>
+    <div>
+      <div class="section-title">Extras — Bonus Projects</div>
+      <div class="section-subtitle">Advanced projects to explore after mastering the basics</div>
+    </div>
+  </div>
+
+  <!-- Extra 1: Patterns -->
+  <section class="section" id="extra1">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E1</div>
+      <span class="section-icon">🌸</span>
+      <div>
+        <div class="section-title">Patterns</div>
+        <div class="section-subtitle">Nested loops making geometric art</div>
+      </div>
+    </div>
+    <p>Rotating shapes around a point creates beautiful mandala-like patterns! By drawing a shape 10 times and rotating by 36° each time, we complete a full circle (10 × 36 = 360°).</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+s = turtle.Screen()
+s.setup(<span class="num">800</span>, <span class="num">800</span>)
+s.bgcolor(<span class="str">"Lavender"</span>)
+t = turtle.Turtle()
+t.speed(<span class="num">0</span>); t.color(<span class="str">"orange"</span>); t.pensize(<span class="num">3</span>)
+
+<span class="cm"># Circle pattern: 10 circles rotated 36° each</span>
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">10</span>):
+    t.circle(<span class="num">80</span>)
+    t.left(<span class="num">36</span>)
+
+<span class="cm"># Star pattern: 10 stars rotated 36° each</span>
+t.pencolor(<span class="str">"dark red"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">10</span>):
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">5</span>):
+        t.forward(<span class="num">70</span>); t.right(<span class="num">144</span>)
+    t.left(<span class="num">36</span>)
+
+<span class="cm"># Square pattern at top-left</span>
+t.penup(); t.goto(<span class="num">-200</span>, <span class="num">200</span>); t.pendown(); t.pencolor(<span class="str">"blue"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">10</span>):
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">4</span>):
+        t.forward(<span class="num">60</span>); t.left(<span class="num">90</span>)
+    t.left(<span class="num">36</span>)
+
+<span class="cm"># Pentagon pattern at top-right</span>
+t.penup(); t.goto(<span class="num">200</span>, <span class="num">200</span>); t.pendown(); t.pencolor(<span class="str">"medium purple"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">10</span>):
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">5</span>):
+        t.forward(<span class="num">60</span>); t.left(<span class="num">72</span>)
+    t.left(<span class="num">36</span>)
+
+turtle.done()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 2: Animation Circles -->
+  <section class="section" id="extra2">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E2</div>
+      <span class="section-icon">🔵</span>
+      <div><div class="section-title">Animated Circles</div><div class="section-subtitle">Growing spiral of circles</div></div>
+    </div>
+    <p>Draw 100 circles of increasing size, each rotated by 5°. Creates a beautiful spinning spiral!</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+turtle.bgcolor(<span class="str">"black"</span>)
+screen = turtle.Screen()
+screen.title(<span class="str">"Animation Circle"</span>)
+t = turtle.Turtle()
+t.color(<span class="str">"red"</span>); t.speed(<span class="num">0</span>); t.hideturtle()
+
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">100</span>):
+    t.circle(i * <span class="num">2</span>)   <span class="cm"># radius grows: 0, 2, 4, 6...</span>
+    t.right(<span class="num">5</span>)        <span class="cm"># rotate slightly each time</span>
+
+turtle.done()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 3a: Click Coordinates -->
+  <section class="section" id="extra3a">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E3a</div>
+      <span class="section-icon">🖱️</span>
+      <div><div class="section-title">Click Coordinates</div><div class="section-subtitle">Mouse events with onclick</div></div>
+    </div>
+    <p>Click anywhere on the screen — the turtle moves there and shows you the x,y coordinates. Great for understanding the coordinate system!</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+ws = turtle.Screen()
+t = turtle.Turtle()
+
+<span class="kw">def</span> <span class="fn">func</span>(x, y):
+    t.goto(x, y)
+    t.write(str(x) + <span class="str">","</span> + str(y))   <span class="cm"># string concatenation</span>
+    <span class="cm"># OR: t.write(f"{x},{y}")        # f-string formatting</span>
+
+ws.onclick(<span class="fn">func</span>)   <span class="cm"># call func(x,y) whenever screen is clicked</span>
+turtle.done()</pre>
+    </div>
+    <div class="callout callout-info">
+      <div class="callout-title">📌 Mouse Events</div>
+      <code>ws.onclick(func)</code> → called when screen is clicked<br>
+      <code>turtle.onclick(func)</code> → called when the turtle itself is clicked<br>
+      <code>t.ondrag(func)</code> → called while dragging the turtle
+    </div>
+  </section>
+
+  <!-- Extra 3b: Cookie Clicker -->
+  <section class="section" id="extra3b">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E3b</div>
+      <span class="section-icon">🍪</span>
+      <div><div class="section-title">Cookie Clicker Game</div><div class="section-subtitle">Score tracking, click events, random positions</div></div>
+    </div>
+    <p>Click the cookie to score points. If you miss, the score resets! The cookie jumps to a random location each time you hit it.</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle, random
+
+wn = turtle.Screen()
+wn.title(<span class="str">"Cookie Clicker"</span>)
+wn.bgcolor(<span class="str">"light green"</span>)
+wn.setup(<span class="num">600</span>, <span class="num">600</span>)
+
+<span class="cm"># Register a gif as a shape (update path to your cookie.gif)</span>
+wn.register_shape(<span class="str">"cookie.gif"</span>)
+
+cookie = turtle.Turtle()
+cookie.shape(<span class="str">"cookie.gif"</span>)
+cookie.speed(<span class="num">0</span>); cookie.pu()
+
+clicks = <span class="num">0</span>
+flag = <span class="num">0</span>
+
+pen = turtle.Turtle()
+pen.hideturtle(); pen.color(<span class="str">"Brown"</span>); pen.penup()
+pen.goto(<span class="num">0</span>, <span class="num">250</span>)
+pen.write(<span class="str">f"Clicks: {clicks}"</span>, align=<span class="str">"center"</span>, font=(<span class="str">"Arial"</span>, <span class="num">30</span>, <span class="str">"normal"</span>))
+
+<span class="kw">def</span> <span class="fn">clicked</span>(x, y):
+    <span class="kw">global</span> clicks, flag
+    clicks += <span class="num">1</span>
+    pen.clear()
+    pen.write(<span class="str">f"Clicks: {clicks}"</span>, align=<span class="str">"center"</span>, font=(<span class="str">"Arial"</span>, <span class="num">32</span>, <span class="str">"normal"</span>))
+    cookie.goto(random.randint(<span class="num">-280</span>, <span class="num">280</span>), random.randint(<span class="num">-280</span>, <span class="num">280</span>))
+    flag = <span class="num">1</span>
+
+<span class="kw">def</span> <span class="fn">wrong_click</span>(x, y):
+    <span class="kw">global</span> clicks, flag
+    <span class="kw">if</span> flag != <span class="num">1</span>:       <span class="cm"># missed the cookie</span>
+        clicks = <span class="num">0</span>
+        cookie.goto(<span class="num">0</span>, <span class="num">0</span>)
+        pen.clear()
+        pen.write(<span class="str">f"Clicks: {clicks}"</span>, align=<span class="str">"center"</span>, font=(<span class="str">"Arial"</span>, <span class="num">32</span>, <span class="str">"normal"</span>))
+    flag = <span class="num">0</span>
+
+cookie.onclick(<span class="fn">clicked</span>)
+wn.onclick(<span class="fn">wrong_click</span>)
+turtle.done()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 4a: Digital Clock -->
+  <section class="section" id="extra4a">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E4a</div>
+      <span class="section-icon">🕐</span>
+      <div><div class="section-title">Digital Clock</div><div class="section-subtitle">datetime module, live time display</div></div>
+    </div>
+    <p>Display the current time (HH:MM:SS) on screen and update it every second using the <code>datetime</code> and <code>time</code> modules!</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> time
+<span class="kw">import</span> datetime <span class="kw">as</span> dte
+<span class="kw">import</span> turtle
+
+t1 = turtle.Turtle()    <span class="cm"># shows the time</span>
+t2 = turtle.Turtle()    <span class="cm"># draws the rectangle box</span>
+screen = turtle.Screen()
+screen.bgcolor(<span class="str">"orange"</span>)
+
+<span class="cm"># Draw a rectangle border</span>
+t2.pensize(<span class="num">3</span>); t2.color(<span class="str">'black"</span>); t2.penup(); t2.goto(<span class="num">-20</span>, <span class="num">0</span>); t2.pendown()
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">2</span>):
+    t2.forward(<span class="num">200</span>); t2.left(<span class="num">90</span>); t2.forward(<span class="num">70</span>); t2.left(<span class="num">90</span>)
+t2.hideturtle()
+
+<span class="kw">while True</span>:
+    t1.hideturtle()
+    t1.clear()                           <span class="cm"># erase old time</span>
+    sec = dte.datetime.now().second
+    min = dte.datetime.now().minute
+    hr  = dte.datetime.now().hour        <span class="cm"># use % 12 for 12-hour format</span>
+    <span class="cm"># zfill(2): adds leading zero e.g. 9 → "09"</span>
+    t1.write(str(hr).zfill(<span class="num">2</span>) + <span class="str">":"</span> + str(min).zfill(<span class="num">2</span>) + <span class="str">":"</span> + str(sec).zfill(<span class="num">2</span>),
+             font=(<span class="str">"Arial Narrow"</span>, <span class="num">35</span>, <span class="str">"bold"</span>))
+    time.sleep(<span class="num">1</span>)                        <span class="cm"># wait 1 second</span></pre>
+    </div>
+  </section>
+
+  <!-- Extra 4b: Analog Clock -->
+  <section class="section" id="extra4b">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E4b</div>
+      <span class="section-icon">🕰️</span>
+      <div><div class="section-title">Analog Clock</div><div class="section-subtitle">Math, angles, and moving clock hands</div></div>
+    </div>
+    <p>Build a real working analog clock! The hands move based on angle calculations using the current time.</p>
+
+    <h3>Angle Calculations (The Math!)</h3>
+    <table>
+      <tr><th>Hand</th><th>Formula</th><th>Why?</th></tr>
+      <tr><td>Second hand</td><td><code>sec × 6</code></td><td>360° ÷ 60 seconds = 6° per second</td></tr>
+      <tr><td>Minute hand</td><td><code>min × 6 + sec × 0.1</code></td><td>6° per minute + smooth movement</td></tr>
+      <tr><td>Hour hand</td><td><code>hr × 30 + min × 0.5</code></td><td>30° per hour + smooth movement</td></tr>
+    </table>
+
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle, datetime, time, math
+
+screen = turtle.Screen()
+screen.bgcolor(<span class="str">"black"</span>); screen.title(<span class="str">"Analog Clock"</span>); screen.setup(<span class="num">600</span>, <span class="num">600</span>)
+
+clock = turtle.Turtle()
+clock.speed(<span class="num">0</span>); clock.pensize(<span class="num">5</span>); clock.color(<span class="str">"white"</span>); clock.hideturtle()
+
+<span class="kw">def</span> <span class="fn">draw_clock_face</span>():
+    clock.penup(); clock.goto(<span class="num">0</span>, <span class="num">-250</span>); clock.pendown()
+    clock.circle(<span class="num">250</span>)
+    <span class="kw">for</span> hour <span class="kw">in</span> range(<span class="num">12</span>):
+        clock.penup(); clock.goto(<span class="num">0</span>, <span class="num">0</span>)
+        clock.setheading(<span class="num">-30</span> * hour + <span class="num">60</span>)
+        clock.forward(<span class="num">220</span>); clock.pendown(); clock.forward(<span class="num">20</span>); clock.penup()
+
+sec_hand  = turtle.Turtle(); sec_hand.color(<span class="str">"red"</span>);   sec_hand.pensize(<span class="num">1</span>);  sec_hand.hideturtle()
+min_hand  = turtle.Turtle(); min_hand.color(<span class="str">"blue"</span>);  min_hand.pensize(<span class="num">3</span>);  min_hand.hideturtle()
+hour_hand = turtle.Turtle(); hour_hand.color(<span class="str">"white"</span>); hour_hand.pensize(<span class="num">6</span>); hour_hand.hideturtle()
+
+<span class="kw">def</span> <span class="fn">draw_hand</span>(t, length, angle):
+    t.clear(); t.penup(); t.goto(<span class="num">0</span>, <span class="num">0</span>)
+    t.setheading(<span class="num">90</span>); t.right(angle)
+    t.pendown(); t.forward(length)
+
+<span class="kw">def</span> <span class="fn">update</span>():
+    now = datetime.datetime.now()
+    sec = now.second; minute = now.minute; hour = now.hour % <span class="num">12</span>
+    sec_angle  = sec * <span class="num">6</span>
+    min_angle  = minute * <span class="num">6</span> + sec * <span class="num">0.1</span>
+    hour_angle = hour * <span class="num">30</span> + minute * <span class="num">0.5</span>
+    <span class="fn">draw_hand</span>(sec_hand, <span class="num">180</span>, sec_angle)
+    <span class="fn">draw_hand</span>(min_hand, <span class="num">150</span>, min_angle)
+    <span class="fn">draw_hand</span>(hour_hand, <span class="num">100</span>, hour_angle)
+    screen.update()
+    screen.ontimer(<span class="fn">update</span>, <span class="num">1000</span>)   <span class="cm"># update every 1000ms = 1 second</span>
+
+screen.tracer(<span class="num">0</span>)
+<span class="fn">draw_clock_face</span>()
+<span class="fn">update</span>()
+turtle.done()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 5: Typing Speed Test -->
+  <section class="section" id="extra5">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E5</div>
+      <span class="section-icon">⌨️</span>
+      <div><div class="section-title">Typing Speed Test</div><div class="section-subtitle">time module, WPM calculation</div></div>
+    </div>
+    <p>Type a random sentence as fast as you can. The program measures your time and calculates Words Per Minute (WPM)!</p>
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Typing tests like 10FastFingers or TypeRacer! They show you a sentence, start timing when you click, and calculate your speed in words per minute. WPM = total words ÷ (time in seconds ÷ 60).
+    </div>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle, random, time
+
+screen = turtle.Screen()
+screen.title(<span class="str">"Typing Speed Test"</span>)
+screen.setup(width=<span class="num">700</span>, height=<span class="num">400</span>)
+
+sentences = [
+    <span class="str">"The quick brown fox jumps over the lazy dog."</span>,
+    <span class="str">"Python is an amazing programming language."</span>,
+    <span class="str">"Turtles are great for simple graphics."</span>,
+]
+sentence = random.choice(sentences)
+
+display = turtle.Turtle(); display.hideturtle(); display.penup()
+display.goto(<span class="num">0</span>, <span class="num">50</span>)
+display.write(sentence, align=<span class="str">"center"</span>, font=(<span class="str">"Courier"</span>, <span class="num">18</span>, <span class="str">"normal"</span>))
+
+typing_turtle = turtle.Turtle(); typing_turtle.hideturtle(); typing_turtle.penup()
+
+<span class="kw">def</span> <span class="fn">start_typing</span>(x, y):
+    typing_turtle.clear()
+    typing_turtle.goto(<span class="num">0</span>, <span class="num">-100</span>)
+    start_time = time.time()         <span class="cm"># record start</span>
+    typed_sentence = <span class="str">""</span>
+    <span class="kw">while</span> typed_sentence != sentence:
+        typed_sentence = screen.textinput(<span class="str">"Typing Test"</span>, <span class="str">"Type the sentence:"</span>).strip()
+    end_time = time.time()
+    time_taken = end_time - start_time
+    wpm = len(typed_sentence.split()) / (time_taken / <span class="num">60</span>)
+    typing_turtle.write(<span class="str">f"Time: {time_taken:.2f} seconds | WPM: {wpm:.1f}"</span>,
+                        align=<span class="str">"center"</span>, font=(<span class="str">"Arial"</span>, <span class="num">14</span>, <span class="str">"normal"</span>))
+
+screen.onclick(<span class="fn">start_typing</span>)
+screen.mainloop()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 6: Countdown Timer -->
+  <section class="section" id="extra6">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E6</div>
+      <span class="section-icon">⏱️</span>
+      <div><div class="section-title">Countdown Timer</div><div class="section-subtitle">range() in reverse, time.sleep()</div></div>
+    </div>
+    <p>Enter a number of seconds and watch it count down to zero on a big display!</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle, time
+
+screen = turtle.Screen()
+screen.title(<span class="str">"Countdown Timer"</span>)
+screen.bgcolor(<span class="str">"black"</span>); screen.setup(<span class="num">400</span>, <span class="num">300</span>)
+
+countdown_time = int(screen.numinput(<span class="str">"Time"</span>, <span class="str">"Enter time in seconds: "</span>))
+
+timer_display = turtle.Turtle()
+timer_display.hideturtle(); timer_display.color(<span class="str">"white"</span>); timer_display.penup()
+timer_display.goto(<span class="num">0</span>, <span class="num">0</span>)
+
+<span class="cm"># range(start, stop, step): step=-1 counts DOWN</span>
+<span class="kw">for</span> i <span class="kw">in</span> range(countdown_time, <span class="num">-1</span>, <span class="num">-1</span>):
+    timer_display.clear()
+    timer_display.write(str(i), align=<span class="str">"center"</span>, font=(<span class="str">"Courier"</span>, <span class="num">48</span>, <span class="str">"bold"</span>))
+    time.sleep(<span class="num">1</span>)
+
+timer_display.clear()
+timer_display.write(<span class="str">"Time's Up!"</span>, align=<span class="str">"center"</span>, font=(<span class="str">"Courier"</span>, <span class="num">36</span>, <span class="str">"bold"</span>))
+screen.mainloop()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 7: Draw Tool -->
+  <section class="section" id="extra7">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E7</div>
+      <span class="section-icon">✏️</span>
+      <div><div class="section-title">Draw Tool</div><div class="section-subtitle">Keyboard input to change color and draw</div></div>
+    </div>
+    <p>Press <strong>C</strong> to choose a colour. Press <strong>Up arrow</strong> to draw forward. A simple interactive paint tool!</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+
+s = turtle.Screen()
+t = turtle.Turtle()
+
+<span class="kw">def</span> <span class="fn">fun</span>():
+    col = s.textinput(<span class="str">"Color"</span>, <span class="str">"Enter the color: "</span>)
+    t.color(col)
+
+<span class="kw">def</span> <span class="fn">move</span>():
+    t.forward(<span class="num">10</span>)
+
+s.listen()
+s.onkey(<span class="fn">fun</span>, <span class="str">"c"</span>)     <span class="cm"># press C to change colour</span>
+s.onkey(<span class="fn">move</span>, <span class="str">"Up"</span>)   <span class="cm"># press Up to draw forward</span>
+
+turtle.done()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 8: Heart -->
+  <section class="section" id="extra8">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E8</div>
+      <span class="section-icon">❤️</span>
+      <div><div class="section-title">Heart Shape</div><div class="section-subtitle">Curves using tiny steps in a loop</div></div>
+    </div>
+    <p>Draw a filled red heart by combining straight lines and gentle curves (200 tiny steps of 1° each)!</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+
+scr = turtle.Screen()
+scr.setup(<span class="num">800</span>, <span class="num">500</span>)
+scr.bgcolor(<span class="str">"lavender"</span>)
+pen = turtle.Turtle()
+pen.fillcolor(<span class="str">'red'</span>)
+pen.begin_fill()
+
+pen.left(<span class="num">140</span>); pen.forward(<span class="num">113</span>)
+
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">200</span>):   <span class="cm"># left curve</span>
+    pen.right(<span class="num">1</span>); pen.forward(<span class="num">1</span>)
+
+pen.left(<span class="num">120</span>)
+
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">200</span>):   <span class="cm"># right curve</span>
+    pen.right(<span class="num">1</span>); pen.forward(<span class="num">1</span>)
+
+pen.forward(<span class="num">112</span>)
+pen.end_fill()
+turtle.done()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 9: Snowman -->
+  <section class="section" id="extra9">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E9</div>
+      <span class="section-icon">🧊</span>
+      <div><div class="section-title">Snowman</div><div class="section-subtitle">Functions, circles, and complex compositions</div></div>
+    </div>
+    <p>Build a full snowman using multiple circles, rectangles, and a reusable <code>black_circle()</code> function for eyes and buttons!</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+turtle.setup(<span class="num">800</span>, <span class="num">700</span>)
+turtle.bgcolor(<span class="str">"black"</span>); turtle.speed(<span class="num">0</span>)
+
+<span class="cm"># Green background circle</span>
+turtle.penup(); turtle.goto(<span class="num">0</span>, <span class="num">-320</span>); turtle.pendown()
+turtle.color(<span class="str">"#c1f8b5"</span>)
+turtle.begin_fill(); turtle.circle(<span class="num">320</span>); turtle.end_fill()
+
+<span class="cm"># Snowman body (3 white circles)</span>
+<span class="kw">for</span> pos, r <span class="kw">in</span> [(<span class="num">-280</span>, <span class="num">110</span>), (<span class="num">-110</span>, <span class="num">90</span>), (<span class="num">20</span>, <span class="num">70</span>)]:
+    turtle.penup(); turtle.goto(<span class="num">0</span>, pos); turtle.pendown()
+    turtle.color(<span class="str">"white"</span>)
+    turtle.begin_fill(); turtle.circle(r); turtle.end_fill()
+
+<span class="kw">def</span> <span class="fn">black_circle</span>():
+    turtle.color(<span class="str">"black"</span>)
+    turtle.begin_fill(); turtle.circle(<span class="num">10</span>); turtle.end_fill()
+
+<span class="cm"># Eyes (2 black circles)</span>
+x = <span class="num">-20</span>
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">2</span>):
+    turtle.penup(); turtle.goto(x, <span class="num">110</span>); turtle.pendown()
+    <span class="fn">black_circle</span>(); x += <span class="num">40</span>
+
+<span class="cm"># Buttons (5 dots down the body)</span>
+y = <span class="num">0</span>
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">5</span>):
+    turtle.penup(); turtle.goto(<span class="num">0</span>, y); turtle.pendown()
+    <span class="fn">black_circle</span>(); y -= <span class="num">55</span>
+
+turtle.hideturtle()
+turtle.done()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 10: Pong Game -->
+  <section class="section" id="extra10">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E10</div>
+      <span class="section-icon">🎮</span>
+      <div><div class="section-title">Pong Game</div><div class="section-subtitle">Two-player game with paddles and ball physics</div></div>
+    </div>
+    <p>The classic Pong! Two players control paddles (W/S and Up/Down). The ball bounces. Miss the ball and the opponent scores!</p>
+    <div class="callout callout-idea">
+      <div class="callout-title">🌍 Real Life Example</div>
+      Like table tennis 🏓 on your computer screen! Player A uses W (up) and S (down). Player B uses Arrow Up and Down. The ball bounces off walls and paddles.
+    </div>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+
+wind = turtle.Screen()
+wind.title(<span class="str">'Pong game'</span>); wind.bgcolor(<span class="str">'Green'</span>)
+wind.setup(width=<span class="num">800</span>, height=<span class="num">600</span>); wind.tracer(<span class="num">0</span>)
+
+<span class="cm"># Paddles</span>
+bar_A = turtle.Turtle(); bar_A.shape(<span class="str">'square'</span>); bar_A.shapesize(<span class="num">5</span>, <span class="num">1</span>); bar_A.penup(); bar_A.goto(<span class="num">-350</span>, <span class="num">0</span>)
+bar_B = turtle.Turtle(); bar_B.shape(<span class="str">'square'</span>); bar_B.shapesize(<span class="num">5</span>, <span class="num">1</span>); bar_B.penup(); bar_B.goto(<span class="num">350</span>, <span class="num">0</span>)
+
+<span class="cm"># Ball</span>
+ball = turtle.Turtle(); ball.shape(<span class="str">"circle"</span>); ball.penup(); ball.goto(<span class="num">0</span>, <span class="num">0</span>)
+ball_x = <span class="num">0.5</span>; ball_y = <span class="num">0.5</span>
+
+score_a = <span class="num">0</span>; score_b = <span class="num">0</span>
+
+<span class="kw">def</span> <span class="fn">bar_A_up</span>():
+    y = bar_A.ycor() + <span class="num">30</span>
+    bar_A.sety(min(y, <span class="num">250</span>))
+<span class="kw">def</span> <span class="fn">bar_A_down</span>():
+    y = bar_A.ycor() - <span class="num">30</span>
+    bar_A.sety(max(y, <span class="num">-250</span>))
+<span class="kw">def</span> <span class="fn">bar_B_up</span>():
+    y = bar_B.ycor() + <span class="num">30</span>
+    bar_B.sety(min(y, <span class="num">250</span>))
+<span class="kw">def</span> <span class="fn">bar_B_down</span>():
+    y = bar_B.ycor() - <span class="num">30</span>
+    bar_B.sety(max(y, <span class="num">-250</span>))
+
+wind.listen()
+wind.onkeypress(<span class="fn">bar_A_up</span>, <span class="str">'w'</span>); wind.onkeypress(<span class="fn">bar_A_down</span>, <span class="str">'s'</span>)
+wind.onkeypress(<span class="fn">bar_B_up</span>, <span class="str">'Up'</span>); wind.onkeypress(<span class="fn">bar_B_down</span>, <span class="str">'Down'</span>)
+
+<span class="kw">while True</span>:
+    wind.update()
+    ball.setx(ball.xcor() + ball_x)
+    ball.sety(ball.ycor() + ball_y)
+    <span class="cm"># Top/bottom walls</span>
+    <span class="kw">if</span> ball.ycor() > <span class="num">290</span>: ball.sety(<span class="num">290</span>); ball_y *= <span class="num">-1</span>
+    <span class="kw">if</span> ball.ycor() &lt; <span class="num">-290</span>: ball.sety(<span class="num">-290</span>); ball_y *= <span class="num">-1</span>
+    <span class="cm"># Scoring</span>
+    <span class="kw">if</span> ball.xcor() > <span class="num">350</span>: score_a += <span class="num">1</span>; ball_x *= <span class="num">-1</span>
+    <span class="kw">if</span> ball.xcor() &lt; <span class="num">-350</span>: score_b += <span class="num">1</span>; ball_x *= <span class="num">-1</span>
+    <span class="cm"># Paddle collision</span>
+    <span class="kw">if</span> ball.xcor() &lt; <span class="num">-340</span> <span class="kw">and</span> bar_A.ycor() - <span class="num">50</span> &lt; ball.ycor() &lt; bar_A.ycor() + <span class="num">50</span>: ball_x *= <span class="num">-1</span>
+    <span class="kw">if</span> ball.xcor() > <span class="num">340</span>  <span class="kw">and</span> bar_B.ycor() - <span class="num">50</span> &lt; ball.ycor() &lt; bar_B.ycor() + <span class="num">50</span>: ball_x *= <span class="num">-1</span>
+
+turtle.done()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 11: Rolling Dice -->
+  <section class="section" id="extra11">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E11</div>
+      <span class="section-icon">🎲</span>
+      <div><div class="section-title">Rolling Dice</div><div class="section-subtitle">Dictionary, stamp(), onclick</div></div>
+    </div>
+    <p>Click the Roll button and a dice shows up with the correct dot pattern. Uses a <strong>dictionary</strong> to store dot positions for each number!</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle, random
+
+screen = turtle.Screen()
+screen.title(<span class="str">"Dice Roller"</span>); screen.bgcolor(<span class="str">"white"</span>)
+
+<span class="cm"># Dictionary: dice value → list of dot positions</span>
+positions = {
+    <span class="num">1</span>: [(<span class="num">0</span>, <span class="num">0</span>)],
+    <span class="num">2</span>: [(<span class="num">-40</span>, <span class="num">-40</span>), (<span class="num">40</span>, <span class="num">40</span>)],
+    <span class="num">3</span>: [(<span class="num">-40</span>, <span class="num">-40</span>), (<span class="num">0</span>, <span class="num">0</span>), (<span class="num">40</span>, <span class="num">40</span>)],
+    <span class="num">4</span>: [(<span class="num">-40</span>, <span class="num">-40</span>), (<span class="num">-40</span>, <span class="num">40</span>), (<span class="num">40</span>, <span class="num">-40</span>), (<span class="num">40</span>, <span class="num">40</span>)],
+    <span class="num">5</span>: [(<span class="num">-40</span>, <span class="num">-40</span>), (<span class="num">-40</span>, <span class="num">40</span>), (<span class="num">0</span>, <span class="num">0</span>), (<span class="num">40</span>, <span class="num">-40</span>), (<span class="num">40</span>, <span class="num">40</span>)],
+    <span class="num">6</span>: [(<span class="num">-40</span>, <span class="num">-40</span>), (<span class="num">-40</span>, <span class="num">0</span>), (<span class="num">-40</span>, <span class="num">40</span>), (<span class="num">40</span>, <span class="num">-40</span>), (<span class="num">40</span>, <span class="num">0</span>), (<span class="num">40</span>, <span class="num">40</span>)]
+}
+
+dice = turtle.Turtle(); dice.hideturtle(); dice.speed(<span class="num">0</span>); dice.pensize(<span class="num">3</span>)
+dot  = turtle.Turtle(); dot.penup(); dot.hideturtle()
+
+button = turtle.Turtle(); button.penup(); button.shape(<span class="str">"square"</span>)
+button.color(<span class="str">"green"</span>); button.shapesize(<span class="num">2</span>, <span class="num">5</span>); button.goto(<span class="num">0</span>, <span class="num">-150</span>)
+button.write(<span class="str">"Roll"</span>, align=<span class="str">"center"</span>, font=(<span class="str">"Arial"</span>, <span class="num">16</span>, <span class="str">"bold"</span>))
+
+<span class="kw">def</span> <span class="fn">draw_dice_face</span>():
+    dice.clear(); dice.penup(); dice.goto(<span class="num">-60</span>, <span class="num">-60</span>); dice.pendown()
+    <span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">4</span>): dice.forward(<span class="num">120</span>); dice.left(<span class="num">90</span>)
+
+<span class="kw">def</span> <span class="fn">draw_dots</span>(number):
+    dot.clearstamps()
+    <span class="kw">for</span> x, y <span class="kw">in</span> positions[number]:
+        dot.goto(x, y); dot.stamp()
+
+text = turtle.Turtle(); text.hideturtle(); text.penup(); text.goto(<span class="num">0</span>, <span class="num">-100</span>)
+text.write(<span class="str">"Click Roll!"</span>, align=<span class="str">"center"</span>, font=(<span class="str">"Arial"</span>, <span class="num">16</span>, <span class="str">"bold"</span>))
+
+<span class="kw">def</span> <span class="fn">roll_dice</span>(x, y):
+    n = random.randint(<span class="num">1</span>, <span class="num">6</span>)
+    <span class="fn">draw_dice_face</span>(); <span class="fn">draw_dots</span>(n)
+    text.clear()
+    text.write(<span class="str">f"You rolled a {n}"</span>, align=<span class="str">"center"</span>, font=(<span class="str">"Arial"</span>, <span class="num">16</span>, <span class="str">"bold"</span>))
+
+button.onclick(<span class="fn">roll_dice</span>)
+screen.mainloop()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 12: Wordle -->
+  <section class="section" id="extra12">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E12</div>
+      <span class="section-icon">🌟</span>
+      <div><div class="section-title">Wordle Game</div><div class="section-subtitle">String comparison, coloured tiles, 6 attempts</div></div>
+    </div>
+    <p>The viral word game! Guess the 5-letter word in 6 tries. Green = correct position, Yellow = wrong position, Gray = not in word.</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle, random
+
+words = [<span class="str">"alive"</span>, <span class="str">"bench"</span>, <span class="str">"begin"</span>, <span class="str">"alarm"</span>]
+word = random.choice(words)
+
+screen = turtle.Screen(); screen.title(<span class="str">"Wordle with Turtle"</span>)
+pen = turtle.Turtle(); pen.hideturtle(); pen.speed(<span class="num">0</span>)
+TILE_SIZE = <span class="num">50</span>; START_X = <span class="num">-130</span>; START_Y = <span class="num">150</span>
+
+<span class="kw">def</span> <span class="fn">draw_square</span>(x, y, color):
+    pen.up(); pen.goto(x, y); pen.down()
+    pen.fillcolor(color); pen.begin_fill()
+    <span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">4</span>): pen.forward(TILE_SIZE); pen.right(<span class="num">90</span>)
+    pen.end_fill()
+
+<span class="kw">def</span> <span class="fn">write_letter</span>(x, y, letter):
+    pen.up(); pen.goto(x + TILE_SIZE / <span class="num">2</span>, y - TILE_SIZE + <span class="num">10</span>)
+    pen.color(<span class="str">"black"</span>)
+    pen.write(letter.upper(), align=<span class="str">"center"</span>, font=(<span class="str">"Arial"</span>, <span class="num">24</span>, <span class="str">"bold"</span>))
+
+<span class="kw">for</span> attempt <span class="kw">in</span> range(<span class="num">6</span>):   <span class="cm"># 6 attempts</span>
+    guess = screen.textinput(<span class="str">"Guess"</span>, <span class="str">"Enter a 5-letter word: "</span>).lower()
+    <span class="kw">if</span> len(guess) != <span class="num">5</span>: <span class="kw">continue</span>
+    row_y = START_Y - attempt * (TILE_SIZE + <span class="num">10</span>)
+    <span class="kw">for</span> i, ch <span class="kw">in</span> enumerate(guess):
+        x = START_X + i * (TILE_SIZE + <span class="num">10</span>)
+        <span class="kw">if</span> ch == word[i]:      color = <span class="str">"green"</span>   <span class="cm"># right spot</span>
+        <span class="kw">elif</span> ch <span class="kw">in</span> word:       color = <span class="str">"yellow"</span>  <span class="cm"># wrong spot</span>
+        <span class="kw">else</span>:                  color = <span class="str">"gray"</span>    <span class="cm"># not in word</span>
+        <span class="fn">draw_square</span>(x, row_y, color); <span class="fn">write_letter</span>(x, row_y, ch)
+    <span class="kw">if</span> guess == word: <span class="kw">break</span>
+
+turtle.done()</pre>
+    </div>
+  </section>
+
+  <!-- Extra 13: Xmas Tree -->
+  <section class="section" id="extra13">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E13</div>
+      <span class="section-icon">🎄</span>
+      <div><div class="section-title">Christmas Tree</div><div class="section-subtitle">Complex shapes, stamp(), decorations</div></div>
+    </div>
+    <p>Draw a full decorated Christmas tree with ornaments, bells (using stamp!), a star on top, and a greeting message!</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+
+window = turtle.Screen()
+tur = turtle.Turtle()
+scr = tur.getscreen()
+scr.title(<span class="str">"Merry Christmas"</span>); scr.bgcolor(<span class="str">"Light Blue"</span>)
+
+<span class="cm"># Tree (green)</span>
+tur.color(<span class="str">"green"</span>); tur.pensize(<span class="num">5</span>); tur.begin_fill()
+tur.forward(<span class="num">100</span>); tur.left(<span class="num">150</span>); tur.forward(<span class="num">90</span>); tur.right(<span class="num">150</span>)
+tur.forward(<span class="num">60</span>);  tur.left(<span class="num">150</span>); tur.forward(<span class="num">60</span>);  tur.right(<span class="num">150</span>)
+tur.forward(<span class="num">40</span>);  tur.left(<span class="num">150</span>); tur.forward(<span class="num">100</span>); tur.end_fill()
+<span class="cm"># ...more tree code draws left side...</span>
+
+<span class="cm"># Star at top using loop</span>
+tur.speed(<span class="num">1</span>); tur.penup(); tur.color(<span class="str">"yellow"</span>); tur.goto(<span class="num">-20</span>, <span class="num">110</span>)
+tur.begin_fill(); tur.pendown()
+<span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">5</span>):
+    tur.forward(<span class="num">40</span>); tur.right(<span class="num">144</span>)
+tur.end_fill()
+
+<span class="cm"># Bells using stamp()</span>
+tur.shape(<span class="str">"triangle"</span>); tur.fillcolor(<span class="str">"yellow"</span>)
+tur.goto(<span class="num">-20</span>, <span class="num">30</span>); tur.setheading(<span class="num">90</span>); tur.stamp()
+
+<span class="cm"># Greeting message</span>
+tur.penup(); tur.color(<span class="str">"Orange"</span>); tur.goto(<span class="num">-10</span>, <span class="num">-180</span>); tur.pendown()
+tur.write(<span class="str">"Merry Christmas!!!"</span>, move=<span class="kw">False</span>, align=<span class="str">"center"</span>,
+          font=(<span class="str">"Arial"</span>, <span class="num">15</span>, <span class="str">"bold"</span>))
+tur.hideturtle()
+turtle.done()</pre>
+    </div>
+    <div class="callout callout-info">
+      <div class="callout-title">📌 stamp() vs dot()</div>
+      <code>t.stamp()</code> leaves an imprint of the turtle's current shape at its current position. <code>t.dot()</code> always draws a circle. If the turtle is set to a triangle shape, <code>stamp()</code> prints a triangle!
+    </div>
+  </section>
+
+  <!-- Extra 14: Maze Game -->
+  <section class="section" id="extra14">
+    <div class="section-header">
+      <div class="section-num" style="background:linear-gradient(135deg,#06d6a0,#118ab2)">E14</div>
+      <span class="section-icon">🗺️</span>
+      <div><div class="section-title">Maze Game</div><div class="section-subtitle">Background image + arrow key navigation</div></div>
+    </div>
+    <p>Load a maze image as the background and navigate a turtle through it using arrow keys! Uses <code>setheading()</code> to always face the right direction while moving.</p>
+    <div class="code-block"><span class="code-label">Python</span>
+<pre><span class="kw">import</span> turtle
+
+s = turtle.Screen()
+s.title(<span class="str">"Maze game"</span>); s.setup(<span class="num">500</span>, <span class="num">500</span>)
+s.bgpic(<span class="str">"maze.png"</span>)  <span class="cm"># set a maze image as background!</span>
+
+t = turtle.Turtle()
+t.pensize(<span class="num">3</span>); t.pencolor(<span class="str">"red"</span>); t.penup()
+t.goto(<span class="num">-150</span>, <span class="num">240</span>); t.pendown()
+
+<span class="kw">def</span> <span class="fn">right</span>():
+    t.setheading(<span class="num">0</span>)      <span class="cm"># face right</span>
+    t.setx(t.xcor() + <span class="num">10</span>)
+
+<span class="kw">def</span> <span class="fn">left</span>():
+    t.setheading(<span class="num">180</span>)    <span class="cm"># face left</span>
+    t.setx(t.xcor() - <span class="num">10</span>)
+
+<span class="kw">def</span> <span class="fn">down</span>():
+    t.setheading(<span class="num">270</span>)    <span class="cm"># face down</span>
+    t.sety(t.ycor() - <span class="num">10</span>)
+
+<span class="kw">def</span> <span class="fn">up</span>():
+    t.setheading(<span class="num">90</span>)     <span class="cm"># face up</span>
+    t.sety(t.ycor() + <span class="num">10</span>)
+
+s.listen()
+s.onkey(<span class="fn">up</span>, <span class="str">"Up"</span>); s.onkey(<span class="fn">down</span>, <span class="str">"Down"</span>)
+s.onkey(<span class="fn">left</span>, <span class="str">"Left"</span>); s.onkey(<span class="fn">right</span>, <span class="str">"Right"</span>)
+
+turtle.done()</pre>
+    </div>
+    <div class="callout callout-tip">
+      <div class="callout-title">🖼️ Using a Background Image</div>
+      <code>s.bgpic("maze.png")</code> sets an image as background. The image file must be in the same folder as your Python file. Only <strong>.gif</strong> and <strong>.png</strong> files work with turtle's bgpic!
+    </div>
+  </section>
+
+  <!-- SUMMARY -->
+  <div class="divider"></div>
+  <section class="section">
+    <div class="section-header">
+      <span class="section-icon">📚</span>
+      <div><div class="section-title">Concepts Summary</div></div>
+    </div>
+    <table>
+      <tr><th>Topic</th><th>Key Concepts Learned</th><th>Tags</th></tr>
+      <tr><td>1. Colors</td><td>Screen setup, bgcolor, write(), RGB, hex colours, colormode</td><td><span class="tag tag-green">Beginner</span></td></tr>
+      <tr><td>2. Shapes</td><td>forward, left/right, begin_fill, end_fill, pensize, 360÷n formula</td><td><span class="tag tag-green">Beginner</span></td></tr>
+      <tr><td>3. Objects</td><td>for loops, penup/pendown, dot(), circle(), goto()</td><td><span class="tag tag-yellow">Easy</span></td></tr>
+      <tr><td>4. Polygons</td><td>Dynamic polygon formula, numinput, textinput, user input</td><td><span class="tag tag-yellow">Easy</span></td></tr>
+      <tr><td>5. Stars</td><td>Nested loops, 144° star, setheading, random, choice, randint</td><td><span class="tag tag-yellow">Easy</span></td></tr>
+      <tr><td>6. Functions</td><td>def, parameters, calling functions, DRY principle</td><td><span class="tag tag-blue">Medium</span></td></tr>
+      <tr><td>7. Fidget Spinner</td><td>Key binding, global variables, tracer, ontimer, animation</td><td><span class="tag tag-blue">Medium</span></td></tr>
+      <tr><td>8. Snake Game</td><td>xcor/ycor, distance, lists, while loop, direction, collision</td><td><span class="tag tag-red">Hard</span></td></tr>
+      <tr><td>9. Turtle Race</td><td>Multiple turtles, random movement, winner detection, break</td><td><span class="tag tag-blue">Medium</span></td></tr>
+      <tr><td>Extras</td><td>datetime, time, onclick, stamp, dictionary, bgpic, f-strings</td><td><span class="tag tag-purple">Advanced</span></td></tr>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link[href]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(l => {
+      l.classList.remove('active');
+      if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+    });
+  });
+
+  // Smooth scroll
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const id = link.getAttribute('href').slice(1);
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
